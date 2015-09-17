@@ -1,0 +1,4 @@
+php_flag display_errors off
+RewriteEngine On
+
+RewriteRule	^([0-9a-zA-Z_=/&\-]+)$	index.php/?page=$1	[L,QSA]
