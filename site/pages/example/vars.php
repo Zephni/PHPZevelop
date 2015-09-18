@@ -24,7 +24,8 @@
 <p>In your browser it will pass back that page. But if you pass extra "/items" to that URL they will act as parameters to that page. Note that if a page exists at that location
 it will choose that instead.</p>
 
-<p>By default (The AutoParamPass option in global.php) will enable this functionality but can be turned off by setting it to false</p>
+<p>By default the PassParamsAutomatically option in "/config.php" will disable this functionality but can be turned on by setting it to true. To see more click 
+<a href="<?php $PHPZevelop->Path->GetPage("example/404"); ?>" target="_blank">here</a>.</p>
 
 <p>When using this option, you will notice at the bottom of the page that $_GET contains the parameters passed through the URL. By default they will be indexed as "param_0", "param_1"
 etc, but this can be changed in the global file by changing $prependParam. If $prependParam is an empty string the parameters will be indexed as a plain integer instead of text.</p>
