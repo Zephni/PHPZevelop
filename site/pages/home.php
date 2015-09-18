@@ -1,8 +1,9 @@
 <?php
 	/* Page meta data
 	------------------------------*/
-	define("PAGE_TITLE",		"Home");
+	$PHPZevelop->Set("PAGE_TITLE",		"Home");
 ?>
+
 
 <h2>Home</h2>
 <p>This is a PHP framework for ease of use and adaptability. I am building it for personal use -  

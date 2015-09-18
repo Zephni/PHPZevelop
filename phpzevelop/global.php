@@ -5,6 +5,20 @@
 	// Include config file
 	require_once(ROOT_DIR."/config.php");
 
+	// Check if multisite
+	if(isset($CFG->MultiSite) && count($CFG->MultiSite) > 0)
+	{
+		foreach($CFG->MultiSite as $site)
+		{
+			if(array_shift(explode("/", $PAGE_PATH)) == $site || array_pop(explode("/", LOCAL_DIR)) == $site)
+			{
+				$PAGE_PATH = str_replace("//", "/", "/".str_replace($site, "", $PAGE_PATH));
+				$CFG->Site = "/".$site;
+				$CFG->LocalDir .= "/".$site;
+			}
+		}
+	}
+
 	$CFG->SiteDir = ROOT_DIR.$CFG->Site;
 	$CFG->SiteDirLocal = LOCAL_DIR.$CFG->Site;
 
