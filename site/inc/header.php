@@ -46,7 +46,8 @@
 					Help:
 					<a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">Configuration</a> |
 					<a href="<?php $PHPZevelop->Path->GetPage("help/base-directory"); ?>">Moving base directory</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a>
+					<a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a> | 
+					<a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a>
 				</p>
 				<p>
 					Classes:

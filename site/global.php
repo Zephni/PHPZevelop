@@ -1,13 +1,4 @@
 <?php
-	/* Config
-	------------------------------*/
-	$CFG->DB = (object) array(
-		"Host" => "",
-		"User" => "",
-		"Pass" => "",
-		"Name" => ""
-	);
-
 	/* Include all classes
 	------------------------------*/
 	$SubLoader = new SubLoader($PHPZevelop->CFG->SiteDir);

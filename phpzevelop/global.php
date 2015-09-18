@@ -19,8 +19,8 @@
 		}
 	}
 
-	$CFG->SiteDir = ROOT_DIR.$CFG->Site;
-	$CFG->SiteDirLocal = LOCAL_DIR.$CFG->Site;
+	$CFG->SiteDir = ROOT_DIR."/".$CFG->Site;
+	$CFG->SiteDirLocal = LOCAL_DIR."/".$CFG->Site;
 
 	$CFG->RootDirs = (object) array();
 	$CFG->LocalDirs = (object) array();
@@ -29,52 +29,53 @@
 		$CFG->LocalDirs->$item = $CFG->SiteDirLocal."/".strtolower($item);
 	}
 
+	// Include site config file
+	require_once($CFG->SiteDir."/config.php");
+
 	// Pass indexed parameters if file doesn't exist - but can find file in directory chain
-	if($CFG->AutoParamPass == true && strlen($PAGE_PATH) > 0){
-		$prependParam = $CFG->PreParam;
-		$defaultFiles = $CFG->DefaultFiles;
-		$newArr = array();
-		$checkFile = explode("/", $CFG->RootDirs->Pages."/".$PAGE_PATH);
-		$checked[] = implode("/", $checkFile);
-		while($checkFile != "%END%" && !is_file(implode("/", $checkFile).".php")){
+	$prependParam = $CFG->PreParam;
+	$defaultFiles = $CFG->DefaultFiles;
+	$newArr = array();
+	$checkFile = explode("/", $CFG->RootDirs->Pages."/".$PAGE_PATH);
+	$checked[] = implode("/", $checkFile);
+	while($checkFile != "%END%" && !is_file(implode("/", $checkFile).".php")){
 
-			foreach($defaultFiles as $item){
-				if(is_file(implode("/", (array)$checkFile)."/".$item)){
-					$PAGE_PATH = str_replace($CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
-					$checkFile = "%END%";
-					break;
-				}
-			}
-
-			if($checkFile != "%END%"){
-				$newArr[] = array_pop($checkFile);
-			
-				if(is_file(implode("/", (array)$checkFile).".php")){
-					$PAGE_PATH = str_replace($CFG->RootDirs->Pages, "", implode("/", $checkFile));
-					$checkFile = "%END%";
-				}else{				
-					foreach($defaultFiles as $item){
-						if(is_file(implode("/", (array)$checkFile)."/".$item)){
-							$PAGE_PATH = str_replace($CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
-							$checkFile = "%END%";
-							break;
-						}
-					}
-				}
-
-				if(implode("/", (array)$checkFile) == $CFG->RootDirs->Pages)
-					$checkFile = "%END%";
-			}else{
+		foreach($defaultFiles as $item){
+			if(is_file(implode("/", (array)$checkFile)."/".$item)){
+				$PAGE_PATH = str_replace($CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
+				$checkFile = "%END%";
 				break;
 			}
 		}
 
-		$newArr = array_reverse($newArr);
-		for($i = 0; $i < count($newArr); $i++)
-			$_GET[$prependParam.$i] = $newArr[$i];
+		if($checkFile != "%END%"){
+			$newArr[] = array_pop($checkFile);
 		
-		unset($newArr, $checkFile, $prependParam);
+			if(is_file(implode("/", (array)$checkFile).".php")){
+				$PAGE_PATH = str_replace($CFG->RootDirs->Pages, "", implode("/", $checkFile));
+				$checkFile = "%END%";
+			}else{				
+				foreach($defaultFiles as $item){
+					if(is_file(implode("/", (array)$checkFile)."/".$item)){
+						$PAGE_PATH = str_replace($CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
+						$checkFile = "%END%";
+						break;
+					}
+				}
+			}
+
+			if(implode("/", (array)$checkFile) == $CFG->RootDirs->Pages)
+				$checkFile = "%END%";
+		}else{
+			break;
+		}
 	}
+
+	$newArr = array_reverse($newArr);
+	for($i = 0; $i < count($newArr); $i++)
+		$_GET[$prependParam.$i] = $newArr[$i];
+	
+	unset($newArr, $checkFile, $prependParam);
 
 	$PAGE_PATH = rtrim($PAGE_PATH, ".php");
 
@@ -87,3 +88,7 @@
 	/* Instantiate
 	------------------------------*/
 	require_once($CFG->MainDir."/instantiate.php");
+
+	/* Custom setup
+	------------------------------*/
+	require_once($PHPZevelop->CFG->SiteDir."/global.php");

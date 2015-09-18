@@ -7,7 +7,6 @@
 		// Properties:
 
 			string $PageFile 		# The main page file (Usually the page that delivers content)
-			string $DefaultPageFile # The default page if $PageFile isn't specified (Eg. When no query string is passed)
 			string $Page404  		# The page to default to if $PageFile can't be found
 			array $FileOrder 		# Order of files to load such as a header/footer, $PageFile should be in this list
 			array $DefinedVars 		# Is an array list of variables that you may want to use inside the included files
@@ -35,18 +34,16 @@
 	class Page
 	{
 		public $PageFile;
-		public $DefaultPageFile;
 		public $Page404;
 		public $FileOrder;
 		public $DefinedVars;
 		public $PageBuffer;
 		public $Errors;
 
-		function __construct($page = "", $defaultPage = "", $page404 = "", $fileOrder = array(), $definedVars = array())
+		function __construct($page = "", $page404 = "", $fileOrder = array(), $definedVars = array())
 		{
 			$this->PageFile = $page;
 			$this->Page404 = $page404;
-			$this->DefaultPageFile = $defaultPage;
 			$this->FileOrder = $fileOrder;
 			$this->DefinedVars = $definedVars;
 			$this->Errors = array();
@@ -66,7 +63,6 @@
 		{
 			// Convert all paths to Unix mode
 			$this->ConvertToUnixPath($this->PageFile);
-			$this->ConvertToUnixPath($this->DefaultPageFile);
 			$this->ConvertToUnixPath($this->Page404);
 			foreach($this->FileOrder as $k => $v)
 				$this->ConvertToUnixPath($this->FileOrder[$k]);
@@ -77,11 +73,6 @@
 
 			// Include page to get variables for use in other files
 			// Then store content for using later and callback when finished
-			if(array_pop(explode("/", $this->PageFile)) == ".".pathinfo($this->PageFile, PATHINFO_EXTENSION)){
-				$this->FileOrder[array_search($this->PageFile, $this->FileOrder)] = $this->DefaultPageFile;
-				$this->PageFile = $this->DefaultPageFile;
-			}
-
 			if(is_file($this->PageFile))
 			{
 				$this->PageBuffer = $this->GetPageBuffer($this->PageFile);

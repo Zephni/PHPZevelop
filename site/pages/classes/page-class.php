@@ -15,7 +15,6 @@
 
 <pre class="code" style="font-size: 13px;">
 string $PageFile 		// The main page file (Usually the page that delivers content)
-string $DefaultPageFile 	// The default page if $PageFile isn't specified (Eg. When no query string is passed)
 string $Page404  		// The page to default to if $PageFile can't be found
 array $FileOrder 		// Order of files to load such as a header/footer, $PageFile should be in this list
 array $DefinedVars 		// Is an array list of variables that you may want to use inside the included files
@@ -27,7 +26,6 @@ array $DefinedVars 		// Is an array list of variables that you may want to use i
 // 1. (Preferred) Defining properties individually and loading page when ready
 
 	$PHPZevelop->Page->PageFile =		$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");
-	$PHPZevelop->Page->DefaultPageFile =	$PHPZevelop->Path->GetPageRoot("home.php");
 	$PHPZevelop->Page->Page404 =		$PHPZevelop->Path->GetPageRoot("error/404.php");
 
 	$PHPZevelop->Page->FileOrder = array(
@@ -45,7 +43,6 @@ array $DefinedVars 		// Is an array list of variables that you may want to use i
 
 new Page(
 	$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php"),
-	$PHPZevelop->Path->GetPageRoot("home.php"),
 	$PHPZevelop->Path->GetPageRoot("error/404.php"),
 	array(
 		$PHPZevelop->Path->GetInc("header.php"),

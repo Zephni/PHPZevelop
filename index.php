@@ -16,14 +16,9 @@
 	------------------------------*/
 	require_once(MAIN_DIR."/global.php");
 
-	/* Custom setup
-	------------------------------*/
-	require_once($PHPZevelop->CFG->SiteDir."/global.php");
-
 	/* Generate page
 	------------------------------*/
 	$PHPZevelop->Page->PageFile =			$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");
-	$PHPZevelop->Page->DefaultPageFile =	$PHPZevelop->Path->GetPageRoot("home.php");
 	$PHPZevelop->Page->Page404 =			$PHPZevelop->Path->GetPageRoot("error/404.php");
 
 	$PHPZevelop->Page->FileOrder = array(
