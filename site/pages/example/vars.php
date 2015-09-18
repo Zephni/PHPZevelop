@@ -2,6 +2,9 @@
 	/* Page meta data
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Vars");
+
+	// Turn parameters off for this page
+	$PHPZevelop->CFG->PassParamsAutomatically = true;
 ?>
 <h2>Variable passing test</h2>
 

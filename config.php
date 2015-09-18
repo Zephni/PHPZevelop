@@ -9,7 +9,7 @@
 		"LocalDir" => LOCAL_DIR,
 		"MainDir" => MAIN_DIR,
 		"MainDirClasses" => MAIN_DIR."/classes",
-		"PassParamsAutomatically" => true,
+		"PassParamsAutomatically" => false,
 		"PreParam" => "param_",
 		"DefaultFiles" => array("index.php", "default.php", "home.php")
 	);
