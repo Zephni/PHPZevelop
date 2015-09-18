@@ -59,10 +59,13 @@
 
 		public function GetPage($string, $return = false)
 		{
+			$value = (strlen($this->CFG->LocalDir) == 0) ? $this->CFG->LocalDir."/".$string : "/".$this->CFG->LocalDir."/".$string;
+			$value = (substr($value, -1, 1) == "/") ? rtrim($value, "/") : $value;
+
 			if(!$return)
-				echo $this->CFG->LocalDir."/".$string;
+				echo $value;
 			else
-				return $this->CFG->LocalDir."/".$string;
+				return $value;
 		}
 
 		public function GetPageRoot($string, $return = true)
