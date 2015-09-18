@@ -6,19 +6,18 @@
 
 <h2>Configuration</h2>
 
-<p>The below configuration can be found in config.php in root directory: </p>
+<p>The below configuration is an example configuration. The config for this setup is "config.php" in the root directory: </p>
 
 <pre class="code">
 $CFG = (object) array(
 	"SiteTitle" => "PHPZevelop",
-	"Domain" => "Zephni.com/PHPZevelop",
-	"Site" => "/site",
-	"AutoParamPass" => true,
+	"Site" => "site",
+	"MultiSite" => array(),
 	"RootDir" => ROOT_DIR,
 	"LocalDir" => LOCAL_DIR,
 	"MainDir" => MAIN_DIR,
 	"MainDirClasses" => MAIN_DIR."/classes",
-	"PassParamsAutomatically" => true,
+	"PassParamsAutomatically" => false,
 	"PreParam" => "param_",
 	"DefaultFiles" => array("index.php", "default.php", "home.php")
 );
@@ -35,11 +34,9 @@ echo $PHPZevelop->CFG->DB->Host;
 
 <p><span style="color: green;">SiteTitle</span>: This will be displayed in the title of each webpage, and can be used else where in the site. You can set it to an empty string if you wish</p>
 
-<p><span style="color: green;">Domain</span>: This is for use internally and not a structural dependancy</p>
-
 <p><span style="color: green;">Site</span>: The directory that your site data belongs in</p>
 
-<p><span style="color: green;">AutoParamPass</span>: This will allow parameters to be passed with friendly URL's, <a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">see more here</a></p>
+<p><span style="color: green;">MultiSite</span>: Other site configuration directories</p>
 
 <p><span style="color: green;">RootDir</span>: The root path to the site eg:</p>
 
@@ -51,7 +48,7 @@ echo $PHPZevelop->CFG->DB->Host;
 
 <p><span style="color: green;">MainDirClasses</span>: The root directory of classes that belong to phpzevelop</p>
 
-<p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("example/404"); ?>">here</a></p>
+<p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">here</a></p>
 
 <p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">here</a></p>
 
