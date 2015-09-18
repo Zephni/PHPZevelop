@@ -12,9 +12,9 @@
 		{
 			if(array_shift(explode("/", $PAGE_PATH)) == $site || array_pop(explode("/", LOCAL_DIR)) == $site)
 			{
-				$PAGE_PATH = str_replace("//", "/", "/".str_replace($site, "", $PAGE_PATH));
-				$CFG->Site = "/".$site;
-				$CFG->LocalDir .= "/".$site;
+				$PAGE_PATH = str_replace("//", "/", str_replace($site, "", $PAGE_PATH));
+				$CFG->Site = $site;
+				$CFG->LocalDir .= $site;
 			}
 		}
 	}
@@ -30,7 +30,8 @@
 	}
 
 	// Include site config file
-	require_once($CFG->SiteDir."/config.php");
+	if(file_exists($CFG->SiteDir."/config.php"))
+		require_once($CFG->SiteDir."/config.php");
 
 	// Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	$prependParam = $CFG->PreParam;
@@ -91,4 +92,5 @@
 
 	/* Custom setup
 	------------------------------*/
-	require_once($PHPZevelop->CFG->SiteDir."/global.php");
+	if(file_exists($PHPZevelop->CFG->SiteDir."/global.php"))
+		require_once($PHPZevelop->CFG->SiteDir."/global.php");
