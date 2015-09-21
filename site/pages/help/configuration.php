@@ -32,7 +32,7 @@ echo $PHPZevelop->CFG->DB->Host;
 
 <h3>Below is an explanation of each of these values</h3>
 
-<p><span style="color: green;">SiteTitle</span>: This will be displayed in the title of each webpage, and can be used else where in the site. You can set it to an empty string if you wish</p>
+<p><span style="color: green;">SiteTitle</span>: This will be displayed in the title of each webpage, and can be used else where in the site.</p>
 
 <p><span style="color: green;">Site</span>: The directory that your site data belongs in</p>
 

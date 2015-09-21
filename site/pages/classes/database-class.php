@@ -8,10 +8,12 @@
 
 <h3>Note</h3>
 
-<p>By default the database class (which uses PDO) is configured in the "site/global.php" file and instantiated in the "site/instantiate.php": </p>
+<p>The class.db.php file must be included in the "classes/" directory for this class to be available.</p>
+
+<p>By default the database class (which uses PDO) is configured in the "site/config.php" file and instantiated in the "site/instantiate.php": </p>
 
 <pre class="code">
-# file: site/global.php
+# file: site/config.php
 
 /* Config
 ------------------------------*/
@@ -33,7 +35,7 @@ if(strlen($PHPZevelop->CFG->DB->Host) > 0){
 }
 </pre>
 
-<p>If the host has not been set in the site/global.php then the database will not attempt to connect.
+<p>If the host has not been set in the site/config.php then the database will not attempt to connect.
 If the the host property is set, then it will try to connect and die on error if it can't connect with a PDOExecption error message.</p>
 
 <h3>Usage</h3>

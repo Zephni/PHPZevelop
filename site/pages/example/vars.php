@@ -8,7 +8,7 @@
 ?>
 <h2>Variable passing test</h2>
 
-<p>Using the PHPZevelop you can pass variables through the URL in two different ways.</p>
+<p>Using PHPZevelop you can pass variables through the URL in two different ways.</p>
 
 <h3>Option 1 - Pretty URL's</h3>
 <p><a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">Test this option</a> (See variables passed at bottom of page)</p>
@@ -21,11 +21,11 @@
 
 <pre class="code">/examples/vars</pre>
 
-<p>In your browser it will pass back that page. But if you pass extra "/items" to that URL they will act as parameters to that page. Note that if a page exists at that location
+<p>PHPZevelop will pass back that page. But if you pass extra "/items" to that URL they will act as parameters to that page. Note that if a page exists at that location
 it will choose that instead.</p>
 
-<p>By default the PassParamsAutomatically option in "/config.php" will disable this functionality but can be turned on by setting it to true. To see more click 
-<a href="<?php $PHPZevelop->Path->GetPage("example/404"); ?>" target="_blank">here</a>.</p>
+<p>By default the PassParamsAutomatically option in "/config.php" will disable this functionality but can be turned on by setting it to true on individual pages like this one, or it can be set
+to true by default. for more information click <a href="<?php $PHPZevelop->Path->GetPage("example/404"); ?>" target="_blank">here</a>.</p>
 
 <p>When using this option, you will notice at the bottom of the page that $_GET contains the parameters passed through the URL. By default they will be indexed as "param_0", "param_1"
 etc, but this can be changed in the global file by changing $prependParam. If $prependParam is an empty string the parameters will be indexed as a plain integer instead of text.</p>
