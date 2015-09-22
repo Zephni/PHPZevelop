@@ -1,10 +1,10 @@
 <?php
 	/* Config
 	------------------------------*/
-
+	
 	// Include config file
 	require_once(ROOT_DIR."/config.php");
-
+	
 	// Check if multisite
 	if(isset($CFG->MultiSite) && count($CFG->MultiSite) > 0)
 	{
@@ -18,7 +18,7 @@
 			}
 		}
 	}
-
+	
 	$CFG->SiteDir = ROOT_DIR."/".$CFG->Site;
 	$CFG->SiteDirLocal = LOCAL_DIR."/".$CFG->Site;
 

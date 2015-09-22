@@ -57,15 +57,24 @@
 				return $this->CFG->LocalDirs->Images."/".$string;
 		}
 
+		public function GetImageRoot($string, $return = true)
+		{
+			if(!$return)
+				echo $this->CFG->RootDirs->Images."/".$string;
+			else
+				return $this->CFG->RootDirs->Images."/".$string;
+		}
+
 		public function GetPage($string, $return = false)
 		{
-			$value = (strlen($this->CFG->LocalDir) == 0) ? $this->CFG->LocalDir."/".$string : "/".$this->CFG->LocalDir."/".$string;
-			$value = (substr($value, -1, 1) == "/") ? rtrim($value, "/") : $value;
+			$string = (strlen($this->CFG->SiteDirLocal) == 0) ? $this->CFG->SiteDirLocal."/".$string : "/".$this->CFG->SiteDirLocal."/".$string;
+			if(substr($string, 0, 2) == "//") $string = ltrim($string, "//");
+			if(substr($string, 0, 1) != "/") $string = "/".$string;
 
 			if(!$return)
-				echo $value;
+				echo $string;
 			else
-				return $value;
+				return $string;
 		}
 
 		public function GetPageRoot($string, $return = true)
