@@ -67,7 +67,7 @@
 
 		public function GetPage($string, $return = false)
 		{
-			$string = (strlen($this->CFG->SiteDirLocal) == 0) ? $this->CFG->SiteDirLocal."/".$string : "/".$this->CFG->SiteDirLocal."/".$string;
+			$string = (strlen($this->CFG->LocalDir) == 0) ? $this->CFG->LocalDir."/".$string : "/".$this->CFG->LocalDir."/".$string;
 			if(substr($string, 0, 2) == "//") $string = ltrim($string, "//");
 			if(substr($string, 0, 1) != "/") $string = "/".$string;
 

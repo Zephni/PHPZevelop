@@ -14,7 +14,7 @@
 			{
 				$PAGE_PATH = str_replace("//", "/", "/".str_replace($site, "", $PAGE_PATH));
 				$CFG->Site = $site;
-				$CFG->LocalDir .= $site;
+				$CFG->LocalDir .= "/".$site;
 			}
 		}
 	}
