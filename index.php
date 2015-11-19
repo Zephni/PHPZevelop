@@ -3,7 +3,7 @@
 
 	/* Get page path and unset $_GET["page"]
 	------------------------------*/
-	$PAGE_PATH = (isset($_GET["page"])) ? (string)$_GET["page"] : "";
+	$PAGE_PATH = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
 	unset($_GET["page"]);
 
 	/* Define dependant directories
