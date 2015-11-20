@@ -116,7 +116,18 @@
 			if(is_array($this->DefinedVars))
 				extract($this->DefinedVars, EXTR_OVERWRITE);
 			
-			// Include file
+			// Include file to check any config changes
+			ob_start();
+		    include($file);
+		    ob_end_clean();
+
+		    // Set gets
+			$newArr = array_reverse($newArr);
+			for($i = 0; $i < count($newArr); $i++)
+				$_GET[$PHPZevelop->CFG->PreParam.$i] = $newArr[$i];
+			unset($newArr);
+
+		    // Get final file buffer
 			ob_start();
 		    include($file);
 		    $pageBuffer = ob_get_contents();

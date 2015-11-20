@@ -46,7 +46,7 @@
 				}
 			}catch(PDOException $e){
 				$this->error[] = $e->getMessage();
-				return false;
+				return array();
 			}
 		}
 

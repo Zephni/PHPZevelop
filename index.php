@@ -1,4 +1,6 @@
 <?php
+	/* Begin session
+	------------------------------*/
 	session_start();
 
 	/* Get page path and unset $_GET["page"]
