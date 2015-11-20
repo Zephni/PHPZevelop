@@ -10,9 +10,8 @@
 
 <pre class="code">
 $CFG = (object) array(
-	"SiteTitle" => "PHPZevelop",
 	"Site" => "site",
-	"MultiSite" => array(),
+	"MultiSite" => array("admin343872"),
 	"RootDir" => ROOT_DIR,
 	"LocalDir" => LOCAL_DIR,
 	"MainDir" => MAIN_DIR,
@@ -29,6 +28,8 @@ $CFG = (object) array(
 echo $PHPZevelop->CFG->SiteTitle;
 echo $PHPZevelop->CFG->DB->Host;
 </pre>
+
+<p>Configuration can be overwritten in the site directory "config.php". This could be nessesary if you are using <a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a>.</p>
 
 <h3>Below is an explanation of each of these values</h3>
 
