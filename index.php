@@ -18,6 +18,8 @@
 	------------------------------*/
 	require_once(MAIN_DIR."/global.php");
 
+	//die("<pre>".print_r($PHPZevelop->CFG, 1)."</pre>");
+
 	/* Generate page
 	------------------------------*/
 	$PHPZevelop->Page->PageFile =			$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");

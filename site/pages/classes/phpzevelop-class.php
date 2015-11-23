@@ -11,7 +11,7 @@
 <pre class="code">
 class PHPZevelop
 {
-	public function NewObject($Alias, &$Object){
+	public function NewObject($Alias, &amp;$Object){
 		$this->$Alias = $Object;
 	}
 }

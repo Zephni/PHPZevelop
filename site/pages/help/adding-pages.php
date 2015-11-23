@@ -13,18 +13,18 @@
 
 <p>Eg. this file lives here: </p>
 
-<pre class="code">/pages/example/adding-pages.php</pre>
+<pre class="code">/pages/help/adding-pages.php</pre>
 
 <p>.. and is being accessed through the URL by: </p>
 
-<pre class="code">/example/adding-pages</pre>
+<pre class="code">/help/adding-pages</pre>
 
 <h3>Default pages</h3>
 
-<p>If you were to go to <a href="<?php $PHPZevelop->Path->GetPage("example"); ?>" target="_blank"><?php $PHPZevelop->Path->GetPage("example"); ?></a> 
-you would get a 404 error because even though the directory "example/" exists, it is not a readable page. If you would like "example/" to show a page you can create
+<p>If you were to go to <a href="<?php $PHPZevelop->Path->GetPage("help"); ?>" target="_blank"><?php $PHPZevelop->Path->GetPage("help"); ?></a> 
+you would get a 404 error because even though the directory "help/" exists, it is not a readable page. If you would like "help/" to show a page you can create
 any of the pages found in the $CFG array in "/config.php": </p>
 
 <pre class="code">"DefaultFiles" => array("index.php", "default.php", "home.php")</pre>
 
-<p>.. in the "example/" directory.</p>
+<p>.. in the "help/" directory.</p>

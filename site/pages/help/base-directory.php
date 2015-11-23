@@ -5,6 +5,8 @@
 ?>
 <h2>Moving base directory</h2>
 
+<p>The "LocalDir" config property should be set to the directory that the PHPZevelop framework lives in.</p>
+
 <p>There will be no issues changing the directory the PHPZevelop lives in, index.php will automatically assign the base directory by default.</p>
 
 <p>However if for some reason you wish to set this manually you can by changing "config.php" (In root directory):</p>

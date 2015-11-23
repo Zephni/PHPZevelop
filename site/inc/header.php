@@ -36,25 +36,37 @@
 				<a href="<?php echo $PHPZevelop->CFG->LocalDir; ?>/">
 					<h1>PHPZevelop</h1>
 				</a>
-				<p>
-					Examples:
-					<a href="<?php $PHPZevelop->Path->GetPage("example/adding-pages"); ?>">Adding pages</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">Passing variables to pages</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("example/404"); ?>">404 page (Undefined URL's)</a>
-				</p>
-				<p>
-					Help:
-					<a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">Configuration</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("help/base-directory"); ?>">Moving base directory</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a> | 
-					<a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a>
-				</p>
-				<p>
-					Classes:
-					<a href="<?php $PHPZevelop->Path->GetPage("classes/phpzevelop-class"); ?>">PHPZevelop</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("classes/page-class"); ?>">Page</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("classes/path-class"); ?>">Path</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("classes/subloader-class"); ?>">SubLoader</a> |
-					<a href="<?php $PHPZevelop->Path->GetPage("classes/database-class"); ?>">Database</a>
-				</p>
+				<table style="width: 100%;">
+					<tr>
+						<td style='padding: 8px; background: #CCCCCC; margin-bottom: 5px;'>Help</td>
+					</tr>
+					<tr>
+						<td>
+							<table style="width: 100%;">
+								<td style='text-align: center;'><a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">Configuration</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("help/adding-pages"); ?>">Adding pages</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("help/base-directory"); ?>">Moving base directory</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">Passing variables to pages</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("help/404"); ?>">404 page (Undefined URL's)</a></td>
+							</table>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style='padding: 8px; background: #CCCCCC; margin-bottom: 5px;'>Classes</td>
+					</tr>
+					<tr>
+						<td>
+							<table style="width: 100%;">
+								<td style='text-align: center;'><a href="<?php $PHPZevelop->Path->GetPage("classes/phpzevelop-class"); ?>">PHPZevelop</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("classes/page-class"); ?>">Page class</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("classes/path-class"); ?>">Path class</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("classes/subloader-class"); ?>">SubLoader class</a></td>
+								<td style='text-align: center; border-left: 1px solid #AAAAAA;'><a href="<?php $PHPZevelop->Path->GetPage("classes/database-class"); ?>">Database class</a></td>
+							</table>
+						</td>
+					</tr>
+				</table>
 				<hr />

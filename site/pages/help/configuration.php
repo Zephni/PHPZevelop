@@ -49,8 +49,8 @@ echo $PHPZevelop->CFG->DB->Host;
 
 <p><span style="color: green;">MainDirClasses</span>: The root directory of classes that belong to phpzevelop</p>
 
-<p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">here</a></p>
+<p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 
-<p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <a href="<?php $PHPZevelop->Path->GetPage("example/vars/5/test"); ?>">here</a></p>
+<p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 
-<p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <a href="<?php $PHPZevelop->Path->GetPage("example/adding-pages"); ?>">here</a></p>
+<p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/adding-pages"); ?>">here</a></p>
