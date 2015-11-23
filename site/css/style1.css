@@ -1,13 +1,15 @@
 @import url(http://fonts.googleapis.com/css?family=Oswald);
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
-html, body {}
-
+html, body {padding: 0px; margin: 0px;}
 body {font-family: "Open Sans"; color: #6E6E6E; font-size: 16px; line-height: 25px;}
 
 h1,h2,h3,h4,h5 {font-family: "Oswald"; color: #444444;}
+h1 {font-size: 40px;}
 p {font-family: "Open Sans"; color: #6E6E6E; font-size: 16px; line-height: 25px;}
-a {color: #00688B; text-decoration: none;}
+a {color: #009ACD; text-decoration: none;}
+
+hr {display: block;height: 1px;border: 0;border-top: 1px solid #009ACD;margin: 1em 0;padding: 0; }
 
 pre {
 	white-space: pre-wrap;       /* css-3 */
@@ -18,9 +20,17 @@ pre {
 }
 
 #fixed-container {position: fixed; width: 100%; height: 40px; z-index: 1;}
-#download-on-github {position: absolute; top: -20px; right: 22px; background: #333333; border-radius: 10px; padding: 20px 10px 5px 10px; color: white; opacity: 0.6; border: 2px solid #CCCCCC;}
-#download-on-github:hover {opacity: 0.9;}
+#download-on-github {position: absolute; top: -20px; right: 9px; background: #009ACD; border-radius: 10px; padding: 24px 15px 5px 15px; color: white; opacity: 0.7; border: 2px solid #CCCCCC;}
+#download-on-github:hover {opacity: 1;}
 
 .wrapper {width: 100%; max-width: 1040px; margin: auto; position: relative;}
 .wrapper .padding {padding: 10px;}
 .code {background: #DFDFDF; padding: 10px;}
+
+table {border-collapse: collapse;}
+#nav {width: 100%; background: #FFFFFF; border-collapse: collapse; border-bottom: 1px solid #AAAAAA;}
+#nav .head {padding: 8px; background: #009ACD; margin-bottom: 5px; color: white; font-weight: bold;}
+#nav tr td table td {text-align: center; border-left: 1px solid #AAAAAA; padding: 3px;}
+#nav tr td table td:first-of-type {border-left: none;}
+#nav tr td table td:hover {background: #EEEEEE;}
+#nav tr td table td a {width: 100%; height: 100%; display: inline-block; padding: 3px 0 3px 0; color: #333333;}
