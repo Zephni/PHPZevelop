@@ -48,8 +48,8 @@
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/base-directory"); ?>">Moving base directory</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">Passing variables to pages</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/404"); ?>">404 page (Undefined URL's)</a></td>
+								<td><a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">Page parameters</a></td>
+								<td><a href="<?php $PHPZevelop->Path->GetPage("help/404"); ?>">Undefined URL's</a></td>
 							</table>
 						</td>
 					</tr>

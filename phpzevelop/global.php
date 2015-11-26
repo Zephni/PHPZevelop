@@ -79,8 +79,8 @@
 
 	/* Include all classes
 	------------------------------*/
-	require_once($CFG->MainDirClasses."/class.subloader.php");
-	$SubLoader = new SubLoader($CFG->MainDirClasses);
+	require_once($CFG->MainDir."/classes/class.subloader.php");
+	$SubLoader = new SubLoader($CFG->MainDir."/classes");
 	$SubLoader->RunIncludes();
 
 	/* Instantiate
