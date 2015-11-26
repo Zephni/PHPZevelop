@@ -2,7 +2,7 @@
 	// Config
 	$CFG = (object) array(
 		"Site" => "site",
-		"MultiSite" => array("admin343872"),
+		"MultiSite" => array("admin"),
 		"RootDir" => ROOT_DIR,
 		"LocalDir" => LOCAL_DIR,
 		"MainDir" => MAIN_DIR,

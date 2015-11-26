@@ -8,10 +8,12 @@
 <p>To change the default meta data for the framework you can change the constant values in "inc/header.php" on lines 4-7:</p>
 
 <pre class="code" style="font-size: 12px;">
-if(!isset($PHPZevelop->PAGE_TITLE))		$PHPZevelop->PAGE_TITLE = "";
-if(!isset($PHPZevelop->META_TITLE))		$PHPZevelop->META_TITLE = "PHPZevelop PHP FrameWork";
-if(!isset($PHPZevelop->META_DESCRIPTION))	$PHPZevelop->META_DESCRIPTION = "PHP framework for ease of use and adaptability";
-if(!isset($PHPZevelop->META_KEYWORDS))		$PHPZevelop->META_KEYWORDS = "PHP, Framework, Zephni";
+/* Defaults if not defined
+------------------------------*/
+if($PHPZevelop->Get("PAGE_TITLE")	== null)	$PHPZevelop->Set("PAGE_TITLE", "");
+if($PHPZevelop->Get("META_TITLE")	== null)	$PHPZevelop->Set("META_TITLE", "PHPZevelop PHP FrameWork");
+if($PHPZevelop->Get("META_DESCRIPTION")	== null)	$PHPZevelop->Set("META_DESCRIPTION", "PHP framework for ease of use and adaptability");
+if($PHPZevelop->Get("META_KEYWORDS")	== null)	$PHPZevelop->Set("META_KEYWORDS", "PHP, Framework, Zephni");
 </pre>
 
 <p>These definitions can be placed in individual pages so the defaults can be overwritten, for example at the top of this file it uses:</p>
@@ -29,5 +31,5 @@ If no page title is passed and the default page title is set to an empty string,
 it can by edited manually on line 15 of "inc/header.php":</p>
 
 <pre class="code">
-&lt;title&gt;&lt;?php if($PHPZevelop->PAGE_TITLE != "") echo $PHPZevelop->CFG->SiteTitle." - ".$PHPZevelop->PAGE_TITLE; else echo $PHPZevelop->CFG->SiteTitle;?&gt;&lt;/title&gt;
+&lt;title&gt;&lt;?php if($PHPZevelop-&gt;Get(&quot;PAGE_TITLE&quot;) != &quot;&quot;) echo $PHPZevelop-&gt;CFG-&gt;SiteTitle.&quot; - &quot;.$PHPZevelop-&gt;Get(&quot;PAGE_TITLE&quot;); else echo $PHPZevelop-&gt;CFG-&gt;SiteTitle; ?&gt;&lt;/title&gt;
 </pre>

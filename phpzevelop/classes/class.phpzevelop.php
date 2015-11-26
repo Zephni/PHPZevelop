@@ -19,11 +19,20 @@
 
 	class PHPZevelop
 	{
+		private $InternalData = array();
+
 		public function NewObject($Alias, &$Object){
 			$this->$Alias = $Object;
 		}
 
 		public function Set($Key, $Value){
-			$this->$Key = $Value;
+			$this->InternalValues[$Key] = $Value;
+		}
+
+		public function Get($Key){
+			if(array_key_exists($Key, $this->InternalValues))
+				return $this->InternalValues[$Key];
+			else
+				return null;
 		}
 	}

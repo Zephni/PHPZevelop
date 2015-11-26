@@ -11,11 +11,10 @@
 <pre class="code">
 $CFG = (object) array(
 	"Site" => "site",
-	"MultiSite" => array("admin343872"),
+	"MultiSite" => array("admin"),
 	"RootDir" => ROOT_DIR,
 	"LocalDir" => LOCAL_DIR,
 	"MainDir" => MAIN_DIR,
-	"MainDirClasses" => MAIN_DIR."/classes",
 	"PassParamsAutomatically" => false,
 	"PreParam" => "param_",
 	"DefaultFiles" => array("index.php", "default.php", "home.php")
@@ -29,7 +28,7 @@ echo $PHPZevelop->CFG->SiteTitle;
 echo $PHPZevelop->CFG->DB->Host;
 </pre>
 
-<p>Configuration can be overwritten in the site directory "config.php". This could be nessesary if you are using <a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a>.</p>
+<p>Configuration can be overwritten in the site directory "config.php". This could be nessesary for overwriting default configuration in <a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a> site.</p>
 
 <h3>Below is an explanation of each of these values</h3>
 
@@ -46,8 +45,6 @@ echo $PHPZevelop->CFG->DB->Host;
 <p><span style="color: green;">LocalDir</span>: This is the public facing directory that the site lives in after the domain name</p>
 
 <p><span style="color: green;">MainDir</span>: The root directory of phpzevelop, by standard this lives in the same directory as index.php</p>
-
-<p><span style="color: green;">MainDirClasses</span>: The root directory of classes that belong to phpzevelop</p>
 
 <p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 

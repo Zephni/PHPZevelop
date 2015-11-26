@@ -1,10 +1,10 @@
 <?php
 	/* Defaults if not defined
 	------------------------------*/
-	if(!isset($PHPZevelop->PAGE_TITLE))			$PHPZevelop->PAGE_TITLE = "";
-	if(!isset($PHPZevelop->META_TITLE))			$PHPZevelop->META_TITLE = "PHPZevelop PHP FrameWork";
-	if(!isset($PHPZevelop->META_DESCRIPTION))	$PHPZevelop->META_DESCRIPTION = "PHP framework for ease of use and adaptability";
-	if(!isset($PHPZevelop->META_KEYWORDS))		$PHPZevelop->META_KEYWORDS = "PHP, Framework, Zephni";
+	if($PHPZevelop->Get("PAGE_TITLE")		== null)	$PHPZevelop->Set("PAGE_TITLE", "");
+	if($PHPZevelop->Get("META_TITLE")		== null)	$PHPZevelop->Set("META_TITLE", "PHPZevelop PHP FrameWork");
+	if($PHPZevelop->Get("META_DESCRIPTION")	== null)	$PHPZevelop->Set("META_DESCRIPTION", "PHP framework for ease of use and adaptability");
+	if($PHPZevelop->Get("META_KEYWORDS")	== null)	$PHPZevelop->Set("META_KEYWORDS", "PHP, Framework, Zephni");
 ?>
 
 <!DOCTYPE html>
@@ -12,11 +12,11 @@
 <html>
 	<head>
 		<!-- META DATA -->
-		<title><?php if($PHPZevelop->PAGE_TITLE != "") echo $PHPZevelop->CFG->SiteTitle." - ".$PHPZevelop->PAGE_TITLE; else echo $PHPZevelop->CFG->SiteTitle; ?></title>
+		<title><?php if($PHPZevelop->Get("PAGE_TITLE") != "") echo $PHPZevelop->CFG->SiteTitle." - ".$PHPZevelop->Get("PAGE_TITLE"); else echo $PHPZevelop->CFG->SiteTitle; ?></title>
 		<meta charset="UTF-8">
-		<meta name="title" content="<?php echo $PHPZevelop->META_TITLE; ?>">
-		<meta name="description" content="<?php echo $PHPZevelop->META_DESCRIPTION; ?>">
-		<meta name="keywords" content="<?php echo $PHPZevelop->META_KEYWORDS; ?>">
+		<meta name="title" content="<?php echo $PHPZevelop->Get("META_TITLE"); ?>">
+		<meta name="description" content="<?php echo $PHPZevelop->Get("META_DESCRIPTION"); ?>">
+		<meta name="keywords" content="<?php echo $PHPZevelop->Get("META_KEYWORDS"); ?>">
 
 		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("style1.css"); ?>">
