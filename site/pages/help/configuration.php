@@ -10,14 +10,12 @@
 
 <pre class="code">
 $PHPZevelop->NewObject("CFG", (object) array(
-	"Site" => "site",
-	"MultiSite" => array("admin"),
-	"RootDir" => ROOT_DIR,
-	"LocalDir" => LOCAL_DIR,
-	"MainDir" => MAIN_DIR,
-	"PassParamsAutomatically" => false,
-	"PreParam" => "param_",
-	"DefaultFiles" => array("index.php", "default.php", "home.php")
+	"SiteTitle"			=> "PHPZevelop",
+	"Site"				=> "site",
+	"MultiSite"			=> array("admin"),
+	"PassParamsAutomatically"	=> false,
+	"PreParam"			=> "param_",
+	"DefaultFiles"			=> array("index.php", "default.php", "home.php")
 ));
 </pre>
 
@@ -37,14 +35,6 @@ echo $PHPZevelop->CFG->DB->Host;
 <p><span style="color: green;">Site</span>: The directory that your site data belongs in</p>
 
 <p><span style="color: green;">MultiSite</span>: Other site configuration directories</p>
-
-<p><span style="color: green;">RootDir</span>: The root path to the site eg:</p>
-
-<pre class="code">/home/username/public_html</pre>
-
-<p><span style="color: green;">LocalDir</span>: This is the public facing directory that the site lives in after the domain name</p>
-
-<p><span style="color: green;">MainDir</span>: The root directory of phpzevelop, by standard this lives in the same directory as index.php</p>
 
 <p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 

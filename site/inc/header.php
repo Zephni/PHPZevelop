@@ -45,7 +45,6 @@
 							<table style="width: 100%;">
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">Configuration</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/adding-pages"); ?>">Adding pages</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/base-directory"); ?>">Moving base directory</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">Page parameters</a></td>

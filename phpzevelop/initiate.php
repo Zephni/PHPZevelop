@@ -1,27 +1,30 @@
 <?php
-	/* Include all classes
+	/* Include base classes
 	------------------------------*/
 	require_once(MAIN_DIR."/classes/class.subloader.php");
 	$SubLoader = new SubLoader(MAIN_DIR."/classes");
 	$SubLoader->RunIncludes();
-
+	
 	/* PHPZevelop setup
 	------------------------------*/
 	$PHPZevelop = new PHPZevelop();
-
-	/* Include config file
-	------------------------------*/
 	require_once(ROOT_DIR."/config.php");
-	
+
+	/* Get page path and unset $_GET["page"]
+	------------------------------*/
+	$PHPZevelop->CFG->PagePath = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
+	$PHPZevelop->CFG->LocalDir = rtrim(array_shift(explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]))), "/");
+	unset($_GET["page"]);
+
 	/* Check if current path is a MultiSite
 	------------------------------*/
 	if(isset($PHPZevelop->CFG->MultiSite) && count($PHPZevelop->CFG->MultiSite) > 0)
 	{
 		foreach($PHPZevelop->CFG->MultiSite as $site)
 		{
-			if(array_shift(explode("/", $PAGE_PATH)) == $site || array_pop(explode("/", LOCAL_DIR)) == $site)
+			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $site || array_pop(explode("/", $PHPZevelop->CFG->LocalDir)) == $site)
 			{
-				$PAGE_PATH = str_replace("//", "/", "/".str_replace($site, "", $PAGE_PATH));
+				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($site, "", $PHPZevelop->CFG->PagePath));
 				$PHPZevelop->CFG->Site = $site;
 				$PHPZevelop->CFG->LocalDir .= "/".$site;
 			}
@@ -31,7 +34,7 @@
 	/* Build Config strings
 	------------------------------*/
 	$PHPZevelop->CFG->SiteDir = ROOT_DIR."/".$PHPZevelop->CFG->Site;
-	$PHPZevelop->CFG->SiteDirLocal = LOCAL_DIR."/".$PHPZevelop->CFG->Site;
+	$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
 
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
@@ -50,13 +53,13 @@
 	$prependParam = $PHPZevelop->CFG->PreParam;
 	$defaultFiles = $PHPZevelop->CFG->DefaultFiles;
 	$newArr = array();
-	$checkFile = explode("/", $PHPZevelop->CFG->RootDirs->Pages."/".$PAGE_PATH);
+	$checkFile = explode("/", $PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->PagePath);
 	$checked[] = implode("/", $checkFile);
 	while($checkFile != "%END%" && !is_file(implode("/", $checkFile).".php")){
 
 		foreach($defaultFiles as $item){
 			if(is_file(implode("/", (array)$checkFile)."/".$item)){
-				$PAGE_PATH = str_replace($PHPZevelop->CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
+				$PHPZevelop->CFG->PagePath = str_replace($PHPZevelop->CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
 				$checkFile = "%END%";
 				break;
 			}
@@ -66,12 +69,12 @@
 			$newArr[] = array_pop($checkFile);
 		
 			if(is_file(implode("/", (array)$checkFile).".php")){
-				$PAGE_PATH = str_replace($PHPZevelop->CFG->RootDirs->Pages, "", implode("/", $checkFile));
+				$PHPZevelop->CFG->PagePath = str_replace($PHPZevelop->CFG->RootDirs->Pages, "", implode("/", $checkFile));
 				$checkFile = "%END%";
 			}else{				
 				foreach($defaultFiles as $item){
 					if(is_file(implode("/", (array)$checkFile)."/".$item)){
-						$PAGE_PATH = str_replace($PHPZevelop->CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
+						$PHPZevelop->CFG->PagePath = str_replace($PHPZevelop->CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
 						$checkFile = "%END%";
 						break;
 					}
@@ -85,7 +88,7 @@
 		}
 	}
 
-	$PAGE_PATH = rtrim($PAGE_PATH, ".php");
+	$PHPZevelop->CFG->PagePath = rtrim($PHPZevelop->CFG->PagePath, ".php");
 
 	/* Path
 	------------------------------*/
