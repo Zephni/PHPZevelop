@@ -9,7 +9,7 @@
 <p>The below configuration is an example configuration. The config for this setup is "config.php" in the root directory: </p>
 
 <pre class="code">
-$CFG = (object) array(
+$PHPZevelop->NewObject("CFG", (object) array(
 	"Site" => "site",
 	"MultiSite" => array("admin"),
 	"RootDir" => ROOT_DIR,
@@ -18,7 +18,7 @@ $CFG = (object) array(
 	"PassParamsAutomatically" => false,
 	"PreParam" => "param_",
 	"DefaultFiles" => array("index.php", "default.php", "home.php")
-);
+));
 </pre>
 
 <p>As $PHPZevelop->CFG is an object, values can be returned by using the following format: </p>

@@ -16,7 +16,7 @@
 
 	/* Include global file
 	------------------------------*/
-	require_once(MAIN_DIR."/global.php");
+	require_once(MAIN_DIR."/initiate.php");
 
 	/* Generate page
 	------------------------------*/

@@ -1,9 +1,9 @@
 <?php
 	/* Config
 	------------------------------*/
-	$CFG->SiteTitle = "PHPZevelop";
+	$PHPZevelop->CFG->SiteTitle = "PHPZevelop";
 
-	$CFG->DB = (object) array(
+	$PHPZevelop->CFG->DB = (object) array(
 		"Host" => "",
 		"User" => "",
 		"Pass" => "",
