@@ -12,12 +12,12 @@
 
 <p>By default the database class (which uses PDO) is configured in the "site/config.php" file and instantiated in the "site/instantiate.php": </p>
 
-<pre class="code">
+<pre class="code" style="font-size: 13px;">
 # file: site/config.php
 
 /* Config
 ------------------------------*/
-$CFG->DB = (object) array(
+$PHPZevelop->CFG->DB = (object) array(
 	"Host" => "",
 	"User" => "",
 	"Pass" => "",
@@ -29,7 +29,7 @@ $CFG->DB = (object) array(
 /* Database connection
 ------------------------------*/
 if(strlen($PHPZevelop->CFG->DB->Host) > 0){
-	$DB = new db($CFG->DB->Host, $CFG->DB->User, $CFG->DB->Pass, $CFG->DB->Name);
+	$DB = new db($PHPZevelop->CFG->DB->Host, $PHPZevelop->CFG->DB->User, $PHPZevelop->CFG->DB->Pass, $PHPZevelop->CFG->DB->Name);
 	if(!$DB->Connected)
 		die($DB->ErrorHandler());
 }

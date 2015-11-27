@@ -13,7 +13,7 @@ class PHPZevelop
 {
 	private $InternalData = array();
 
-	public function NewObject($Alias, &amp;$Object){
+	public function NewObject($Alias, $Object){
 		$this->$Alias = $Object;
 	}
 
