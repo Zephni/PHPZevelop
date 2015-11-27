@@ -34,7 +34,11 @@
 	/* Build Config strings
 	------------------------------*/
 	$PHPZevelop->CFG->SiteDir = ROOT_DIR."/".$PHPZevelop->CFG->Site;
-	$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
+
+	if(in_array($PHPZevelop->CFG->Site, $PHPZevelop->CFG->MultiSite))
+		$PHPZevelop->CFG->SiteDirLocal = "/".$PHPZevelop->CFG->Site;
+	else
+		$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
 
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
