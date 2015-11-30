@@ -1,17 +1,18 @@
 <?php
-	
-
 	/* Check if current path is a MultiSite
 	------------------------------*/
 	if(isset($PHPZevelop->CFG->MultiSite) && count($PHPZevelop->CFG->MultiSite) > 0)
 	{
-		foreach($PHPZevelop->CFG->MultiSite as $site)
+		foreach($PHPZevelop->CFG->MultiSite as $alias => $directory)
 		{
-			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $site || array_pop(explode("/", $PHPZevelop->CFG->LocalDir)) == $site)
+			if(is_numeric($alias))
+				$alias = $directory;
+
+			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $alias || array_pop(explode("/", $PHPZevelop->CFG->LocalDir)) == $alias)
 			{
-				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($site, "", $PHPZevelop->CFG->PagePath));
-				$PHPZevelop->CFG->Site = $site;
-				$PHPZevelop->CFG->LocalDir .= "/".$site;
+				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($alias, "", $PHPZevelop->CFG->PagePath));
+				$PHPZevelop->CFG->Site = $directory;
+				$PHPZevelop->CFG->LocalDir .= "/".$alias;
 			}
 		}
 	}
