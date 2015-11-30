@@ -9,13 +9,13 @@
 <p>By default the "site/global.php" file contains a snippet that automatically includes all the class files in the "site/classes/" directory.</p>
 
 <p>NOTE: You can include all from other directories by appending the directory name string to the SubLoader->RunIncludes() parameter array,
-you may wish to do this with somthing like "functions". like below: </p>
+you may wish to do this with something like "functions". like below: </p>
 
 <pre class="code">
 	$SubLoader->RunIncludes(array("classes", "functions"));
 </pre>
 
-<p>After this you should instantiate your class in the "site/instantiate.php" file, somthing like below: </p>
+<p>After this you should instantiate your class in the "site/instantiate.php" file, something like below: </p>
 
 <pre class="code">
 	/* MyClass

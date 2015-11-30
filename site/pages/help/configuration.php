@@ -36,7 +36,7 @@ echo $PHPZevelop->CFG->DB->Host;
 
 <p><span style="color: green;">MultiSite</span>: Other site configuration directories</p>
 
-<p><span style="color: green;">PassParamAutomatically</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
+<p><span style="color: green;">PassParams</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 
 <p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 

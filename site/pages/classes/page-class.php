@@ -25,17 +25,17 @@ array $DefinedVars 		// Is an array list of variables that you may want to use i
 <pre class="code">
 // 1. (Preferred) Defining properties individually and loading page when ready
 
-	$PHPZevelop->Page->PageFile =		$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");
-	$PHPZevelop->Page->Page404 =		$PHPZevelop->Path->GetPageRoot("error/404.php");
+$PHPZevelop->Page->PageFile = $PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");
+$PHPZevelop->Page->Page404  = $PHPZevelop->Path->GetPageRoot("error/404.php");
 
-	$PHPZevelop->Page->FileOrder = array(
-		$PHPZevelop->Path->GetInc("header.php"),
-		$PHPZevelop->Page->PageFile,
-		$PHPZevelop->Path->GetInc("footer.php")
-	);
+$PHPZevelop->Page->FileOrder = array(
+	$PHPZevelop->Path->GetInc("header.php"),
+	$PHPZevelop->Page->PageFile,
+	$PHPZevelop->Path->GetInc("footer.php")
+);
 
-	$PHPZevelop->Page->DefinedVars = get_defined_vars();
-	$PHPZevelop->Page->LoadPage();
+$PHPZevelop->Page->DefinedVars = get_defined_vars();
+$PHPZevelop->Page->LoadPage();
 </pre>
 
 <pre class="code">
