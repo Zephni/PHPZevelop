@@ -60,6 +60,7 @@
 						<td>
 							<table style="width: 100%;">
 								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/phpzevelop-class"); ?>">PHPZevelop</a></td>
+								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/adding-classes"); ?>">Custom classes</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/page-class"); ?>">Page class</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/path-class"); ?>">Path class</a></td>
 								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/subloader-class"); ?>">SubLoader class</a></td>
