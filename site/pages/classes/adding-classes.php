@@ -1,5 +1,5 @@
 <?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Adding classes");
 ?>

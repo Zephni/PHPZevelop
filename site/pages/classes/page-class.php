@@ -1,5 +1,5 @@
 <?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Page class");
 
@@ -67,7 +67,7 @@ in the "FileOrder". But then what if on some pages you don't want to include it?
 
 <pre class="code">
 &lt;?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
 ?&gt;
@@ -77,7 +77,7 @@ in the "FileOrder". But then what if on some pages you don't want to include it?
 
 <pre class="code">
 &lt;?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
 

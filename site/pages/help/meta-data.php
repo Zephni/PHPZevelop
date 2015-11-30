@@ -1,5 +1,5 @@
 <?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
 ?>
@@ -20,7 +20,7 @@ if($PHPZevelop->Get("META_KEYWORDS")	== null)	$PHPZevelop->Set("META_KEYWORDS", 
 
 <pre class="code">
 &lt;?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
 ?&gt;

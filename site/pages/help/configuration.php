@@ -1,5 +1,5 @@
 <?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Configuration");
 ?>
@@ -10,12 +10,12 @@
 
 <pre class="code">
 $PHPZevelop->NewObject("CFG", (object) array(
-	"SiteTitle"			=> "PHPZevelop",
-	"Site"				=> "site",
-	"MultiSite"			=> array("admin"),
-	"PassParamsAutomatically"	=> false,
-	"PreParam"			=> "param_",
-	"DefaultFiles"			=> array("index.php", "default.php", "home.php")
+	"SiteTitle"		=> "PHPZevelop",
+	"Site"			=> "site",
+	"MultiSite"		=> array("admin"),
+	"PassParams"		=> false,
+	"PreParam"		=> "param_",
+	"DefaultFiles"		=> array("index.php", "default.php", "home.php")
 ));
 </pre>
 

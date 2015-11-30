@@ -4,7 +4,7 @@
 		"SiteTitle"					=> "PHPZevelop",
 		"Site"						=> "site",
 		"MultiSite"					=> array(),
-		"PassParamsAutomatically"	=> false,
+		"PassParams"				=> false,
 		"PreParam"					=> "param_",
 		"DefaultFiles"				=> array("index.php", "default.php", "home.php")
 	));

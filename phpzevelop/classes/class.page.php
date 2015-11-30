@@ -134,7 +134,7 @@
 		    ob_end_clean();
 
 		    // Check if allowed to pass parameters, return 404 if not
-			if(!$PHPZevelop->CFG->PassParamsAutomatically && isset($_GET[$PHPZevelop->CFG->PreParam."0"])){
+			if(!$PHPZevelop->CFG->PassParams && isset($_GET[$PHPZevelop->CFG->PreParam."0"])){
 				ob_start();
 			    include($PHPZevelop->Page->Page404);
 			    $pageBuffer = ob_get_contents();

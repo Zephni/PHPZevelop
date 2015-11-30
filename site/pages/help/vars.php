@@ -1,10 +1,10 @@
 <?php
-	/* Page meta data
+	/* Page setup
 	------------------------------*/
 	$PHPZevelop->Set("PAGE_TITLE",		"Vars");
 
 	// Turn parameters off for this page
-	$PHPZevelop->CFG->PassParamsAutomatically = true;
+	$PHPZevelop->CFG->PassParams = true;
 ?>
 <h2>Variable passing test</h2>
 
@@ -24,7 +24,7 @@
 <p>PHPZevelop will pass back that page. But if you pass extra "/items" to that URL they will act as parameters to that page. Note that if a page exists at that location
 it will choose that instead.</p>
 
-<p>By default the PassParamsAutomatically option in "/config.php" will disable this functionality but can be turned on by setting it to true on individual pages like this one, or it can be set
+<p>By default the PassParams option in "/config.php" will disable this functionality but can be turned on by setting it to true on individual pages like this one, or it can be set
 to true by default. for more information click <a href="<?php $PHPZevelop->Path->GetPage("help/404"); ?>" target="_blank">here</a>.</p>
 
 <p>When using this option, you will notice at the bottom of the page that $_GET contains the parameters passed through the URL. By default they will be indexed as "param_0", "param_1"
