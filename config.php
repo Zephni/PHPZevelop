@@ -3,7 +3,7 @@
 	$PHPZevelop->NewObject("CFG", (object) array(
 		"SiteTitle"					=> "PHPZevelop",
 		"Site"						=> "site",
-		"MultiSite"					=> array("test" => "admin"),
+		"MultiSite"					=> array(),
 		"PassParamsAutomatically"	=> false,
 		"PreParam"					=> "param_",
 		"DefaultFiles"				=> array("index.php", "default.php", "home.php")

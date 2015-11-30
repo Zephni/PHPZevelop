@@ -8,6 +8,9 @@
 			if(is_numeric($alias))
 				$alias = $directory;
 
+			if(substr($alias, 0, 1) == "/")
+				$alias = ltrim($alias, "/");
+
 			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $alias || array_pop(explode("/", $PHPZevelop->CFG->LocalDir)) == $alias)
 			{
 				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($alias, "", $PHPZevelop->CFG->PagePath));
