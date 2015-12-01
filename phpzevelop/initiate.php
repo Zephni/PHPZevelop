@@ -43,45 +43,32 @@
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
-	$prependParam = $PHPZevelop->CFG->PreParam;
-	$defaultFiles = $PHPZevelop->CFG->DefaultFiles;
-	$newArr = array();
-	$checkFile = explode("/", $PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->PagePath);
-	$checked[] = implode("/", $checkFile);
-	while($checkFile != "%END%" && !is_file(implode("/", $checkFile).".php")){
+	$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
+	$PHPZevelop->Set("URLParameters", array());
 
-		foreach($defaultFiles as $item){
-			if(is_file(implode("/", (array)$checkFile)."/".$item)){
-				$PHPZevelop->CFG->PagePath = str_replace($PHPZevelop->CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
-				$checkFile = "%END%";
-				break;
-			}
-		}
+	for($i = count($PathParts); $i >= 0; $i--)
+	{
+		$FilePath = implode("/", array_slice($PathParts, 0, $i));
 
-		if($checkFile != "%END%"){
-			$newArr[] = array_pop($checkFile);
-		
-			if(is_file(implode("/", (array)$checkFile).".php")){
-				$PHPZevelop->CFG->PagePath = str_replace($PHPZevelop->CFG->RootDirs->Pages, "", implode("/", $checkFile));
-				$checkFile = "%END%";
-			}else{				
-				foreach($defaultFiles as $item){
-					if(is_file(implode("/", (array)$checkFile)."/".$item)){
-						$PHPZevelop->CFG->PagePath = str_replace($PHPZevelop->CFG->RootDirs->Pages."/", "", implode("/", (array)$checkFile)."/".$item);
-						$checkFile = "%END%";
-						break;
-					}
+		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath.".php"))
+			$i = 0;
+		else
+		{
+			foreach($PHPZevelop->CFG->DefaultFiles as $item){
+				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath."/".$item)){
+					$FilePath = $FilePath."/".str_replace(".php", "", $item);
+					$i = 0;
+					break;
 				}
 			}
-
-			if(implode("/", (array)$checkFile) == $PHPZevelop->CFG->RootDirs->Pages)
-				$checkFile = "%END%";
-		}else{
-			break;
+			
+			if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath) && $i > 0)
+				$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
 		}
+			
 	}
 
-	$PHPZevelop->CFG->PagePath = rtrim($PHPZevelop->CFG->PagePath, ".php");
+	$PHPZevelop->CFG->PagePath = $FilePath;
 
 	/* Path
 	------------------------------*/

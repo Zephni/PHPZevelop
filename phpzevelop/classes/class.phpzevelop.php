@@ -31,6 +31,14 @@
 			$this->InternalData[$Key] = $Value;
 		}
 
+		public function Append($Key, $V1, $V2 = null)
+		{
+			if($V2 === null)
+				$this->InternalData[$Key][] = $V1;
+			else
+				$this->InternalData[$Key][$V1] = $V2;
+		}
+
 		public function Get($Key)
 		{
 			if(array_key_exists($Key, $this->InternalData))

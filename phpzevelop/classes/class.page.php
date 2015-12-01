@@ -117,10 +117,13 @@
 				extract($this->DefinedVars, EXTR_OVERWRITE);
 			
 			// Set gets
-			$newArr = array_reverse($newArr);
-			for($i = 0; $i < count($newArr); $i++)
-				$_GET[$PHPZevelop->CFG->PreParam.$i] = $newArr[$i];
-			unset($newArr);
+			if(count($PHPZevelop->Get("URLParameters")) > 0)
+			{
+				$Params = array_reverse($PHPZevelop->Get("URLParameters"));
+				for($i = 0; $i < count($Params); $i++)
+					$_GET[$PHPZevelop->CFG->PreParam.$i] = $Params[$i];
+				unset($Params);
+			}
 
 			// Include file to check any config changes
 			ob_start();
