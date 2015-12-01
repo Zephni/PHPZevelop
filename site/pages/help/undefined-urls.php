@@ -1,12 +1,11 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"404");
+	$PHPZevelop->Set("PAGE_TITLE",		"Undefined URL's");
 ?>
-<h2>404 Page</h2>
+<h2>Undefined URL's</h2>
 
-<p>You have a two options when dealing with 404 pages:</p>
-
+<p>You have a two options when dealing with undefined URL's:</p>
 
 <h3>Option 1 (Default): No pages accept parameters unless specified</h3>
 
