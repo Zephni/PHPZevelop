@@ -15,7 +15,7 @@ $PHPZevelop->NewObject("CFG", (object) array(
 	"MultiSite"		=> array("admin"),
 	"PassParams"		=> false,
 	"PreParam"		=> "param_",
-	"DefaultFiles"		=> array("index.php", "default.php", "home.php")
+	"DefaultFiles"		=> array("index", "default", "home")
 ));
 </pre>
 

@@ -7,4 +7,4 @@
 
 	/* Instantiate
 	------------------------------*/
-	require_once($PHPZevelop->CFG->SiteDir."/instantiate.php");
+	require_once($PHPZevelop->CFG->SiteDir."/instantiate".FILE_EXT);

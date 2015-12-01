@@ -17,14 +17,14 @@
 
 		// Below is an example of usage:
 
-			$PHPZevelop->Page->PageFile =		$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");
-			$PHPZevelop->Page->DefaultPageFile =	$PHPZevelop->Path->GetPageRoot("home.php");
-			$PHPZevelop->Page->Page404 =		$PHPZevelop->Path->GetPageRoot("error/404.php");
+			$PHPZevelop->Page->PageFile =		$PHPZevelop->Path->GetPageRoot($PAGE_PATH.FILE_EXT);
+			$PHPZevelop->Page->DefaultPageFile =	$PHPZevelop->Path->GetPageRoot("home".FILE_EXT);
+			$PHPZevelop->Page->Page404 =		$PHPZevelop->Path->GetPageRoot("error/404".FILE_EXT);
 
 			$PHPZevelop->Page->FileOrder = array(
-				$PHPZevelop->Path->GetInc("header.php"),
+				$PHPZevelop->Path->GetInc("header".FILE_EXT),
 				$PHPZevelop->Page->PageFile,
-				$PHPZevelop->Path->GetInc("footer.php")
+				$PHPZevelop->Path->GetInc("footer".FILE_EXT)
 			);
 
 			$PHPZevelop->Page->DefinedVars = get_defined_vars();

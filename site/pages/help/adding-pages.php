@@ -25,6 +25,6 @@
 you would get a 404 error because even though the directory "help/" exists, it is not a readable page. If you would like "help/" to show a page you can create
 any of the pages found in the $CFG array in "/config.php": </p>
 
-<pre class="code">"DefaultFiles" => array("index.php", "default.php", "home.php")</pre>
+<pre class="code">"DefaultFiles" => array("index", "default", "home")</pre>
 
 <p>.. in the "help/" directory.</p>

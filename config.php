@@ -6,5 +6,5 @@
 		"MultiSite"					=> array(),
 		"PassParams"				=> false,
 		"PreParam"					=> "param_",
-		"DefaultFiles"				=> array("index.php", "default.php", "home.php")
+		"DefaultFiles"				=> array("index", "default", "home")
 	));

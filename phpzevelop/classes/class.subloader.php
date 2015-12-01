@@ -63,7 +63,7 @@
 
 			foreach (new RecursiveIteratorIterator($RDI) as $item => $cur)
 			{
-				if(basename($item) != ".." && basename($item) != "." && substr(basename($item), -4, 4) == ".php")
+				if(basename($item) != ".." && basename($item) != "." && substr(basename($item), -4, 4) == FILE_EXT)
 			   		$array[] = $item;
 			}
 

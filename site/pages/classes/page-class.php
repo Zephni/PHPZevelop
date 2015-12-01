@@ -4,7 +4,7 @@
 	$PHPZevelop->Set("PAGE_TITLE",		"Page class");
 
 	$PHPZevelop->Page->FileOrder = array(
-		$PHPZevelop->Path->GetInc("header.php"),
+		$PHPZevelop->Path->GetInc("header".FILE_EXT),
 		$PHPZevelop->Page->PageFile
 	);
 ?>
@@ -25,13 +25,13 @@ array $DefinedVars 		// Is an array list of variables that you may want to use i
 <pre class="code">
 // 1. (Preferred) Defining properties individually and loading page when ready
 
-$PHPZevelop->Page->PageFile = $PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php");
-$PHPZevelop->Page->Page404  = $PHPZevelop->Path->GetPageRoot("error/404.php");
+$PHPZevelop->Page->PageFile = $PHPZevelop->Path->GetPageRoot($PAGE_PATH.FILE_EXT);
+$PHPZevelop->Page->Page404  = $PHPZevelop->Path->GetPageRoot("error/404".FILE_EXT);
 
 $PHPZevelop->Page->FileOrder = array(
-	$PHPZevelop->Path->GetInc("header.php"),
+	$PHPZevelop->Path->GetInc("header".FILE_EXT),
 	$PHPZevelop->Page->PageFile,
-	$PHPZevelop->Path->GetInc("footer.php")
+	$PHPZevelop->Path->GetInc("footer".FILE_EXT)
 );
 
 $PHPZevelop->Page->DefinedVars = get_defined_vars();
@@ -42,12 +42,12 @@ $PHPZevelop->Page->LoadPage();
 // 2. Using constructor
 
 new Page(
-	$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php"),
-	$PHPZevelop->Path->GetPageRoot("error/404.php"),
+	$PHPZevelop->Path->GetPageRoot($PAGE_PATH.FILE_EXT),
+	$PHPZevelop->Path->GetPageRoot("error/404".FILE_EXT),
 	array(
-		$PHPZevelop->Path->GetInc("header.php"),
-		$PHPZevelop->Path->GetPageRoot($PAGE_PATH.".php"),
-		$PHPZevelop->Path->GetInc("footer.php")"
+		$PHPZevelop->Path->GetInc("header".FILE_EXT),
+		$PHPZevelop->Path->GetPageRoot($PAGE_PATH.FILE_EXT),
+		$PHPZevelop->Path->GetInc("footer".FILE_EXT)"
 	),
 	get_defined_vars()
 );
@@ -82,9 +82,9 @@ in the "FileOrder". But then what if on some pages you don't want to include it?
 	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
 
 	$PHPZevelop->Page->FileOrder = array(
-		$PHPZevelop->Path->GetInc("header.php"),
+		$PHPZevelop->Path->GetInc("header".FILE_EXT),
 		$PHPZevelop->Page->PageFile,
-		$PHPZevelop->Path->GetInc("footer.php")
+		$PHPZevelop->Path->GetInc("footer".FILE_EXT)
 	);
 ?&gt;
 </pre>

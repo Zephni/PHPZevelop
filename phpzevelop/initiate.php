@@ -38,8 +38,8 @@
 
 	/* Include config from site
 	------------------------------*/
-	if(file_exists($PHPZevelop->CFG->SiteDir."/config.php"))
-		require_once($PHPZevelop->CFG->SiteDir."/config.php");
+	if(file_exists($PHPZevelop->CFG->SiteDir."/config".FILE_EXT))
+		require_once($PHPZevelop->CFG->SiteDir."/config".FILE_EXT);
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
@@ -50,13 +50,13 @@
 	{
 		$FilePath = implode("/", array_slice($PathParts, 0, $i));
 
-		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath.".php"))
+		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath.FILE_EXT))
 			$i = 0;
 		else
 		{
 			foreach($PHPZevelop->CFG->DefaultFiles as $item){
-				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath."/".$item)){
-					$FilePath = $FilePath."/".str_replace(".php", "", $item);
+				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath."/".$item.FILE_EXT)){
+					$FilePath = $FilePath."/".$item;
 					$i = 0;
 					break;
 				}
@@ -80,5 +80,5 @@
 
 	/* Custom setup
 	------------------------------*/
-	if(file_exists($PHPZevelop->CFG->SiteDir."/global.php"))
-		require_once($PHPZevelop->CFG->SiteDir."/global.php");
+	if(file_exists($PHPZevelop->CFG->SiteDir."/global".FILE_EXT))
+		require_once($PHPZevelop->CFG->SiteDir."/global".FILE_EXT);
