@@ -7,9 +7,8 @@
 		{
 			if(is_numeric($alias))
 				$alias = $directory;
-
-			if(substr($alias, 0, 1) == "/")
-				$alias = ltrim($alias, "/");
+			
+			$alias = ltrim($alias, "/");
 
 			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $alias || array_pop(explode("/", $PHPZevelop->CFG->LocalDir)) == $alias)
 			{

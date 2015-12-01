@@ -1,9 +1,8 @@
 <?php
 	// Config
 	$PHPZevelop->NewObject("CFG", (object) array(
-		"SiteTitle"					=> "PHPZevelop",
 		"Site"						=> "site",
-		"MultiSite"					=> array(),
+		"MultiSite"					=> array("admin"),
 		"PassParams"				=> false,
 		"PreParam"					=> "param_",
 		"DefaultFiles"				=> array("index", "default", "home")
