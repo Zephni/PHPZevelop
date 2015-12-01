@@ -28,13 +28,13 @@
 
 		public function Set($Key, $Value)
 		{
-			$this->InternalValues[$Key] = $Value;
+			$this->InternalData[$Key] = $Value;
 		}
 
 		public function Get($Key)
 		{
-			if(array_key_exists($Key, $this->InternalValues))
-				return $this->InternalValues[$Key];
+			if(array_key_exists($Key, $this->InternalData))
+				return $this->InternalData[$Key];
 			else
 				return null;
 		}
