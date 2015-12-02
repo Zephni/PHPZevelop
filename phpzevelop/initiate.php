@@ -24,10 +24,10 @@
 	$PHPZevelop->CFG->SiteDir = ROOT_DIR."/".$PHPZevelop->CFG->Site;
 
 	if(in_array($PHPZevelop->CFG->Site, $PHPZevelop->CFG->MultiSite))
-		$PHPZevelop->CFG->SiteDirLocal = "/".$PHPZevelop->CFG->Site;
+		$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir;
 	else
 		$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
-
+	
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
 	foreach(array("Classes", "Inc", "Pages", "Images", "Scripts", "CSS") as $item){
