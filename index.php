@@ -39,7 +39,9 @@
 	/* Generate page
 	------------------------------*/
 	$PHPZevelop->Page->PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT);
-	$PHPZevelop->Page->Page404	= $PHPZevelop->Path->GetPageRoot("error/404".FILE_EXT);
+
+	if(isset($PHPZevelop->CFG->Page404) && strlen($PHPZevelop->CFG->Page404) > 0)
+		$PHPZevelop->Page->Page404	= $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT);
 
 	$PHPZevelop->Page->FileOrder = array(
 		$PHPZevelop->Path->GetInc("header".FILE_EXT),
