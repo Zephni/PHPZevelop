@@ -1,6 +1,7 @@
 <?php
 	/* Check if current path is a MultiSite
 	------------------------------*/
+	$PHPZevelop->CFG->IsMultiSite = false;
 	if(isset($PHPZevelop->CFG->MultiSite) && count($PHPZevelop->CFG->MultiSite) > 0)
 	{
 		foreach($PHPZevelop->CFG->MultiSite as $alias => $directory)
@@ -14,20 +15,16 @@
 			{
 				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($alias, "", $PHPZevelop->CFG->PagePath));
 				$PHPZevelop->CFG->Site = $directory;
-				$PHPZevelop->CFG->LocalDir .= "/".$alias;
+				$PHPZevelop->CFG->IsMultiSite = true;
 			}
 		}
 	}
-	
+
 	/* Build Config strings
 	------------------------------*/
 	$PHPZevelop->CFG->SiteDir = ROOT_DIR."/".$PHPZevelop->CFG->Site;
+	$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
 
-	if(in_array($PHPZevelop->CFG->Site, $PHPZevelop->CFG->MultiSite))
-		$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir;
-	else
-		$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
-	
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
 	foreach(array("Classes", "Inc", "Pages", "Images", "Scripts", "CSS") as $item){
