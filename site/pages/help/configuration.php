@@ -15,6 +15,7 @@ $PHPZevelop->NewObject("CFG", (object) array(
 	"MultiSite"		=> array("admin"),
 	"PassParams"		=> false,
 	"PreParam"		=> "param_",
+	"Page404"		=> "error/404",
 	"DefaultFiles"		=> array("index", "default", "home")
 ));
 </pre>
@@ -39,5 +40,7 @@ echo $PHPZevelop->CFG->DB->Host;
 <p><span style="color: green;">PassParams</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
 
 <p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
+
+<p><span style="color: green;">Page404</span>: This will define the 404 page to load if the URL cannot be found. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/undefined-urls"); ?>">here</a></p>
 
 <p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/adding-pages"); ?>">here</a></p>
