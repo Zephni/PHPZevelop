@@ -1,4 +1,4 @@
-php_flag display_errors on
-RewriteEngine On
+#PHPZevelop
 
+RewriteEngine On
 RewriteRule	^([0-9a-zA-Z_=/&\-]+)$	index.php/?page=$1	[L,QSA]
