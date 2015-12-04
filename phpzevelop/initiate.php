@@ -11,7 +11,7 @@
 			
 			$alias = ltrim($alias, "/");
 
-			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $alias || array_pop(explode("/", $PHPZevelop->CFG->LocalDir)) == $alias)
+			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $alias || array_pop(explode("/", LOCAL_DIR)) == $alias)
 			{
 				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($alias, "", $PHPZevelop->CFG->PagePath));
 				$PHPZevelop->CFG->Site = $directory;
@@ -22,20 +22,20 @@
 
 	/* Build Config strings
 	------------------------------*/
-	$PHPZevelop->CFG->SiteDir = ROOT_DIR."/".$PHPZevelop->CFG->Site;
-	$PHPZevelop->CFG->SiteDirLocal = $PHPZevelop->CFG->LocalDir."/".$PHPZevelop->CFG->Site;
+	$PHPZevelop->CFG->SiteDirRoot = ROOT_DIR."/".$PHPZevelop->CFG->Site;
+	$PHPZevelop->CFG->SiteDirLocal = LOCAL_DIR."/".$PHPZevelop->CFG->Site;
 
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
 	foreach(array("Classes", "Inc", "Pages", "Images", "Scripts", "CSS") as $item){
-		$PHPZevelop->CFG->RootDirs->$item = $PHPZevelop->CFG->SiteDir."/".strtolower($item);
+		$PHPZevelop->CFG->RootDirs->$item = $PHPZevelop->CFG->SiteDirRoot."/".strtolower($item);
 		$PHPZevelop->CFG->LocalDirs->$item = $PHPZevelop->CFG->SiteDirLocal."/".strtolower($item);
 	}
 
 	/* Include config from site
 	------------------------------*/
-	if(file_exists($PHPZevelop->CFG->SiteDir."/config".FILE_EXT))
-		require_once($PHPZevelop->CFG->SiteDir."/config".FILE_EXT);
+	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/config".FILE_EXT))
+		require_once($PHPZevelop->CFG->SiteDirRoot."/config".FILE_EXT);
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
@@ -76,5 +76,5 @@
 
 	/* Custom setup
 	------------------------------*/
-	if(file_exists($PHPZevelop->CFG->SiteDir."/global".FILE_EXT))
-		require_once($PHPZevelop->CFG->SiteDir."/global".FILE_EXT);
+	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/global".FILE_EXT))
+		require_once($PHPZevelop->CFG->SiteDirRoot."/global".FILE_EXT);

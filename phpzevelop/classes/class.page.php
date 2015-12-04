@@ -36,9 +36,10 @@
 		public $PageFile;
 		public $Page404;
 		public $FileOrder;
-		public $DefinedVars;
 		public $PageBuffer;
 		public $Errors;
+
+		private $DefinedVars;
 
 		function __construct($page = "", $page404 = "", $fileOrder = array(), $definedVars = array())
 		{
@@ -55,8 +56,14 @@
 				$this->LoadPage();	
 		}
 
-		function DissallowParameters($page){
+		function DissallowParameters($page)
+		{
 			$this->NoParamPage = $page;
+		}
+
+		function SetDefinedVariables($array)
+		{
+			$this->DefinedVars = $array;
 		}
 
 		function LoadPage()
@@ -103,6 +110,7 @@
 							echo $this->PageBuffer;
 					}
 				}
+				$this->DefinedVars = null;
 		    }
 		    // If FileOrder is not set then just display page
 		    else

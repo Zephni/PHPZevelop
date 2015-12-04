@@ -29,8 +29,11 @@
 	/* Get page path and unset $_GET["page"]
 	------------------------------*/
 	$PHPZevelop->CFG->PagePath = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
-	$PHPZevelop->CFG->LocalDir = rtrim(array_shift(explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]))), "/");
 	unset($_GET["page"]);
+
+	/* Set Local directory
+	------------------------------*/
+	define("LOCAL_DIR", rtrim(array_shift(explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]))), "/"));
 
 	/* Initiate PHPZevelop
 	------------------------------*/
@@ -49,5 +52,5 @@
 		$PHPZevelop->Path->GetInc("footer".FILE_EXT)
 	);
 
-	$PHPZevelop->Page->DefinedVars = get_defined_vars();
+	$PHPZevelop->Page->SetDefinedVariables(get_defined_vars());
 	$PHPZevelop->Page->LoadPage();

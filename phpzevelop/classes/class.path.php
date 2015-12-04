@@ -67,7 +67,7 @@
 
 		public function GetPage($string, $return = false)
 		{
-			$string = ($this->CFG->IsMultiSite) ? $this->CFG->LocalDir."/".$this->CFG->Site."/".$string : "/".$this->CFG->LocalDir."/".$string;
+			$string = ($this->CFG->IsMultiSite) ? LOCAL_DIR."/".$this->CFG->Site."/".$string : "/".LOCAL_DIR."/".$string;
 			if(substr($string, 0, 2) == "//") $string = ltrim($string, "//");
 			if(substr($string, 0, 1) != "/") $string = "/".$string;
 
