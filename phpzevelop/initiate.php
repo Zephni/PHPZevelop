@@ -11,12 +11,15 @@
 			
 			$alias = ltrim($alias, "/");
 
-			if(array_shift(explode("/", $PHPZevelop->CFG->PagePath)) == $alias || array_pop(explode("/", LOCAL_DIR)) == $alias)
+			$inter1 = explode("/", $PHPZevelop->CFG->PagePath);
+			$inter2 = explode("/", LOCAL_DIR);
+			if(array_shift($inter1) == $alias || array_pop($inter2) == $alias)
 			{
 				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($alias, "", $PHPZevelop->CFG->PagePath));
 				$PHPZevelop->CFG->Site = $directory;
 				$PHPZevelop->CFG->IsMultiSite = true;
 			}
+			unset($inter1, $inter2);
 		}
 	}
 

@@ -33,7 +33,9 @@
 
 	/* Set Local directory
 	------------------------------*/
-	define("LOCAL_DIR", rtrim(array_shift(explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]))), "/"));
+	$inter = explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]));
+	define("LOCAL_DIR", rtrim(array_shift($inter), "/"));
+	unset($inter);
 
 	/* Initiate PHPZevelop
 	------------------------------*/
