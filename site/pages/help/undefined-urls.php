@@ -35,3 +35,7 @@ if you were to put "/help/test/value1/value2" that page would be able to access 
 <p>If you wish to have a specific page that doesn't allow parameters through you would have to add the following to the top of the page in the PHP section:</p>
 
 <pre class="code">$PHPZevelop->CFG->PassParams = false;</pre>
+
+<br /><h3>404 page</h3>
+
+<p>You can specify a 404 page to fall back on if PassParams is turned off and the page passed does not exist, for more information check here: <a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">help/configuration</a>.</p>
