@@ -1,10 +1,10 @@
 <?php
 	/* Defaults if not defined
 	------------------------------*/
-	if($PHPZevelop->Get("PAGE_TITLE")		== null)	$PHPZevelop->Set("PAGE_TITLE", "");
-	if($PHPZevelop->Get("META_TITLE")		== null)	$PHPZevelop->Set("META_TITLE", "PHPZevelop PHP FrameWork");
-	if($PHPZevelop->Get("META_DESCRIPTION")	== null)	$PHPZevelop->Set("META_DESCRIPTION", "PHP framework for ease of use and adaptability");
-	if($PHPZevelop->Get("META_KEYWORDS")	== null)	$PHPZevelop->Set("META_KEYWORDS", "PHP, Framework, Zephni");
+	if(!isset($PHPZevelop->CFG->PageTitle)) 	  $PHPZevelop->CFG->PageTitle		= "";
+	if(!isset($PHPZevelop->CFG->MetaTitle)) 	  $PHPZevelop->CFG->MetaTitle		= "PHPZevelop PHP FrameWork";
+	if(!isset($PHPZevelop->CFG->MetaDescription)) $PHPZevelop->CFG->MetaDescription	= "PHP framework for ease of use and adaptability";
+	if(!isset($PHPZevelop->CFG->MetaKeywords))	  $PHPZevelop->CFG->MetaKeywords	= "PHP, Framework, Zephni";
 ?>
 
 <!DOCTYPE html>
@@ -12,11 +12,13 @@
 <html>
 	<head>
 		<!-- META DATA -->
-		<title><?php if($PHPZevelop->Get("PAGE_TITLE") != "") echo $PHPZevelop->CFG->SiteTitle." - ".$PHPZevelop->Get("PAGE_TITLE"); else echo $PHPZevelop->CFG->SiteTitle; ?></title>
+		<title><?php
+			echo $PHPZevelop->CFG->SiteTitle.($PHPZevelop->CFG->PageTitle != "" ? " - ".$PHPZevelop->CFG->PageTitle : "");
+		?></title>
 		<meta charset="UTF-8">
-		<meta name="title" content="<?php echo $PHPZevelop->Get("META_TITLE"); ?>">
-		<meta name="description" content="<?php echo $PHPZevelop->Get("META_DESCRIPTION"); ?>">
-		<meta name="keywords" content="<?php echo $PHPZevelop->Get("META_KEYWORDS"); ?>">
+		<meta name="title" content="<?php echo $PHPZevelop->CFG->MetaTitle; ?>">
+		<meta name="description" content="<?php echo $PHPZevelop->CFG->MetaDescription; ?>">
+		<meta name="keywords" content="<?php echo $PHPZevelop->CFG->MetaKeywords; ?>">
 
 		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("style1.css"); ?>">
@@ -33,7 +35,7 @@
 		</div>
 		<div class="wrapper">
 			<div class="padding">
-				<a href="<?php echo $PHPZevelop->CFG->LocalDir; ?>/">
+				<a href="<?php echo $PHPZevelop->Path->GetPage(""); ?>">
 					<h1>PHPZevelop</h1>
 				</a>
 				<table id="nav">

@@ -1,8 +1,11 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Adding pages");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Adding pages"
+	));
 ?>
+
 <h2>Pages</h2>
 
 <h3>Adding pages</h3>

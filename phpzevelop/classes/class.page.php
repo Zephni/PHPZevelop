@@ -133,11 +133,6 @@
 				unset($Params);
 			}
 
-			// Include file to check any config changes
-			ob_start();
-		    include($file);
-		    ob_end_clean();
-
 		    // Get final file buffer
 			ob_start();
 		    include($file);

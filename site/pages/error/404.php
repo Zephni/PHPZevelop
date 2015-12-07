@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"404");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "404"
+	));
 ?>
 <h2>404 - Page does not exist</h2>
 

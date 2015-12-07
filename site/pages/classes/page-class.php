@@ -1,12 +1,13 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Page class");
-
-	$PHPZevelop->Page->FileOrder = array(
-		$PHPZevelop->Path->GetInc("header".FILE_EXT),
-		$PHPZevelop->Page->PageFile
-	);
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Page class",
+		"FileOrder"  => array(
+			$PHPZevelop->Path->GetInc("header".FILE_EXT),
+			$PHPZevelop->Page->PageFile
+		)
+	));
 ?>
 
 <h2>Page class</h2>

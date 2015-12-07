@@ -26,6 +26,13 @@
 			$this->$Alias = $Object;
 		}
 
+		public function OverrideObjectData($Alias, $NewData)
+		{
+			if(isset($this->$Alias))
+				foreach($NewData as $Key => $Value)
+					$this->$Alias->$Key = $Value;
+		}
+
 		public function Set($Key, $Value)
 		{
 			$this->InternalData[$Key] = $Value;

@@ -1,11 +1,12 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Vars");
-
-	// Turn parameters off for this page
-	$PHPZevelop->CFG->PassParams = true;
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Vars",
+		"PassParams" => true
+	));
 ?>
+
 <h2>Variable passing test</h2>
 
 <p>Using PHPZevelop you can pass variables through the URL in two different ways.</p>

@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Home");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Home"
+	));
 ?>
 
 

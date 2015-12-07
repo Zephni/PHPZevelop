@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Adding classes");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Adding classes"
+	));
 ?>
 
 <h2>Adding classes</h2>

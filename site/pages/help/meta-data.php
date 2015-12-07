@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "MetaData"
+	));
 ?>
 <h2>Meta data</h2>
 
@@ -10,10 +12,10 @@
 <pre class="code" style="font-size: 12px;">
 /* Defaults if not defined
 ------------------------------*/
-if($PHPZevelop->Get("PAGE_TITLE")	== null)	$PHPZevelop->Set("PAGE_TITLE", "");
-if($PHPZevelop->Get("META_TITLE")	== null)	$PHPZevelop->Set("META_TITLE", "PHPZevelop PHP FrameWork");
-if($PHPZevelop->Get("META_DESCRIPTION")	== null)	$PHPZevelop->Set("META_DESCRIPTION", "PHP framework for ease of use and adaptability");
-if($PHPZevelop->Get("META_KEYWORDS")	== null)	$PHPZevelop->Set("META_KEYWORDS", "PHP, Framework, Zephni");
+if(!isset($PHPZevelop->CFG->PageTitle))	      $PHPZevelop->CFG->PageTitle	= "";
+if(!isset($PHPZevelop->CFG->MetaTitle))	      $PHPZevelop->CFG->MetaTitle	= "PHPZevelop PHP FrameWork";
+if(!isset($PHPZevelop->CFG->MetaDescription)) $PHPZevelop->CFG->MetaDescription	= "PHP framework for ease of use and adaptability";
+if(!isset($PHPZevelop->CFG->MetaKeywords))    $PHPZevelop->CFG->MetaKeywords	= "PHP, Framework, Zephni";
 </pre>
 
 <p>These definitions can be placed in individual pages so the defaults can be overwritten, for example at the top of this file it uses:</p>
@@ -22,14 +24,18 @@ if($PHPZevelop->Get("META_KEYWORDS")	== null)	$PHPZevelop->Set("META_KEYWORDS", 
 &lt;?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "MetaData"
+	));
 ?&gt;
 </pre>
 
 <p>.. so as you can see the title of this page (or tab) is now the site title (Which is set in "global.php") followed by a " - " and then the $PHPZevelop->PAGE_TITLE.
 If no page title is passed and the default page title is set to an empty string, only the site title will appear. If you wish to override any of the way the title appears, 
-it can by edited manually on line 15 of "inc/header.php":</p>
+it can by edited manually on line 16 of "inc/header.php":</p>
 
 <pre class="code">
-&lt;title&gt;&lt;?php if($PHPZevelop-&gt;Get(&quot;PAGE_TITLE&quot;) != &quot;&quot;) echo $PHPZevelop-&gt;CFG-&gt;SiteTitle.&quot; - &quot;.$PHPZevelop-&gt;Get(&quot;PAGE_TITLE&quot;); else echo $PHPZevelop-&gt;CFG-&gt;SiteTitle; ?&gt;&lt;/title&gt;
+&lt;title&gt;&lt;?php
+echo $PHPZevelop-&gt;CFG-&gt;SiteTitle.($PHPZevelop-&gt;CFG-&gt;PageTitle != &quot;&quot; ? &quot; - &quot;.$PHPZevelop-&gt;CFG-&gt;PageTitle : &quot;&quot;);
+?&gt;&lt;/title&gt;
 </pre>

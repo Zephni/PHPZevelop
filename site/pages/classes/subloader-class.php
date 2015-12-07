@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"SubLoader class");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Subloader class"
+	));
 ?>
 
 <h2>SubLoader class</h2>

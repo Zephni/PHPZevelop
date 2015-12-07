@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Meta data");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Meta data"
+	));
 ?>
 <h2>MultiSite</h2>
 

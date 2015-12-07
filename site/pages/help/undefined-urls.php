@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Undefined URL's");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Undefined URL's"
+	));
 ?>
 <h2>Undefined URL's</h2>
 
@@ -15,9 +17,9 @@
 
 <p>If you want to specify a page to be able to take parameters you can add:</p>
 
-<pre class="code">$PHPZevelop->CFG->PassParams = false;</pre>
+<pre class="code">"PassParams" = false;</pre>
 
-<p>.. to the top of the PHP page below the Meta data. To see this in action have a look <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>" target="_blank">here</a>. In "help/vars.php"
+<p>.. to the OverrideObjectData array at the top of the page. To see this in action have a look <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>" target="_blank">here</a>. In "help/vars.php"
 PassParams has been set to true in the configuration instance, so any parameters passed will be accessible on that page.</p>
 
 
@@ -32,9 +34,9 @@ if you were to put "/help/test/value1/value2" that page would be able to access 
 
 <p>Also if you didn't have a page at "/help/test.php" then using the same URL as above would return all of them parameters to the home or index page.</p>
 
-<p>If you wish to have a specific page that doesn't allow parameters through you would have to add the following to the top of the page in the PHP section:</p>
+<p>If you wish to have a specific page that doesn't allow parameters through you would have to add the following to the top of the page in the OverrideObjectData array:</p>
 
-<pre class="code">$PHPZevelop->CFG->PassParams = false;</pre>
+<pre class="code">"PassParams" => false</pre>
 
 <br /><h3>404 page</h3>
 

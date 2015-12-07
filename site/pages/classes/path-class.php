@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Path class");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Path class"
+	));
 ?>
 
 <h2>Path class</h2>

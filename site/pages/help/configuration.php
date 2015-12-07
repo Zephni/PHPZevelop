@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Configuration");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Configuration"
+	));
 ?>
 
 <h2>Configuration</h2>

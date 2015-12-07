@@ -1,7 +1,9 @@
 <?php
 	/* Page setup
 	------------------------------*/
-	$PHPZevelop->Set("PAGE_TITLE",		"Database class");
+	$PHPZevelop->OverrideObjectData("CFG", array(
+		"PageTitle"  => "Database class"
+	));
 ?>
 
 <h2>Database</h2>
