@@ -19,7 +19,7 @@ pre {
 	word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
-#fixed-container {position: fixed; width: 100%; height: 40px; z-index: 1;}
+#fixed-container {position: fixed; width: 100%; z-index: 1;}
 #download-on-github {position: absolute; top: -20px; right: 9px; background: #009ACD; border-radius: 10px; padding: 24px 15px 5px 15px; color: white; opacity: 0.7; border: 2px solid #CCCCCC;}
 #download-on-github:hover {opacity: 1;}
 
