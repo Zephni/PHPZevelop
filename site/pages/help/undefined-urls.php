@@ -11,13 +11,9 @@
 
 <h3>Option 1 (Default): No pages accept parameters unless specified</h3>
 
-<p>This is a strict option that will not allow anything to be passed to pages through the URL, to use this mode simply set the following in "/config.php"</p>
+<p>This is a strict option that will not allow anything to be passed to pages through the URL, if you want to specify a page to be able to take parameters you can add:</p>
 
-<pre class="code">"PassParams" => false</pre>
-
-<p>If you want to specify a page to be able to take parameters you can add:</p>
-
-<pre class="code">"PassParams" = true;</pre>
+<pre class="code">"PassParams" = true</pre>
 
 <p>.. to the OverrideObjectData array at the top of the page. To see this in action have a look <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>" target="_blank">here</a>. In "help/vars.php"
 PassParams has been set to true in the configuration instance, so any parameters passed will be accessible on that page.</p>
