@@ -1,12 +1,3 @@
-<?php
-	/* Defaults if not defined
-	------------------------------*/
-	if(!isset($PHPZevelop->CFG->PageTitle)) 	  $PHPZevelop->CFG->PageTitle		= "";
-	if(!isset($PHPZevelop->CFG->MetaTitle)) 	  $PHPZevelop->CFG->MetaTitle		= "PHPZevelop PHP FrameWork";
-	if(!isset($PHPZevelop->CFG->MetaDescription)) $PHPZevelop->CFG->MetaDescription	= "PHP framework for ease of use and adaptability";
-	if(!isset($PHPZevelop->CFG->MetaKeywords))	  $PHPZevelop->CFG->MetaKeywords	= "PHP, Framework, Zephni";
-?>
-
 <!DOCTYPE html>
 
 <html>
