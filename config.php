@@ -3,13 +3,14 @@
 	------------------------------*/
 	$PHPZevelop->NewObject("CFG", (object) array(
 		// Strings
-		"Site"				=> "site",
+		"SiteTitle"			=> "PHPZevelop",
 		"PageTitle"			=> "",
 		"MetaTitle"			=> "PHPZevelop PHP FrameWork",
 		"MetaDescription"	=> "PHP framework for ease of use and adaptability",
 		"MetaKeywords"		=> "PHP, Framework, Zephni",
 
 		// Structural
+		"Site"				=> "site",
 		"MultiSite"			=> array("admin"),
 		"PassParams"		=> false,
 		"PreParam"			=> "param_",
