@@ -17,7 +17,7 @@
 
 <p>If you want to specify a page to be able to take parameters you can add:</p>
 
-<pre class="code">"PassParams" = false;</pre>
+<pre class="code">"PassParams" = true;</pre>
 
 <p>.. to the OverrideObjectData array at the top of the page. To see this in action have a look <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>" target="_blank">here</a>. In "help/vars.php"
 PassParams has been set to true in the configuration instance, so any parameters passed will be accessible on that page.</p>
