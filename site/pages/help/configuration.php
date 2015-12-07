@@ -8,7 +8,7 @@
 
 <h2>Configuration</h2>
 
-<p>The below configuration is an example configuration. The config for this setup is "config.php" in the root directory. </p>
+<p>The main config file is "config.php", placed in the root directory. </p>
 
 <p>As $PHPZevelop->CFG is an object, values can be returned by using the following format: </p>
 
