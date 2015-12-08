@@ -1,15 +1,14 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Date:	16/06/2015
-		Ver:	1.03
+		Ver:	1.4
 
 		// Properties:
 
-			string $PageFile 		# The main page file (Usually the page that delivers content)
-			string $Page404  		# The page to default to if $PageFile can't be found
-			array $FileOrder 		# Order of files to load such as a header/footer, $PageFile should be in this list
-			array $DefinedVars 		# Is an array list of variables that you may want to use inside the included files
+			string $PageFile 		// The main page file (Usually the page that delivers content)
+			string $Page404  		// The page to default to if $PageFile can't be found
+			array $FileOrder 		// Order of files to load such as a header/footer, $PageFile should be in this list
+			array $DefinedVars 		// Is an array list of variables that you may want to use inside the included files
 
 		// Note:
 

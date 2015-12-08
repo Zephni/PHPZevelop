@@ -1,12 +1,16 @@
 <?php
 	/*
-	 *	Class: Connecting and querying the Database, class instantiates itself instantly
-	 *	@Param String host
-	 *	@Param String Database user
-	 *	@Param String Database password
-	 *	@param String Database name
+		Author: Craig Dennis
+		Ver:	1.4
+
+		// Construct
+	 	Class: Connecting and querying the Database
+	 	@Param String host
+	 	@Param String Database user
+	 	@Param String Database password
+	 	@param String Database name
 			
-	 *	EXAMPLE:
+	 	EXAMPLE:
 			$db->query("SELECT * FROM table WHERE id=:id", array('id' => $_GET['id']));
 	*/
 	class DB{

@@ -1,11 +1,46 @@
 <?php
+	/*
+		Author: Craig Dennis
+		Ver:	1.4
+
+		// Properties:
+
+			private object $Path - The $PHPZevelop->Path object
+		
+		// Methods
+
+			public function __construct($Path)
+				// Parameters
+				$Path -> Requires $PHPZevelop->Path object
+
+			public funtion Get($URL, $Text = null, $Options = array())
+				// Parameters
+				$URL		-> Either a local or public URL, should not begin with "/"
+				$Text 		-> Either (string) LinkText or (array) $Options. Options for this parameter will set the link text to $URL
+				$Options 	-> Associative array that represent the attributes list for the link
+
+				// Description
+				Returns HTML link based on URL, Link text and attributes list.
+			
+			public funtion Set($URL, $Text = null, $Options = array())
+				// Parameters
+				$URL		-> Either a local or public URL, should not begin with "/"
+				$Text 		-> Either (string) LinkText or (array) $Options. Options for this parameter will set the link text to $URL
+				$Options 	-> Associative array that represent the attributes list for the link
+				
+				// Description
+				Echos HTML link based on URL, Link text and attributes list.
+	*/
 	class Link
 	{
 		private $Path;
 
 		public function __construct($_Path)
 		{
-			$this->Path = $_Path;
+			if(get_class($_Path) == "Path")
+				$this->Path = $_Path;
+			else
+				die("Link construct expecting \$PHPZevelop->Path object");
 		}
 
 		public function Get($URL, $Text = null, $Options = array())

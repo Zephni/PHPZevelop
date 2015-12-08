@@ -1,8 +1,7 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Date:	16/06/2015
-		Ver:	1.0
+		Ver:	1.4
 
 		// Properties:
 

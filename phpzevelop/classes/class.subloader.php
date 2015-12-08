@@ -1,16 +1,17 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Date:	16/06/2015
-		Ver:	1.0
+		Ver:	1.4
 
 		The PHPZevelop class is simply a collection of PHPZevelop dependant objects that are fundamental to the workings of the framework.
 
 		// Properties:
 
-			array $DefinedVariables = array();	// An array of variables to pass to the included files
-			array $IncludedFiles;				// List of successfully included files after RunIncludes() has ran
-			array $ErrorFiles;					// List of unsuccessfully included files after RunIncludes() has ran
+			public array $DefinedVariables	// An array of variables to pass to the included files
+			public array $IncludedFiles		// List of successfully included files after RunIncludes() has ran
+			public array $ErrorFiles		// List of unsuccessfully included files after RunIncludes() has ran
+			private string $rootPath 		// Root PHPZevelop location
+			private array $Directories 		// Directory list to iterate over
 
 		// Below is an example of usage:
 

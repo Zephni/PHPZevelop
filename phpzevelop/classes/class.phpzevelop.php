@@ -1,14 +1,14 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Date:	16/06/2015
-		Ver:	1.0
+		Ver:	1.4
 
 		The PHPZevelop class is simply a collection of PHPZevelop dependant objects that are fundamental to the workings of the framework.
 
 		// Properties:
 
-			Defined after instantiated
+			private array $InternalData			// Internal data available through Set and Get methods
+			Others defined after instantiated	// Objects added via NewObect method
 
 		// Below is an example of usage:
 
