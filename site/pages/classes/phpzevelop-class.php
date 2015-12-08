@@ -61,12 +61,12 @@ $PHPZevelop->NewObject("Page", new Page());
 </pre>
 
 <p>You can change the name of the property by changing the first parameter string value, the second parameter is the instantiated object itself. 
-A property can by overwritten by applying a new object to the same string value. An example of why you may do this can be found here <a href="<?php $PHPZevelop->Path->GetPage("classes/path-class"); ?>">classes/path-class</a>.</p>
+A property can by overwritten by applying a new object to the same string value. An example of why you may do this can be found here <?php $Link->Out("classes/path-class"); ?>.</p>
 
 <p style='color: green;'>OverrideObjectData(string $Alias, object $NewData):</p>
 <p>OverrideObjectData will loop through the $Alias object and ammend the properties with the new values in an array like so: </p>
 <pre class="code">array("Key" => "PropertyName", "Value" => "NewValue")</pre>
-<p>see more here: <a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">meta data</a>.</p>
+<p>see more here: <?php $Link->Out("help/meta-data"); ?>.</p>
 
 <p style='color: green;'>Append(string $Alias, string $V1, string $V2 = null):</p>
 <p>Append will add an array element to an already existing one, the first parameter is the key of the item you want to append to. The second parameter is the item to append.

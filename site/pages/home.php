@@ -7,7 +7,7 @@
 ?>
 
 <h2>Home</h2>
-<p><a href="https://github.com/Zephni/PHPZevelop">PHPZevelop</a> is a PHP framework for ease of use and adaptability. I am building it for personal use -  
+<p><?php $Link->Out("https://github.com/Zephni/PHPZevelop", "PHPZevelop"); ?> is a PHP framework for ease of use and adaptability. I am building it for personal use -  
 but if anybody wishes to fork it please feel free! Any comments and ideas are welcome, you can also email me on: contact at zephni.com</p>
 
 <b>My ethos is to create a platform that provides an intuitive website structure that is well organised and quick to develop upon.

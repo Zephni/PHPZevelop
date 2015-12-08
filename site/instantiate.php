@@ -7,3 +7,7 @@
 		if(!$DB->Connected)
 			die($DB->ErrorHandler());
 	}
+
+	/* Instantiate
+	------------------------------*/
+	$Link = new Link($PHPZevelop->Path);

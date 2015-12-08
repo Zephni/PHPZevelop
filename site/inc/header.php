@@ -21,7 +21,7 @@
 	<body>
 		<div id="fixed-container">
 			<div class="wrapper">
-				<a href="https://github.com/Zephni/PHPZevelop" id="download-on-github" target="_blank">Download on GitHub</a>
+				<?php $Link->Out("https://github.com/Zephni/PHPZevelop", "Download on GitHub", array("id" => "download-on-github", "target" => "_blank")); ?>
 			</div>
 		</div>
 		<div class="wrapper">
@@ -36,13 +36,13 @@
 					<tr>
 						<td>
 							<table style="width: 100%;">
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">Configuration</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/structure"); ?>">Structure</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/adding-pages"); ?>">Adding pages</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">Meta data</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">Page parameters</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("help/undefined-urls"); ?>">Undefined URL's</a></td>
+								<td><?php $Link->Out("help/structure",				"PHPZevelop structure"); ?></td>
+								<td><?php $Link->Out("help/configuration",			"Configuration"); ?></td>
+								<td><?php $Link->Out("help/adding-pages",			"Adding pages"); ?></td>
+								<td><?php $Link->Out("help/meta-data",				"Meta data"); ?></td>
+								<td><?php $Link->Out("help/multisite",				"MultiSite"); ?></td>
+								<td><?php $Link->Out("help/vars/5/test",			"Page parameters"); ?></td>
+								<td><?php $Link->Out("help/undefined-urls",			"Undefined URL's"); ?></td>
 							</table>
 						</td>
 					</tr>
@@ -53,12 +53,13 @@
 					<tr>
 						<td>
 							<table style="width: 100%;">
-								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/phpzevelop-class"); ?>">PHPZevelop</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/adding-classes"); ?>">Custom classes</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/page-class"); ?>">Page class</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/path-class"); ?>">Path class</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/subloader-class"); ?>">SubLoader class</a></td>
-								<td><a href="<?php $PHPZevelop->Path->GetPage("classes/database-class"); ?>">Database class</a></td>
+								<td><?php $Link->Out("classes/phpzevelop-class",	"PHPZevelop"); ?></td>
+								<td><?php $Link->Out("classes/adding-classes",		"Custom classes"); ?></td>
+								<td><?php $Link->Out("classes/page-class",			"Page class"); ?></td>
+								<td><?php $Link->Out("classes/path-class",			"Path class"); ?></td>
+								<td><?php $Link->Out("classes/subloader-class",		"SubLoader class"); ?></td>
+								<td><?php $Link->Out("classes/database-class",		"Database class"); ?></td>
+								<td><?php $Link->Out("classes/link-class",			"Link class"); ?></td>
 							</table>
 						</td>
 					</tr>

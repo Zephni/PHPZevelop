@@ -30,7 +30,7 @@ index.php
 
 <h2>Site structure</h2>
 
-<p>The standard site structure is as follows, same is applied for additional <a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSites</a>.</p>
+<p>The standard site structure is as follows, same is applied for additional <?php $Link->Out("help/multisite", "MultiSites"); ?>.</p>
 
 <pre class="code">
 classes/
@@ -47,5 +47,5 @@ instantiate.php
 <p><span style="color: green;">inc/</span>: Includable PHP files should be placed here. The site header and footer files are placed here by default.</p>
 <p><span style="color: green;">scripts/</span>: A directory for JavaScript files, by default JQuery is instantiated and "scripts/main.js" is called from "inc/header.php"</p>
 <p><span style="color: green;">config.php</span>: You can override config properties here. All pages loaded in the containing site will have the same config applied.</p>
-<p><span style="color: green;">global.php</span>: For any site specific code. By default this file runs all specified include directories. See more <a href="<?php $PHPZevelop->Path->GetPage("classes/subloader-class"); ?>">here</a>.</p>
+<p><span style="color: green;">global.php</span>: For any site specific code. By default this file runs all specified include directories. See more <?php $Link->Out("classes/subloader-class", "here"); ?>.</p>
 <p><span style="color: green;">instantiate.php</span>: Here you can instantiate included classes and set up their configuration.</p>

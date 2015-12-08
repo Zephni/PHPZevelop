@@ -17,8 +17,8 @@ echo $PHPZevelop->CFG->SiteTitle;
 echo $PHPZevelop->CFG->DB->Host;
 </pre>
 
-<p>Configuration can be overwritten in the site directory "config.php". This could be nessesary for overwriting default configuration in <a href="<?php $PHPZevelop->Path->GetPage("help/multisite"); ?>">MultiSite</a> site, 
-you can also change configuration per page, more information here: <a href="<?php $PHPZevelop->Path->GetPage("help/meta-data"); ?>">help/meta-data</a></p>
+<p>Configuration can be overwritten in the site directory "config.php". This could be nessesary for overwriting default configuration in <?php $Link->Out("help/multisite", "MultiSite"); ?> site, 
+you can also change configuration per page, more information here: <?php $Link->Out("help/meta-data"); ?></p>
 
 <h3>Below is an explanation of the available values</h3>
 
@@ -36,10 +36,10 @@ you can also change configuration per page, more information here: <a href="<?ph
 
 <p><span style="color: green;">MultiSite</span>: Other site configuration directories</p>
 
-<p><span style="color: green;">PassParams</span>: If true, parameters can be passed to all pages. For more options check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
+<p><span style="color: green;">PassParams</span>: If true, parameters can be passed to all pages. For more options check <?php $Link->Out("help/vars/5/test"); ?></p>
 
-<p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a></p>
+<p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <?php $Link->Out("help/vars/5/test"); ?></p>
 
-<p><span style="color: green;">Page404</span>: This will define the 404 page to load if the URL cannot be found. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/undefined-urls"); ?>">here</a></p>
+<p><span style="color: green;">Page404</span>: This will define the 404 page to load if the URL cannot be found. For more information check <?php $Link->Out("help/undefined-urls"); ?></p>
 
-<p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <a href="<?php $PHPZevelop->Path->GetPage("help/adding-pages"); ?>">here</a></p>
+<p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <?php $Link->Out("help/adding-pages"); ?></p>

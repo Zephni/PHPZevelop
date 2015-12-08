@@ -15,7 +15,7 @@
 
 <pre class="code">"PassParams" = true</pre>
 
-<p>.. to the OverrideObjectData array at the top of the page. To see this in action have a look <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>" target="_blank">here</a>. In "help/vars.php"
+<p>.. to the OverrideObjectData array at the top of the page. To see this in action have a look <?php $Link->Out("help/vars/5/test", "here", array("target" => "_blank")); ?>. In "help/vars.php"
 PassParams has been set to true in the configuration instance, so any parameters passed will be accessible on that page.</p>
 
 
@@ -26,7 +26,7 @@ PassParams has been set to true in the configuration instance, so any parameters
 <pre class="code">"PassParams" => true</pre>
 
 <p>To explain what this does.. say you have a page located at "/help/test.php" which can be accessed by simply using "/help/test" as a URL, 
-if you were to put "/help/test/value1/value2" that page would be able to access them variables (as explained <a href="<?php $PHPZevelop->Path->GetPage("help/vars/5/test"); ?>">here</a>).</p>
+if you were to put "/help/test/value1/value2" that page would be able to access them variables (as explained <?php $Link->Out("help/vars/5/test", "here"); ?>).</p>
 
 <p>Also if you didn't have a page at "/help/test.php" then using the same URL as above would return all of them parameters to the home or index page.</p>
 
@@ -36,4 +36,4 @@ if you were to put "/help/test/value1/value2" that page would be able to access 
 
 <br /><h3>404 page</h3>
 
-<p>You can specify a 404 page to fall back on if PassParams is turned off and the page passed does not exist, for more information check here: <a href="<?php $PHPZevelop->Path->GetPage("help/configuration"); ?>">help/configuration</a>.</p>
+<p>You can specify a 404 page to fall back on if PassParams is turned off and the page passed does not exist, for more information check here: <?php $Link->Out("help/configuration"); ?>.</p>
