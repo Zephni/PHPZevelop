@@ -77,7 +77,12 @@
 	------------------------------*/
 	$PHPZevelop->NewObject("Page", new Page());
 
-	/* Custom setup
+	/* Site specific
 	------------------------------*/
+	// Global
 	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/global".FILE_EXT))
 		require_once($PHPZevelop->CFG->SiteDirRoot."/global".FILE_EXT);
+
+	// Instantiate
+	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT))
+		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
