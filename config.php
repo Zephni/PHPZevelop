@@ -11,7 +11,7 @@
 
 		// Structural
 		"Site"				=> "site",
-		"MultiSite"			=> array("admin"),
+		"MultiSite"			=> array("howto"),
 		"PassParams"		=> false,
 		"PreParam"			=> "param_",
 		"Page404"			=> "error/404",

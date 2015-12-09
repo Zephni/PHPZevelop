@@ -13,9 +13,10 @@
 
 			$inter1 = explode("/", $PHPZevelop->CFG->PagePath);
 			$inter2 = explode("/", LOCAL_DIR);
+
 			if(array_shift($inter1) == $alias || array_pop($inter2) == $alias)
 			{
-				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".str_replace($alias, "", $PHPZevelop->CFG->PagePath));
+				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".substr($PHPZevelop->CFG->PagePath, strlen($alias)));
 				$PHPZevelop->CFG->Site = $directory;
 				$PHPZevelop->CFG->IsMultiSite = true;
 			}
@@ -42,6 +43,7 @@
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
+	$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->LocalDirs->Pages.$PHPZevelop->CFG->PagePath;
 	$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
 	$PHPZevelop->Set("URLParameters", array());
 

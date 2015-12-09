@@ -5,8 +5,11 @@
 		"PageTitle"  => "404"
 	));
 ?>
-<h2>404 - Page does not exist</h2>
 
-<p>If the page passed through the URL doesn't exist, the "Page" class will default to the assigned page.</p>
-
-<p>The 404 Page lives in the pages/error/ directory and can be set as the "Page->Page404" property in index.php.</p>
+<div style="padding: 10px;">
+	<div style="width: 100%; max-width: 1080px; margin: 50px auto;">
+		<h2>404 - This page does not exist</h2>
+		<hr />
+		<p>Check your PHPZevelop configuration and that the page exists in (<span style='color: green;'><?php echo $PHPZevelop->CFG->TestedPagePath.FILE_EXT; ?></span>)</p>
+	</div>
+</div>
