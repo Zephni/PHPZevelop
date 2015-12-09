@@ -5,4 +5,4 @@ But if anybody wishes to fork it please feel free! Any comments and ideas are we
 
 Downloading the framework and running on a PHP webserver will come with an almost blank site configuration and this help site accessible through /help.
 
-See the framework in action here: [http://zephni.com/phpzevelop](http://zephni.com/phpzevelop/howto/ "PHPZevelop")</a>.
+See the framework in action here: [http://zephni.com/phpzevelop/howto/](http://zephni.com/phpzevelop/howto/ "PHPZevelop")</a>.
