@@ -10,6 +10,7 @@
 		<meta name="title" content="<?php echo $PHPZevelop->CFG->MetaTitle; ?>">
 		<meta name="description" content="<?php echo $PHPZevelop->CFG->MetaDescription; ?>">
 		<meta name="keywords" content="<?php echo $PHPZevelop->CFG->MetaKeywords; ?>">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("style1.css"); ?>">
@@ -29,38 +30,54 @@
 				<a href="<?php echo $PHPZevelop->Path->GetPage(""); ?>">
 					<h1>PHPZevelop</h1>
 				</a>
-				<table id="nav">
-					<tr>
-						<td class="head">Help</td>
-					</tr>
-					<tr>
-						<td>
-							<table style="width: 100%;">
-								<td><?php $Link->Out("help/structure",				"PHPZevelop structure"); ?></td>
-								<td><?php $Link->Out("help/configuration",			"Configuration"); ?></td>
-								<td><?php $Link->Out("help/adding-pages",			"Adding pages"); ?></td>
-								<td><?php $Link->Out("help/meta-data",				"Meta data"); ?></td>
-								<td><?php $Link->Out("help/multisite",				"MultiSite"); ?></td>
-								<td><?php $Link->Out("help/vars/5/test",			"Page parameters"); ?></td>
-								<td><?php $Link->Out("help/undefined-urls",			"Undefined URL's"); ?></td>
-							</table>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="head">Classes</td>
-					</tr>
-					<tr>
-						<td>
-							<table style="width: 100%;">
-								<td><?php $Link->Out("classes/phpzevelop-class",	"PHPZevelop"); ?></td>
-								<td><?php $Link->Out("classes/adding-classes",		"Custom classes"); ?></td>
-								<td><?php $Link->Out("classes/page-class",			"Page class"); ?></td>
-								<td><?php $Link->Out("classes/path-class",			"Path class"); ?></td>
-								<td><?php $Link->Out("classes/subloader-class",		"SubLoader class"); ?></td>
-								<td><?php $Link->Out("classes/database-class",		"Database class"); ?></td>
-								<td><?php $Link->Out("classes/link-class",			"Link class"); ?></td>
-							</table>
-						</td>
-					</tr>
+
+				<?php
+					$NavItems = array(
+						"Help" => array(
+							$Link->Get("help/structure",			"PHPZevelop structure"),
+							$Link->Get("help/configuration",		"Configuration"),
+							$Link->Get("help/adding-pages",			"Adding pages"),
+							$Link->Get("help/meta-data",			"Meta data"),
+							$Link->Get("help/multisite",			"MultiSite"),
+							$Link->Get("help/vars/5/test",			"Page parameters"),
+							$Link->Get("help/undefined-urls",		"Undefined URL's")
+						),
+						"Classes" => array(
+							$Link->Get("classes/phpzevelop-class",	"PHPZevelop"),
+							$Link->Get("classes/adding-classes",	"Custom classes"),
+							$Link->Get("classes/page-class",		"Page class"),
+							$Link->Get("classes/path-class",		"Path class"),
+							$Link->Get("classes/subloader-class",	"SubLoader class"),
+							$Link->Get("classes/database-class",	"Database class"),
+							$Link->Get("classes/link-class",		"Link class")
+						)
+					);
+				?>
+
+				<table id="nav" class="non-mobile-only">
+					<?php
+						foreach($NavItems as $Name => $Array)
+						{
+							echo "<tr><td class='head'>".$Name."</td></tr>";
+							echo "<tr><td><table style='width: 100%;'>";
+							foreach($Array as $Value){
+								echo "<td>".$Value."</td>";
+							}
+							echo "</table></td></tr>";
+						}
+					?>
 				</table>
+
+				<div id="nav" class="mobile-only">
+					<?php
+						foreach($NavItems as $Name => $Array)
+						{
+							echo "<div class='head'>".$Name."</div>";
+							echo "<div class='expandable'>";
+							foreach($Array as $Value){
+								echo "<div>".$Value."</div>";
+							}
+							echo "</div>";
+						}
+					?>
+				</div>

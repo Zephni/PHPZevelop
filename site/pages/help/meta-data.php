@@ -10,8 +10,8 @@
 <p>To change the default meta data for the framework you can change the values in "config.php":</p>
 
 <pre class="code" style="font-size: 12px;">
-"PageTitle"			=> "",
-"MetaTitle"			=> "PHPZevelop PHP FrameWork",
+"PageTitle"		=> "",
+"MetaTitle"		=> "PHPZevelop PHP FrameWork",
 "MetaDescription"	=> "PHP framework for ease of use and adaptability",
 "MetaKeywords"		=> "PHP, Framework, Zephni"
 </pre>
