@@ -47,5 +47,12 @@
 
 	/* Generate page
 	------------------------------*/
-	$PHPZevelop->CFG->PagePath = str_replace("//", "/", $PHPZevelop->CFG->PagePath);
-	require_once(MAIN_DIR."/generatepage_template".FILE_EXT);
+	ob_start();
+	include($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT));
+	$PHPZevelop->PageContent = ob_get_contents();
+	ob_clean();
+
+	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "template")
+		require_once(MAIN_DIR."/generatepage_template".FILE_EXT);
+	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "fileorder")
+		require_once(MAIN_DIR."/generatepage_fileorder".FILE_EXT);

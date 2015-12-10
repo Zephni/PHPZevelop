@@ -2,11 +2,12 @@
 	/* Config
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
+		// Strings
 		"SiteTitle"			=> "PHPZevelop",
 		"PageTitle"			=> "",
 		"MetaTitle"			=> "PHPZevelop PHP FrameWork",
 		"MetaDescription"	=> "PHP framework for ease of use and adaptability",
-		"MetaKeywords"		=> "PHP, Framework, Zephni"
+		"MetaKeywords"		=> "PHP, Framework, Zephni",
 	));
 
 	$PHPZevelop->CFG->DB = (object) array(

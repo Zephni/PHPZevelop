@@ -2,22 +2,6 @@
 	/* Generate page by template
 	------------------------------*/
 
-	// Check if parameters have been passed
-	if(count($PHPZevelop->Get("URLParameters")) > 0)
-	{
-		// Convert to $_GET
-		$Params = array_reverse($PHPZevelop->Get("URLParameters"));
-		for($i = 0; $i < count($Params); $i++)
-			$_GET[$PHPZevelop->CFG->PreParam.$i] = $Params[$i];
-		unset($Params);
-	}
-
-	// Load page and get any overriden content
-	ob_start();
-	include($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT));
-	$PHPZevelop->PageContent = ob_get_contents();
-	ob_clean();
-
 	// If PassParams is not set and param was passed
 	if(!$PHPZevelop->CFG->PassParams && isset($_GET[$PHPZevelop->CFG->PreParam."0"]))
 	{

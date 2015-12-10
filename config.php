@@ -12,9 +12,10 @@
 		// Structural
 		"Site"				=> "site",
 		"MultiSite"			=> array("howto"),
+		"LoadStyle"			=> "template",
 		"Template"			=> "main",
 		"PassParams"		=> false,
 		"PreParam"			=> "param_",
-		"Page404"			=> "error/4s04",
+		"Page404"			=> "error/404",
 		"DefaultFiles"		=> array("index", "default", "home")
 	));

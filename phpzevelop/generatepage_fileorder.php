@@ -1,16 +1,42 @@
 <?php
 	/* Generate page by file order
 	------------------------------*/
-	$PHPZevelop->Page->PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT);
+	function ConvertToUnixPath(&$path){
+		if (strpos($path, "\\") !== FALSE){
+			$path = str_replace("\\", "/", $path);
+		}
+	}
 
-	if(isset($PHPZevelop->CFG->Page404) && strlen($PHPZevelop->CFG->Page404) > 0)
-		$PHPZevelop->Page->Page404	= $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT);
+	// Get page files
+	$PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT);
+	$Page404 = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT);
 
-	$PHPZevelop->Page->FileOrder = array(
-		$PHPZevelop->Path->GetInc("header".FILE_EXT),
-		$PHPZevelop->Page->PageFile,
-		$PHPZevelop->Path->GetInc("footer".FILE_EXT)
-	);
+	// Convert to Unix strings
+	ConvertToUnixPath($PageFile);
+	ConvertToUnixPath($Page404);
 
-	$PHPZevelop->Page->SetDefinedVariables(get_defined_vars());
-	$PHPZevelop->Page->LoadPage();
+	foreach($PHPZevelop->CFG->FileOrder as $k => $v)
+		ConvertToUnixPath($PHPZevelop->CFG->FileOrder[$k]);
+
+	// Run file order
+	if(!isset($PHPZevelop->CFG->FileOrder))
+	{
+		$PHPZevelop->CFG->FileOrder = array($PageFile);
+	}
+	else
+	{
+		foreach($PHPZevelop->CFG->FileOrder as $k => $v)
+		{
+			if($v == "[page]")
+			{
+				if(is_file(ROOT_DIR.$PHPZevelop->CFG->TestedPagePath.FILE_EXT))
+					echo $PHPZevelop->PageContent;
+				else
+					include($Page404);
+			}
+			else
+			{
+				include($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v);
+			}
+		}
+	}
