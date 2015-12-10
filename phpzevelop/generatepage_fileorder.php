@@ -20,23 +20,19 @@
 
 	// Run file order
 	if(!isset($PHPZevelop->CFG->FileOrder))
-	{
 		$PHPZevelop->CFG->FileOrder = array($PageFile);
-	}
-	else
+
+	foreach($PHPZevelop->CFG->FileOrder as $k => $v)
 	{
-		foreach($PHPZevelop->CFG->FileOrder as $k => $v)
+		if($v == "[page]")
 		{
-			if($v == "[page]")
-			{
-				if(is_file(ROOT_DIR.$PHPZevelop->CFG->TestedPagePath.FILE_EXT))
-					echo $PHPZevelop->PageContent;
-				else
-					include($Page404);
-			}
+			if(is_file($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->TestedPagePath.FILE_EXT)))
+				echo $PHPZevelop->PageContent;
 			else
-			{
-				include($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v);
-			}
+				include($Page404);
+		}
+		else
+		{
+			include($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v);
 		}
 	}

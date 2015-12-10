@@ -43,7 +43,7 @@
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
-	$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->LocalDirs->Pages.$PHPZevelop->CFG->PagePath;
+	$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->PagePath;
 	$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
 	$PHPZevelop->Set("URLParameters", array());
 

@@ -22,7 +22,7 @@
 				header("Location: ".$PHPZevelop->Path->GetPage("", true));
 			}
 		}
-	}	
+	}
 
 	// Include template file
 	include($PHPZevelop->CFG->RootDirs->Templates."/".$PHPZevelop->CFG->Template.FILE_EXT);
