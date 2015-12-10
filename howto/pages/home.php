@@ -2,9 +2,7 @@
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
-		"PageTitle"  => "Home",
-		"LoadStyle"  => "FileOrder",
-		"FileOrder"	 => array("inc/header", "[page]", "inc/footer")
+		"PageTitle"  => "Home"
 	));
 ?>
 
