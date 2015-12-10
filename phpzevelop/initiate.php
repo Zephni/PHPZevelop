@@ -80,10 +80,6 @@
 		}
 	}
 
-	// Fix for default files
-	if($PHPZevelop->CFG->TestedPagePath == "/" && isset($FilePath) && strlen($FilePath) > 0)
-		$PHPZevelop->CFG->TestedPagePath = str_replace("//", "/", $FilePath);
-
 	/* Path
 	------------------------------*/
 	$PHPZevelop->NewObject("Path", new Path($PHPZevelop->CFG));
