@@ -11,6 +11,10 @@
 	$PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT);
 	$Page404 = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT);
 
+	// Check file order has been set
+	if(!isset($PHPZevelop->CFG->FileOrder) || count($PHPZevelop->CFG->FileOrder) == 0)
+		$PHPZevelop->CFG->FileOrder = array("[page]");
+
 	// Convert to Unix strings
 	ConvertToUnixPath($PageFile);
 	ConvertToUnixPath($Page404);
@@ -19,9 +23,6 @@
 		ConvertToUnixPath($PHPZevelop->CFG->FileOrder[$k]);
 
 	// Run file order
-	if(!isset($PHPZevelop->CFG->FileOrder))
-		$PHPZevelop->CFG->FileOrder = array($PageFile);
-
 	foreach($PHPZevelop->CFG->FileOrder as $k => $v)
 	{
 		if($v == "[page]")
