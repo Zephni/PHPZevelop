@@ -1,4 +1,15 @@
 <?php
+	/* Include base classes
+	------------------------------*/
+	require_once(MAIN_DIR."/classes/class.subloader".FILE_EXT);
+	$SubLoader = new SubLoader(MAIN_DIR."/classes");
+	$SubLoader->RunIncludes();
+	
+	/* PHPZevelop setup
+	------------------------------*/
+	$PHPZevelop = new PHPZevelop();
+	require_once(ROOT_DIR."/config".FILE_EXT);
+
 	/* Get page path and unset $_GET["page"]
 	------------------------------*/
 	$PHPZevelop->CFG->PagePath = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
@@ -104,3 +115,15 @@
 	// Instantiate
 	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT))
 		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
+
+	/* Generate page
+	------------------------------*/
+	ob_start();
+	include($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->ExistingFilePath.FILE_EXT));
+	$PHPZevelop->PageContent = ob_get_contents();
+	ob_clean();
+
+	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "Template" || !isset($PHPZevelop->CFG->LoadStyle))
+		require_once(MAIN_DIR."/generatepage_template".FILE_EXT);
+	elseif(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "FileOrder")
+		require_once(MAIN_DIR."/generatepage_fileorder".FILE_EXT);

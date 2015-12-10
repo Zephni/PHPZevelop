@@ -92,6 +92,6 @@
 		public function IncludeFiles($files)
 		{
 			foreach($files as $file)
-				$this->IncludeFile($file);
+				$this->IncludeFile($file);			
 		}
 	}
