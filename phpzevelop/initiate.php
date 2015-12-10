@@ -54,6 +54,7 @@
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
+	$PHPZevelop->CFG->PagePath = str_replace("//", "/", $PHPZevelop->CFG->PagePath);
 	$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->PagePath;
 	$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
 	$PHPZevelop->Set("URLParameters", array());
@@ -77,10 +78,11 @@
 			if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath) && $i > 0)
 				$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
 		}
-			
 	}
 
-	$PHPZevelop->CFG->PagePath = str_replace("//", "/", $FilePath);
+	// Fix for default files
+	if($PHPZevelop->CFG->TestedPagePath == "/" && isset($FilePath) && strlen($FilePath) > 0)
+		$PHPZevelop->CFG->TestedPagePath = str_replace("//", "/", $FilePath);
 
 	/* Path
 	------------------------------*/

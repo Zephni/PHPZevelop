@@ -37,7 +37,7 @@
 	/* Generate page
 	------------------------------*/
 	ob_start();
-	include($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT));
+	include($PHPZevelop->Path->GetPageRoot($FilePath.FILE_EXT));
 	$PHPZevelop->PageContent = ob_get_contents();
 	ob_clean();
 

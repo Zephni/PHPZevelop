@@ -8,7 +8,7 @@
 	}
 
 	// Get page files
-	$PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->PagePath.FILE_EXT);
+	$PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->TestedPagePath.FILE_EXT);
 	$Page404 = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT);
 
 	// Check file order has been set
@@ -28,7 +28,7 @@
 	{
 		if($v == "[page]")
 		{
-			if(is_file($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->TestedPagePath.FILE_EXT)))
+			if(is_file($PageFile))
 				echo $PHPZevelop->PageContent;
 			else
 				include($Page404);
