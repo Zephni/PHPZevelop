@@ -12,7 +12,7 @@
 		// Structural
 		"Site"				=> "site",
 		"MultiSite"			=> array("howto"),
-		"LoadStyle"			=> "template",
+		"LoadStyle"			=> "Template",
 		"Template"			=> "main",
 		"PassParams"		=> false,
 		"PreParam"			=> "param_",

@@ -1,4 +1,15 @@
 <?php
+	/* Get page path and unset $_GET["page"]
+	------------------------------*/
+	$PHPZevelop->CFG->PagePath = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
+	unset($_GET["page"]);
+
+	/* Set Local directory
+	------------------------------*/
+	$inter = explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]));
+	define("LOCAL_DIR", rtrim(array_shift($inter), "/"));
+	unset($inter);
+	
 	/* Check if current path is a MultiSite
 	------------------------------*/
 	$PHPZevelop->CFG->IsMultiSite = false;

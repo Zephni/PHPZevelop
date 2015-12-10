@@ -20,7 +20,8 @@
 	ConvertToUnixPath($Page404);
 
 	foreach($PHPZevelop->CFG->FileOrder as $k => $v)
-		ConvertToUnixPath($PHPZevelop->CFG->FileOrder[$k]);
+		if($PHPZevelop->CFG->FileOrder[$k] != "[page]")
+			ConvertToUnixPath($PHPZevelop->CFG->FileOrder[$k]);
 
 	// Run file order
 	foreach($PHPZevelop->CFG->FileOrder as $k => $v)
@@ -34,6 +35,6 @@
 		}
 		else
 		{
-			include($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v);
+			include($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v.FILE_EXT);
 		}
 	}

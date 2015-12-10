@@ -35,8 +35,8 @@ index.php
 <pre class="code">
 classes/
 css/
-inc/
 scripts/
+templates/
 config.php
 global.php
 instantiate.php
@@ -44,8 +44,8 @@ instantiate.php
 
 <p><span style="color: green;">classes/</span>: All classes in this directory will be included by default from global.php</p>
 <p><span style="color: green;">css/</span>: .css files for site styling.</p>
-<p><span style="color: green;">inc/</span>: Includable PHP files should be placed here. The site header and footer files are placed here by default.</p>
 <p><span style="color: green;">scripts/</span>: A directory for JavaScript files, by default JQuery is instantiated and "scripts/main.js" is called from "inc/header.php"</p>
+<p><span style="color: green;">templates/</span>: Template files should be placed here. See more <?php $Link->Out("help/load-style", "here"); ?>.</p>
 <p><span style="color: green;">config.php</span>: You can override config properties here. All pages loaded in the containing site will have the same config applied.</p>
 <p><span style="color: green;">global.php</span>: For any site specific code. By default this file runs all specified include directories. See more <?php $Link->Out("classes/subloader-class", "here"); ?>.</p>
 <p><span style="color: green;">instantiate.php</span>: Here you can instantiate included classes and set up their configuration.</p>

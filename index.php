@@ -30,17 +30,6 @@
 	$PHPZevelop = new PHPZevelop();
 	require_once(ROOT_DIR."/config".FILE_EXT);
 
-	/* Get page path and unset $_GET["page"]
-	------------------------------*/
-	$PHPZevelop->CFG->PagePath = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
-	unset($_GET["page"]);
-
-	/* Set Local directory
-	------------------------------*/
-	$inter = explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]));
-	define("LOCAL_DIR", rtrim(array_shift($inter), "/"));
-	unset($inter);
-
 	/* Initiate PHPZevelop
 	------------------------------*/
 	require_once(MAIN_DIR."/initiate".FILE_EXT);
@@ -52,7 +41,7 @@
 	$PHPZevelop->PageContent = ob_get_contents();
 	ob_clean();
 
-	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "template")
+	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "Template" || !isset($PHPZevelop->CFG->LoadStyle))
 		require_once(MAIN_DIR."/generatepage_template".FILE_EXT);
-	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "fileorder")
+	elseif(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "FileOrder")
 		require_once(MAIN_DIR."/generatepage_fileorder".FILE_EXT);

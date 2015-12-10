@@ -36,10 +36,14 @@ you can also change configuration per page, more information here: <?php $Link->
 
 <p><span style="color: green;">MultiSite</span>: Other site configuration directories</p>
 
-<p><span style="color: green;">PassParams</span>: If true, parameters can be passed to all pages. For more options check <?php $Link->Out("help/vars/5/test"); ?></p>
+<p><span style="color: green;">PassParams</span>: If true, parameters can be passed to all pages. For more options check <?php $Link->Out("help/vars/5/test", "Vars"); ?></p>
 
-<p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <?php $Link->Out("help/vars/5/test"); ?></p>
+<p><span style="color: green;">PreParam</span>: Parameters passed will be accessable with this property and then an integer. For more information check <?php $Link->Out("help/vars/5/test", "Vars"); ?></p>
 
-<p><span style="color: green;">Page404</span>: This will define the 404 page to load if the URL cannot be found. For more information check <?php $Link->Out("help/undefined-urls"); ?></p>
+<p><span style="color: green;">Page404</span>: This will define the 404 page to load if the URL cannot be found. For more information check <?php $Link->Out("help/undefined-urls", "Undefined URL's"); ?></p>
 
-<p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <?php $Link->Out("help/adding-pages"); ?></p>
+<p><span style="color: green;">DefaultFiles</span>: An array of files that can be used as home pages, or default fallback files. For more information check <?php $Link->Out("help/adding-pages", "Adding pages"); ?></p>
+
+<p><span style="color: green;">LoadStyle</span>: Should be set to either "Template" or "FileOrder". For more information check <?php $Link->Out("help/load-style", "Load style"); ?></p>
+
+<p><span style="color: green;">Template/FileOrder</span>: Linked with "LoadStyle". For more information check <?php $Link->Out("help/load-style", "Load style"); ?></p>
