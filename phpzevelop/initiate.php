@@ -61,21 +61,21 @@
 
 	for($i = count($PathParts); $i >= 0; $i--)
 	{
-		$FilePath = implode("/", array_slice($PathParts, 0, $i));
+		$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $i));
 
-		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath.FILE_EXT))
+		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath.FILE_EXT))
 			$i = 0;
 		else
 		{
 			foreach($PHPZevelop->CFG->DefaultFiles as $item){
-				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath."/".$item.FILE_EXT)){
-					$FilePath = $FilePath."/".$item;
+				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath."/".$item.FILE_EXT)){
+					$PHPZevelop->CFG->ExistingFilePath = $PHPZevelop->CFG->ExistingFilePath."/".$item;
 					$i = 0;
 					break;
 				}
 			}
 			
-			if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$FilePath) && $i > 0)
+			if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $i > 0)
 				$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
 		}
 	}

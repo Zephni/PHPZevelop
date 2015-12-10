@@ -20,7 +20,7 @@
 	else
 	{
 		// Set page to existing page
-		$PageFile = $PHPZevelop->Path->GetPageRoot($FilePath.FILE_EXT);
+		$PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->ExistingFilePath.FILE_EXT);
 	}
 
 	// Check file order has been set
