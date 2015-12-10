@@ -35,7 +35,7 @@ $PHPZevelop->Page->FileOrder = array(
 	$PHPZevelop->Path->GetInc("footer".FILE_EXT)
 );
 
-$PHPZevelop->Page->DefinedVars = get_defined_vars();
+$PHPZevelop->Page->SetDefinedVars(get_defined_vars());
 $PHPZevelop->Page->LoadPage();
 </pre>
 

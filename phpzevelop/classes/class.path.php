@@ -35,33 +35,33 @@
 		public function GetClass($string, $return = true)
 		{
 			if(!$return)
-				echo $path = $this->CFG->RootDirs->Classes."/".$string;
+				echo $this->StripBad($path = $this->CFG->RootDirs->Classes."/".$string);
 			else
-				return $path = $this->CFG->RootDirs->Classes."/".$string;
+				return $this->StripBad($path = $this->CFG->RootDirs->Classes."/".$string);
 		}	
 	
 		public function GetInc($string, $return = true)
 		{
 			if(!$return)
-				echo $this->CFG->RootDirs->Inc."/".$string;
+				echo $this->StripBad($this->CFG->RootDirs->Inc."/".$string);
 			else
-				return $this->CFG->RootDirs->Inc."/".$string;
+				return $this->StripBad($this->CFG->RootDirs->Inc."/".$string);
 		}
 
 		public function GetImage($string, $return = false)
 		{
 			if(!$return)
-				echo $this->CFG->LocalDirs->Images."/".$string;
+				echo $this->StripBad($this->CFG->LocalDirs->Images."/".$string);
 			else
-				return $this->CFG->LocalDirs->Images."/".$string;
+				return $this->StripBad($this->CFG->LocalDirs->Images."/".$string);
 		}
 
 		public function GetImageRoot($string, $return = true)
 		{
 			if(!$return)
-				echo $this->CFG->RootDirs->Images."/".$string;
+				echo $this->StripBad($this->CFG->RootDirs->Images."/".$string);
 			else
-				return $this->CFG->RootDirs->Images."/".$string;
+				return $this->StripBad($this->CFG->RootDirs->Images."/".$string);
 		}
 
 		public function GetPage($string, $return = false)
@@ -71,33 +71,38 @@
 			if(substr($string, 0, 1) != "/") $string = "/".$string;
 
 			if(!$return)
-				echo $string;
+				echo $this->StripBad($string);
 			else
-				return $string;
+				return $this->StripBad($string);
 		}
 
 		public function GetPageRoot($string, $return = true)
 		{
 			if(!$return)
-				echo $this->CFG->RootDirs->Pages."/".$string;
+				echo $this->StripBad($this->CFG->RootDirs->Pages."/".$string);
 			else
-				return $this->CFG->RootDirs->Pages."/".$string;
+				return $this->StripBad($this->CFG->RootDirs->Pages."/".$string);
 		}
 
 		public function GetScript($string, $return = false)
 		{
 			if(!$return)
-				echo $this->CFG->LocalDirs->Scripts."/".$string;
+				echo $this->StripBad($this->CFG->LocalDirs->Scripts."/".$string);
 			else
-				return $this->CFG->LocalDirs->Scripts."/".$string;
+				return $this->StripBad($this->CFG->LocalDirs->Scripts."/".$string);
 		}
 
 		public function GetCSS($string, $return = false)
 		{
 			if(!$return)
-				echo $this->CFG->LocalDirs->CSS."/".$string;
+				echo $this->StripBad($this->CFG->LocalDirs->CSS."/".$string);
 			else
-				return $this->CFG->LocalDirs->CSS."/".$string;
+				return $this->StripBad($this->CFG->LocalDirs->CSS."/".$string);
+		}
+
+		private function StripBad($string)
+		{
+			return str_replace("//", "/", $string);
 		}
 	}
 ?>

@@ -31,7 +31,7 @@
 
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
-	foreach(array("Classes", "Inc", "Pages", "Images", "Scripts", "CSS") as $item){
+	foreach(array("Classes", "CSS", "Images", "Inc", "Pages", "Scripts", "Templates") as $item){
 		$PHPZevelop->CFG->RootDirs->$item = $PHPZevelop->CFG->SiteDirRoot."/".strtolower($item);
 		$PHPZevelop->CFG->LocalDirs->$item = $PHPZevelop->CFG->SiteDirLocal."/".strtolower($item);
 	}
