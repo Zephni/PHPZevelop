@@ -3,11 +3,11 @@
 	------------------------------*/
 	$PHPZevelop->NewObject("CFG", (object) array(
 		// Strings
-		"SiteTitle"			=> "PHPZevelop",
+		"SiteTitle"			=> "New project",
 		"PageTitle"			=> "",
-		"MetaTitle"			=> "PHPZevelop PHP FrameWork",
-		"MetaDescription"	=> "PHP framework for ease of use and adaptability",
-		"MetaKeywords"		=> "PHP, Framework, Zephni",
+		"MetaTitle"			=> "",
+		"MetaDescription"	=> "",
+		"MetaKeywords"		=> "",
 
 		// Structural
 		"Site"				=> "site",
