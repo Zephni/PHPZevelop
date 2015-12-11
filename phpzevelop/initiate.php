@@ -10,16 +10,13 @@
 	$PHPZevelop = new PHPZevelop();
 	require_once(ROOT_DIR."/config".FILE_EXT);
 
-	/* Get page path and unset $_GET["page"]
+	/* Set Local directory (should be a slash '/' followed by the containing directory/ies with no trailing slash)
 	------------------------------*/
-	$PHPZevelop->CFG->PagePath = rtrim((isset($_GET["page"])) ? (string)$_GET["page"] : "", "/");
-	unset($_GET["page"]);
+	define("LOCAL_DIR", "/".rtrim(ltrim(rtrim($_SERVER["PHP_SELF"], array_pop(explode("/", $_SERVER["PHP_SELF"]))), "/"), "/"));
 
-	/* Set Local directory
+	/* Get page path (should be the path after LOCAL_DIR with no trailing slash and query string removed)
 	------------------------------*/
-	$inter = explode("?", str_replace($PHPZevelop->CFG->PagePath, "", $_SERVER["REQUEST_URI"]));
-	define("LOCAL_DIR", rtrim(array_shift($inter), "/"));
-	unset($inter);
+	$PHPZevelop->CFG->PagePath = array_shift(explode("?", rtrim(ltrim(substr($_SERVER["REQUEST_URI"], strlen(LOCAL_DIR)), "/"), "/")));
 	
 	/* Check if current path is a MultiSite
 	------------------------------*/
@@ -38,7 +35,7 @@
 
 			if(array_shift($inter1) == $alias || array_pop($inter2) == $alias)
 			{
-				$PHPZevelop->CFG->PagePath = str_replace("//", "/", "/".substr($PHPZevelop->CFG->PagePath, strlen($alias)));
+				$PHPZevelop->CFG->PagePath = substr($PHPZevelop->CFG->PagePath, strlen($alias));
 				$PHPZevelop->CFG->Site = $directory;
 				$PHPZevelop->CFG->IsMultiSite = true;
 			}
@@ -65,7 +62,6 @@
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
-	$PHPZevelop->CFG->PagePath = str_replace("//", "/", $PHPZevelop->CFG->PagePath);
 	$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->PagePath;
 	$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
 	$PHPZevelop->Set("URLParameters", array());
