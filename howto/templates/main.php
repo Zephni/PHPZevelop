@@ -54,17 +54,19 @@
 					);
 				?>
 
-				<nav id='nav' class="non-mobile-only"><ul>
+				<table id="nav" class="non-mobile-only">
 					<?php
 						foreach($NavItems as $Name => $Array)
 						{
-							echo "<li><span class='head'>".$Name."</span><ul>";
-							foreach($Array as $Value)
-								echo "<li>".$Value."</li>";
-							echo "</ul></li>";
+							echo "<tr><td class='head'>".$Name."</td></tr>";
+							echo "<tr><td><table style='width: 100%;'>";
+							foreach($Array as $Value){
+								echo "<td>".$Value."</td>";
+							}
+							echo "</table></td></tr>";
 						}
 					?>
-				</ul><div style="width: 100%; clear: both;"></div></nav>
+				</table>
 
 				<div id="nav" class="mobile-only">
 					<?php

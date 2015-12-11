@@ -31,22 +31,13 @@ table {border-collapse: collapse;}
 
 /* NAV */
 #nav {width: 100%; background: #FFFFFF; border-collapse: collapse; border-bottom: 1px solid #AAAAAA;}
-#nav div.head {padding: 8px; background: #009ACD; margin-bottom: 5px; color: white; font-weight: bold;}
+#nav .head {padding: 8px; background: #009ACD; margin-bottom: 5px; color: white; font-weight: bold;}
 
 /* NAV - PC */
-#nav ul {list-style:none; position:relative; float:left; margin:0 0 5px 0; padding:0;}
-#nav span.head {font-size:16px; display:block; text-decoration:none; color: white; padding:5px 30px; line-height:32px;font-weight:bold; text-align: center;}
-#nav span.head:hover {cursor: default;}
-#nav span.head {border-right: 1px solid #FFFFFF;}
-#nav ul li ul li a {font-size:12px; display:block; text-decoration:none; color: white; padding:5px 25px; line-height:32px;font-weight:700;}
-#nav ul li {position:relative; float:left; margin:0; padding:0; font-size: 16px; background: #009ACD;}
-#nav ul li.current-menu-item {background:#dddddd;}
-#nav ul li:hover {background:#11ABDE;}
-#nav ul ul {display:none; position:absolute; top:100%; left:0; background:#ffffff; padding:0;}
-#nav ul ul li {float:none; width:200px; background: #0089BC;}
-#nav ul ul a {line-height:120%; padding:10px 15px;}
-#nav ul ul ul {top:0; left:100%;}
-#nav ul li:hover > ul {display:block;}
+#nav tr td table td {text-align: center; border-left: 1px solid #AAAAAA; padding: 3px;}
+#nav tr td table td:first-of-type {border-left: none;}
+#nav tr td table td:hover {background: #EEEEEE;}
+#nav tr td table td a {width: 100%; height: 100%; display: inline-block; padding: 3px 0 3px 0; color: #333333;}
 
 /* NAV - MOBILE */
 #nav .expandable {margin-bottom: 5px;}

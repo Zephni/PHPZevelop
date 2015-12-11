@@ -93,12 +93,15 @@
 	------------------------------*/
 	$PHPZevelop->NewObject("Path", new Path($PHPZevelop->CFG));
 
-	/* Check if parameters have been passed, and set them in $_GET
+	/* Check if parameters have been passed
 	------------------------------*/
 	if(count($PHPZevelop->Get("URLParameters")) > 0)
 	{
-		foreach(array_reverse($PHPZevelop->Get("URLParameters")) as $key => $value)
-			$_GET[$PHPZevelop->CFG->PreParam.$key] = $value;
+		// Convert to $_GET
+		$Params = array_reverse($PHPZevelop->Get("URLParameters"));
+		for($i = 0; $i < count($Params); $i++)
+			$_GET[$PHPZevelop->CFG->PreParam.$i] = $Params[$i];
+		unset($Params);
 	}
 
 	/* Site specific
