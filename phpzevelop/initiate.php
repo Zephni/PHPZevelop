@@ -12,9 +12,7 @@
 
 	/* Set Local directory (should be a slash '/' followed by the containing directory/ies with no trailing slash)
 	------------------------------*/
-	$inter = explode("/", $_SERVER["PHP_SELF"]);
-	define("LOCAL_DIR", "/".rtrim(ltrim(rtrim($_SERVER["PHP_SELF"], array_pop($inter)), "/"), "/"));
-	unset($inter);
+	define("LOCAL_DIR", "/".rtrim(ltrim(substr($_SERVER["PHP_SELF"], 0, strlen($_SERVER["PHP_SELF"]) -strlen("index".FILE_EXT)-1), "/"), "/"));
 
 	/* Get page path (should be the path after LOCAL_DIR with no trailing slash and query string removed)
 	------------------------------*/
