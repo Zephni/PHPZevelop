@@ -12,11 +12,15 @@
 
 	/* Set Local directory (should be a slash '/' followed by the containing directory/ies with no trailing slash)
 	------------------------------*/
-	define("LOCAL_DIR", "/".rtrim(ltrim(rtrim($_SERVER["PHP_SELF"], array_pop(explode("/", $_SERVER["PHP_SELF"]))), "/"), "/"));
+	$inter = explode("/", $_SERVER["PHP_SELF"]);
+	define("LOCAL_DIR", "/".rtrim(ltrim(rtrim($_SERVER["PHP_SELF"], array_pop($inter)), "/"), "/"));
+	unset($inter);
 
 	/* Get page path (should be the path after LOCAL_DIR with no trailing slash and query string removed)
 	------------------------------*/
-	$PHPZevelop->CFG->PagePath = array_shift(explode("?", rtrim(ltrim(substr($_SERVER["REQUEST_URI"], strlen(LOCAL_DIR)), "/"), "/")));
+	$inter = explode("?", rtrim(ltrim(substr($_SERVER["REQUEST_URI"], strlen(LOCAL_DIR)), "/"), "/"));
+	$PHPZevelop->CFG->PagePath = array_shift($inter);
+	unset($inter);
 	
 	/* Check if current path is a MultiSite
 	------------------------------*/
