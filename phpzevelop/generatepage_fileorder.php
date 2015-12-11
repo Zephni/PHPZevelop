@@ -13,7 +13,10 @@
 		// Plus the tested page file does not exist
 		if(!is_file($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->TestedPagePath.FILE_EXT)))
 		{
-			// Set page file to 404
+			// Get 404 page settings and set page file to 404
+			ob_start();
+			include($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT));
+			ob_clean();
 			$PageFile = $PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT);
 		}
 	}
