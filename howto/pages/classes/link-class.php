@@ -11,6 +11,9 @@
 <p>The link class is for shortening and speeding up code when dealing with links. It exists in the "site/classes" directory as 
 "class.link.php" and is instantiated in "site/instantiate.php".</p>
 
+<p>The link class uses the <?php $Link->Out("classes/path-class", "Path"); ?> class for internal links so local directories or
+MultiSite directory structures will automatically be prepended to the link.</p>
+
 <p>Example, to link to this page you would use: </p>
 
 <pre class="code">
