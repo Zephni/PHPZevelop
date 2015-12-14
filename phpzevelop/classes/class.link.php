@@ -45,12 +45,14 @@
 
 		public function Get($URL, $Text = null, $Options = array())
 		{
+			$OriginalURL = $URL;
+
 			// If not external, or begins with '/' don't automatially prepend site path
 			if(substr($URL, 0, 7) != "http://" && substr($URL, 0, 8) != "https://" && substr($URL, 0, 1) != "/")
 				$URL = $this->Path->GetPage($URL, true);
 
 			if($Text === null)
-				$Text = $URL;
+				$Text = $OriginalURL;
 
 			if(is_array($Text))
 			{

@@ -23,7 +23,7 @@ $Link->Out("classes/link-class.php");
 <p>This would echo the following HTML: </p>
 
 <pre class="code">
-<?php echo htmlentities("<a href='/classes/link-class.php'>/classes/link-class.php</a>") ?>
+<?php echo htmlentities("<a href='/classes/link-class.php'>classes/link-class.php</a>") ?>
 </pre>
 
 <p>If PHPZevelop is stored in a sub folder or you are using a MultiSite the returned URL would automatically be correctly assigned.</p>
