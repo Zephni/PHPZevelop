@@ -54,25 +54,31 @@
 					);
 				?>
 
-				<table id="nav" class="non-mobile-only">
-					<?php
-						foreach($NavItems as $Name => $Array)
-						{
-							echo "<tr><td class='head'>".$Name."</td></tr>";
-							echo "<tr><td><table style='width: 100%;'>";
-							foreach($Array as $Value){
-								echo "<td>".$Value."</td>";
+				<script type="text/javascript">
+					$(document).ready(function(){
+						// Common Javascript
+						$("#nav .head").click(function(){
+							if($(this).attr("expanded") != "true")
+							{
+								$(this).find("img").attr("src", "<?php $PHPZevelop->Path->GetImage('arrow-down.png'); ?>");
+								$(this).next().slideDown();
+								$(this).attr("expanded", "true");
 							}
-							echo "</table></td></tr>";
-						}
-					?>
-				</table>
+							else
+							{
+								$(this).find("img").attr("src", "<?php $PHPZevelop->Path->GetImage('arrow-right.png'); ?>");
+								$(this).next().slideUp();
+								$(this).attr("expanded", "false");
+							}
+						});
+					});
+				</script>
 
-				<div id="nav" class="mobile-only">
+				<div id="nav">
 					<?php
 						foreach($NavItems as $Name => $Array)
 						{
-							echo "<div class='head'>".$Name."</div>";
+							echo "<div class='head'><img src='".$PHPZevelop->Path->GetImage("arrow-right.png", true)."' />".$Name."</div>";
 							echo "<div class='expandable'>";
 							foreach($Array as $Value){
 								echo "<div>".$Value."</div>";
