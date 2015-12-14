@@ -97,11 +97,8 @@
 	------------------------------*/
 	if(count($PHPZevelop->Get("URLParameters")) > 0)
 	{
-		// Convert to $_GET
-		$Params = array_reverse($PHPZevelop->Get("URLParameters"));
-		for($i = 0; $i < count($Params); $i++)
-			$_GET[$PHPZevelop->CFG->PreParam.$i] = $Params[$i];
-		unset($Params);
+		foreach(array_reverse($PHPZevelop->Get("URLParameters")) as $k => $v)
+			$_GET[$PHPZevelop->CFG->PreParam.$k] = $v;
 	}
 
 	/* Site specific
