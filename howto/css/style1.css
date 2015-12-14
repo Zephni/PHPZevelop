@@ -5,7 +5,7 @@ html, body {padding: 0px; margin: 0px;}
 body {font-family: "Open Sans"; color: #6E6E6E; font-size: 16px; line-height: 25px;}
 
 h1,h2,h3,h4,h5 {font-family: "Oswald"; color: #444444;}
-h1 {font-size: 40px;}
+h1 {font-size: 40px; line-height: 45px; margin-top: 40px; margin-bottom: 20px;}
 p {font-family: "Open Sans"; color: #6E6E6E; font-size: 16px; line-height: 25px;}
 a {color: #009ACD; text-decoration: none;}
 

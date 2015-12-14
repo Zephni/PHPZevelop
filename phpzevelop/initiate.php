@@ -27,9 +27,7 @@
 	{
 		foreach($PHPZevelop->CFG->MultiSite as $alias => $directory)
 		{
-			if(is_numeric($alias))
-				$alias = $directory;
-			
+			if(is_numeric($alias)) $alias = $directory;
 			$alias = ltrim($alias, "/");
 
 			$inter1 = explode("/", $PHPZevelop->CFG->PagePath);
@@ -73,14 +71,16 @@
 		$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $i));
 
 		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath.FILE_EXT))
-			$i = 0;
+		{
+			break 1;
+		}
 		else
 		{
-			foreach($PHPZevelop->CFG->DefaultFiles as $item){
+			foreach($PHPZevelop->CFG->DefaultFiles as $item)
+			{
 				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath."/".$item.FILE_EXT)){
 					$PHPZevelop->CFG->ExistingFilePath = $PHPZevelop->CFG->ExistingFilePath."/".$item;
-					$i = 0;
-					break;
+					break 2;
 				}
 			}
 			
