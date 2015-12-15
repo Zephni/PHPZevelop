@@ -20,8 +20,25 @@
 		<script src="<?php echo $PHPZevelop->Path->GetScript("main.js"); ?>"></script>
 	</head>
 	<body>
+		
+		<div class="outerContainer">
+			<div id="header" class="innerContainer">
+				<h1><?php echo $PHPZevelop->CFG->SiteTitle; ?></h1>
+				<hr />
+			</div>
+		</div>
 
-		<?php echo $PHPZevelop->PageContent; ?>
+		<div class="outerContainer">
+			<div class="innerContainer">
+				<?php echo $PHPZevelop->PageContent; ?>
+			</div>
+		</div>
+		
+		<div class="outerContainer">
+			<div class="innerContainer">
+
+			</div>
+		</div>
 
 	</body>
 </html>
