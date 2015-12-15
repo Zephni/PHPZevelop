@@ -29,14 +29,15 @@
 		</div>
 
 		<div class="outerContainer">
-			<div class="innerContainer">
+			<div id="body" class="innerContainer">
 				<?php echo $PHPZevelop->PageContent; ?>
 			</div>
 		</div>
 		
 		<div class="outerContainer">
-			<div class="innerContainer">
-
+			<div id="footer" class="innerContainer">
+				<hr />
+				<p style="font-size: 12px;">&copy;  PHPZevelop <?php echo date("Y"); ?> - <?php $Link->Out("https://twitter.com/_Zephni", "@_Zephni"); ?> (Craig Dennis)</p>
 			</div>
 		</div>
 
