@@ -15,6 +15,6 @@
 		}
 		else
 		{
-			include($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v.FILE_EXT);
+			require($PHPZevelop->CFG->FileOrder[$k] = $PHPZevelop->CFG->SiteDirRoot."/".$v.FILE_EXT);
 		}
 	}
