@@ -23,21 +23,27 @@
 		
 		<div class="outerContainer">
 			<div id="header" class="innerContainer">
-				<h1><?php echo $PHPZevelop->CFG->SiteTitle; ?></h1>
-				<hr />
+				<div class="horizontalPadding">
+					<h1><?php echo $PHPZevelop->CFG->SiteTitle; ?></h1>
+					<hr />
+				</div>
 			</div>
 		</div>
 
 		<div class="outerContainer">
 			<div id="body" class="innerContainer">
-				<?php echo $PHPZevelop->PageContent; ?>
+				<div class="horizontalPadding">
+					<?php echo $PHPZevelop->PageContent; ?>
+				</div>
 			</div>
 		</div>
 		
 		<div class="outerContainer">
 			<div id="footer" class="innerContainer">
-				<hr />
-				<p style="font-size: 12px;">&copy;  PHPZevelop <?php echo date("Y"); ?> - <?php $Link->Out("https://twitter.com/_Zephni", "@_Zephni"); ?> (Craig Dennis)</p>
+				<div class="horizontalPadding">
+					<hr />
+					<p style="font-size: 12px;">&copy;  PHPZevelop <?php echo date("Y"); ?> - <?php $Link->Out("https://twitter.com/_Zephni", "@_Zephni"); ?> (Craig Dennis)</p>
+				</div>
 			</div>
 		</div>
 

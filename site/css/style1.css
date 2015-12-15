@@ -20,16 +20,17 @@ hr {margin: 10px 0 10px 0;}
 /* Classes
 ---------------------------*/
 .outerContainer {position: relative; width: 100%;}
-.innerContainer {position: relative; width: 100%; max-width: 1080px; margin: auto; background: #FFFFFF; padding: 0px 15px 15px 15px;}
+.innerContainer {position: relative; width: 100%; max-width: 1080px; margin: auto; background: #FFFFFF;}
+.horizontalPadding {padding: 0 15px 0 15px;}
 
 /* ID's and sections
 ---------------------------*/
 #header {height: 110px;}
 #header h1 {padding-top: 20px;}
 
-#body {}
+#body {padding: 15px 0 10px 0;}
 
-#footer {padding-top: 15px;}
+#footer {padding: 15px 0 15px 0;}
 #footer p {font-size: 12px;}
 
 /* Mobile only */

@@ -2,6 +2,7 @@
 	/* Config
 	------------------------------*/
 	$PHPZevelop->NewObject("CFG", (object) array(
+
 		// Strings
 		"SiteTitle"			=> "New project",
 		"PageTitle"			=> "",
@@ -18,4 +19,5 @@
 		"PreParam"			=> "param_",
 		"Page404"			=> "error/404",
 		"DefaultFiles"		=> array("index", "default", "home")
+	
 	));
