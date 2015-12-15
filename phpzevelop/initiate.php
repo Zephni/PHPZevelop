@@ -114,7 +114,23 @@
 	/* Generate page
 	------------------------------*/
 	ob_start();
-	include($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->ExistingFilePath.FILE_EXT));
+	try
+	{
+		// Try to require page, if not exist throw exception
+		require($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->ExistingFilePath.FILE_EXT));
+
+		// If file included and PassParams is not set and a parameter has been passed
+		if(!$PHPZevelop->CFG->PassParams && isset($_GET[$PHPZevelop->CFG->PreParam."0"]))
+			throw new Exception();
+	}
+	catch (Exception $e)
+	{
+		// On failure clear ob and require 404 page (Error on failure)
+		ob_clean();
+		require($PHPZevelop->Path->GetPageRoot($PHPZevelop->CFG->Page404.FILE_EXT));		
+	}
+
+	// Set page content
 	$PHPZevelop->PageContent = ob_get_contents();
 	ob_clean();
 
