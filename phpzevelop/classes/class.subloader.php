@@ -60,12 +60,21 @@
 		public function GetRecursiveFileList($path)
 		{
 			$array = array();
-			$RDI = new RecursiveDirectoryIterator($path);
-
-			foreach (new RecursiveIteratorIterator($RDI) as $item => $cur)
+			
+			try
 			{
-				if(basename($item) != ".." && basename($item) != "." && substr(basename($item), -4, 4) == FILE_EXT)
-			   		$array[] = $item;
+				
+				$RDI = new RecursiveDirectoryIterator($path);
+
+				foreach (new RecursiveIteratorIterator($RDI) as $item => $cur)
+				{
+					if(basename($item) != ".." && basename($item) != "." && substr(basename($item), -4, 4) == FILE_EXT)
+				   		$array[] = $item;
+				}
+			}
+			catch(Exception $e)
+			{
+				// Do nothing
 			}
 
 			return $array;
