@@ -30,16 +30,12 @@
 			if(is_numeric($alias)) $alias = $directory;
 			$alias = ltrim($alias, "/");
 
-			$inter1 = explode("/", $PHPZevelop->CFG->PagePath);
-			$inter2 = explode("/", LOCAL_DIR);
-
-			if(array_shift($inter1) == $alias || array_pop($inter2) == $alias)
+			if(strtok($PHPZevelop->CFG->PagePath, "/") == $alias || substr(strrchr(LOCAL_DIR, "/"), 1) == $alias)
 			{
 				$PHPZevelop->CFG->PagePath = substr($PHPZevelop->CFG->PagePath, strlen($alias));
 				$PHPZevelop->CFG->Site = $directory;
 				$PHPZevelop->CFG->IsMultiSite = true;
 			}
-			unset($inter1, $inter2);
 		}
 	}
 
@@ -132,7 +128,7 @@
 
 	// Set page content
 	$PHPZevelop->PageContent = ob_get_contents();
-	ob_clean();
+	ob_end_clean();
 
 	if(isset($PHPZevelop->CFG->LoadStyle) && $PHPZevelop->CFG->LoadStyle == "Template" || !isset($PHPZevelop->CFG->LoadStyle))
 		require_once(MAIN_DIR."/generatepage_template".FILE_EXT);
