@@ -1,4 +1,8 @@
 <?php
+	/*------------------------------
+	|      PHPZevelop V1.69        |
+	------------------------------*/
+
 	/* Include base classes
 	------------------------------*/
 	require_once(MAIN_DIR."/classes/class.subloader".FILE_EXT);
@@ -84,7 +88,7 @@
 				$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
 		}
 	}
-
+	
 	/* Path
 	------------------------------*/
 	$PHPZevelop->NewObject("Path", new Path($PHPZevelop->CFG));
