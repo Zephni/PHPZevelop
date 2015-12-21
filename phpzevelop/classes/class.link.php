@@ -1,7 +1,7 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Ver:	1.4
+		Ver:	1.5
 
 		// Properties:
 
@@ -63,10 +63,7 @@
 			// Options HTML
 			$OptionsHTML = "";
 			foreach($Options as $k => $v)
-				$OptionsHTML .= $k."='".$v."'";
-
-			if(strlen($OptionsHTML) > 0)
-				$OptionsHTML = " ".$OptionsHTML;
+				$OptionsHTML .= " ".$k."='".$v."'";
 
 			// Echo HTML code
 			return "<a href='".$URL."'".$OptionsHTML.">".htmlentities($Text)."</a>";
