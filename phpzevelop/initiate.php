@@ -1,6 +1,6 @@
 <?php
 	/*------------------------------
-	|      PHPZevelop V1.69        |
+	|       PHPZevelop V1.7        |
 	------------------------------*/
 
 	/* Include base classes
@@ -46,7 +46,7 @@
 	/* Build Config strings
 	------------------------------*/
 	$PHPZevelop->CFG->SiteDirRoot = ROOT_DIR."/".$PHPZevelop->CFG->Site;
-	$PHPZevelop->CFG->SiteDirLocal = LOCAL_DIR."/".$PHPZevelop->CFG->Site;
+	$PHPZevelop->CFG->SiteDirLocal = str_replace("//", "/", LOCAL_DIR."/".$PHPZevelop->CFG->Site);
 
 	$PHPZevelop->CFG->RootDirs = (object) array();
 	$PHPZevelop->CFG->LocalDirs = (object) array();
