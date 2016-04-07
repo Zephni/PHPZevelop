@@ -22,10 +22,7 @@
 	$Pagination->SetCSS("ActiveButtonCSS", array("background" => "#00688B", "color" => "#FFFFFF"));
 	$Pagination->SetCSS("HighlightedButtonCSS", array("background" => "#00688B", "color" => "#FFFFFF"));
 
-	if(isset($_GET["curpage"]))
-		$Pagination->SetPage($_GET["curpage"]);
-	else
-		$Pagination->SetPage(1);
+	$Pagination->SetPage($_GET["curpage"]);
 
 	/* Table config
 	------------------------------*/
@@ -68,7 +65,12 @@
 		{
 			foreach($forceFilter as $item)
 			{
-				$field = str_replace(".", "_", $item["field"]);
+				if(strpos($item["field"], '.') !== false)
+				{
+					$items = explode(".", $item["field"]);
+					$items[0] = "jointbl1";
+					$field = implode("_", $items);
+				}
 				
 				if($injWhere != "WHERE ")
 					$injWhere .= " AND ";
@@ -117,12 +119,12 @@
 
 		$querySQL = "SELECT ".$table.".*".$injJoinFields." FROM ".$table." ".$injJoinSQL." ".$injWhere." ".$injOrder;
 
-		$Limit = (!isset($_GET["limit"]) || (isset($_GET["limit"]) && $_GET["limit"] != "No limit")) ? "LIMIT 80" : "";
+		$Limit = ($_GET["limit"] != "No limit") ? "LIMIT 80" : "";
 		$Pagination->BuildHTML(count($DB->Query($querySQL." ".$Limit, $SQLarray)));
 
 		$DB->Data["tbl"] = $DB->Query($querySQL." LIMIT ".$Pagination->BeginItems.",".$Pagination->Options["PerPage"], $SQLarray);
 
-		//die($querySQL);
+		//die($querySQL.print_r($SQLarray));
 
 		// Remove join fields if exists
 		$temp = array();
