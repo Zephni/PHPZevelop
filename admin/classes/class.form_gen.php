@@ -2,9 +2,9 @@
 	class formGen {
 		public $elements = array();
 		public $formAttributes = array();
-		public $availableFormAttributes = array("name", "action", "method", "enctype", "class");
-		public $availableElements = array("text", "textarea", "file", "checkbox", "tel", "email", "select", "date", "datetime", "color", "submit");
-		public $availableAttributes = array("name", "required", "class", "value", "placeholder", "checked", "disabled", "style");
+		//public $availableFormAttributes = array("name", "action", "method", "enctype", "class");
+		//public $availableElements = array("text", "textarea", "file", "checkbox", "tel", "email", "select", "date", "datetime", "color", "submit");
+		//public $availableAttributes = array("name", "required", "class", "value", "placeholder", "checked", "disabled", "style", "maxlength");
 		public $html = "";
 		public $captcha = "";
 		public $totalElements = 0;
@@ -43,7 +43,7 @@
 			$ret = "";
 
 			foreach($this->formAttributes as $k => $v){
-				if(in_array($k, $this->availableFormAttributes))
+				//if(in_array($k, $this->availableFormAttributes))
 					$ret .= $k."='".$v."' ";
 			}
 
@@ -62,13 +62,13 @@
 			$ret = true;
 
 			// Check element type is available
-			if(!in_array($type, $this->availableElements))
-				$ret = false;
+			//if(!in_array($type, $this->availableElements))
+			//	$ret = false;
 
 			// Check all attributes are available
 			foreach($data as $k => $v){
-				if(!in_array($k, $this->availableAttributes))
-					$ret = false;
+				//if(!in_array($k, $this->availableAttributes))
+				//	$ret = false;
 			}
 
 			// If available then add the element to the elements array			
@@ -145,7 +145,7 @@
 				}else{
 					$value = "";
 				}
-				$ret .= "<textarea ".$this->attributesHTML($data).">".$value."</textarea> ".$param1;
+				$ret .= "<textarea ".$this->attributesHTML($data).">".htmlentities($value)."</textarea> ".$param1;
 
 			// SELECT
 			}elseif($type == "select" && gettype($param1) == "array"){
@@ -155,7 +155,7 @@
 					if(gettype($k) == "int")
 						$k = $v;
 
-					$injSelect = ($k == $param2) ? "selected='selected'" : "";
+					$injSelect = ($k == $param2 && $param2 != "") ? "selected='selected'" : "";
 					$ret .= "<option ".$injSelect." value='".$k."'>".$v."</option>";
 				}
 				

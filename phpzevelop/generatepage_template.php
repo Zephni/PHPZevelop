@@ -3,12 +3,12 @@
 	------------------------------*/
 
 	// Try to include template file
-	try
+	if(file_exists($PHPZevelop->CFG->RootDirs->Templates."/".$PHPZevelop->CFG->Template.FILE_EXT))
 	{
 		require($PHPZevelop->CFG->RootDirs->Templates."/".$PHPZevelop->CFG->Template.FILE_EXT);
 	}
 	// Else just echo page content
-	catch(Exception $e)
+	else
 	{
 		echo $PHPZevelop->PageContent;
 	}

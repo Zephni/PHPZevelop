@@ -1,8 +1,19 @@
 <?php
+	/* Enums
+	------------------------------*/
+	abstract class SiteMode
+	{
+	    const Development = 1;
+	    const Live = 2;
+    }
+
 	/* Config
 	------------------------------*/
 	$PHPZevelop->NewObject("CFG", (object) array(
 
+		// Site specific
+		"SiteMode"			=> SiteMode::Development,
+		
 		// Strings
 		"SiteTitle"			=> "New project",
 		"PageTitle"			=> "",
@@ -12,7 +23,7 @@
 
 		// Structural
 		"Site"				=> "site",
-		"MultiSite"			=> array("howto"),
+		"MultiSite"			=> array("howto", "admin"),
 		"LoadStyle"			=> "Template",
 		"Template"			=> "main",
 		"PassParams"		=> false,

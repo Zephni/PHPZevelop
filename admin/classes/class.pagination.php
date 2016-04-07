@@ -1,132 +1,160 @@
 <?php
-	/*
-		Pagination class
-		Author: Craig Dennis
-		Version: 0.3
-		Last edit: 04/12/2014
-	*/
 	class Pagination
 	{
-		public $PerPage;
-		public $TotalItems;
-		public $BeginItems;
-		public $EndItems;
-		public $TotalPages;
-		public $MaxPages;
-		public $Variables;
-		public $CurrentPage;
-		public $Options;
-		public $ForceLink = null;
+		/* Fields
+		-------------------------------------*/
 
-		private $HTML;
+		// Public
+		public $Options = array(
+			"PerPage" => "12",
+			"OverflowSides" => "3",
+			"PageVar" => "(PN)",
+			"URL" => "",
+			"ContainerClass" => "pagination-container",
+			"ButtonClass" => "pagination-button",
+			"ActiveButtonClass" => "pagination-button-active",
+			"DisableCSS" => false,
+			"ContainerCSS" => array("display" => "block", "width" => "100%", "clear" => "both", "float" => "left", "padding" => "15px 0px", "color" => "#222222",),
+			"ButtonCSS" => array("border" => "1px solid #CCCCCC", "padding" => "3px 7px", "background" => "#E6E6E6", "margin" => "0px 3px", "text-decoration" => "none", "display" => "inline-block", "border-radius" => "3px"),
+			"ActiveButtonCSS" => array("background" => "#FCFCFC"),
+			"HighlightedButtonCSS" => array("background" => "#FCFCFC"),
+			"GapJumper" => ".."
+		);
 
-		public function __construct($_perPage = 10, $_maxPages = 10, $_options = array())
+		public $TotalPages = 0;
+		public $TotalItems = 0;
+		public $BeginItems = 0;
+
+		// Private
+		private $HTML = "";
+		private $CurrentPage = 1;
+
+		/* METHODS
+		-------------------------------------*/
+
+		// Public
+		public function __construct($options)
 		{
-			$this->Options = array(
-				"link_prepend" => (isset($_options["link_prepend"])) ? $_options["link_prepend"] : "",
-				"cur_page_var" => (isset($_options["cur_page_var"])) ? $_options["curpage_var"] : "p",
-				"page_name" => (isset($_options["page_name"])) ? $_options["page_name"] : "",
-				"first_page_text" => (isset($_options["first_page_text"])) ? $_options["first_page_text"] : "first",
-				"last_page_text" => (isset($_options["last_page_text"])) ? $_options["last_page_text"] : "last",
-				"show_first_last" => (isset($_options["show_first_last"])) ? $_options["show_first_last"] : true,
-				"insert_page_num" => (isset($_options["insert_page_num"])) ? $_options["insert_page_num"] : "*string*",
-				"append_vars" => (isset($_options["append_vars"])) ? $_options["append_vars"] : ""
-			);
-
-			$this->MaxPages = $_maxPages;
-			$this->PerPage = $_perPage;
-			$this->CalculatePages();
-
-			$this->SetPage(1);
-
-			$this->BuildVariablesString();
+			foreach($options as $k => $v)
+				$this->Options[$k] = $v;
 		}
 
-		public function AddVariable($key, $value)
+		public function SetPage($I)
 		{
-			$this->Options["append_vars"] .= "&".$key."=".$value;
+			if($I == null)
+				$I = 1;
+
+			$this->CurrentPage = $I;
+			$this->BeginItems = ($this->CurrentPage - 1) * $this->Options["PerPage"];
 		}
 
-		public function BuildVariablesString()
+		public function BuildHTML($totalItems = null)
 		{
-			$this->Variables = "?".$this->Options["cur_page_var"]."=".$this->Options["insert_page_num"].$this->Options["append_vars"];
-		}
+			if($totalItems != null)
+				$this->TotalItems = $totalItems;
 
-		public function GetLink($_pageNumber = null){
-			if($this->ForceLink == null)
-				$mainLink = $this->Options["link_prepend"].$this->Options["page_name"].$this->Variables;
-			else
-				$mainLink = $this->ForceLink;
+			$this->TotalPages = ceil($this->TotalItems / $this->Options["PerPage"]);
 
-			if($_pageNumber != null)
-				return str_replace($this->Options["insert_page_num"], (string)$_pageNumber, $mainLink);
-			else
-				return str_replace($this->Options["insert_page_num"], (string)$this->CurrentPage, $mainLink);
-		}
+			$this->HTML .= "<div class='".$this->Options["ContainerClass"]."'>";
 
-		public function SetTotalItems($_totalItems = null)
-		{
-			if(isset($_totalItems) && $_totalItems > 0)
-				$this->TotalItems = $_totalItems;
-
-			$this->CalculatePages();
-			$this->SetBeginEndItems();
-		}		
-
-		public function SetPage($_page = null)
-		{
-			if(isset($_page) && $_page > 0)
-				$this->CurrentPage = $_page;
-
-			$this->SetBeginEndItems();
-		}
-
-		public function SetBeginEndItems()
-		{
-			$this->BeginItems = ($this->CurrentPage * $this->PerPage) - $this->PerPage;
-			$this->EndItems = $this->CurrentPage * $this->PerPage;
-		}
-
-		public function CalculatePages()
-		{
-			$this->TotalPages = ceil($this->TotalItems / $this->PerPage);
-		}
-
-		public function GenerateHTML()
-		{
-			$this->CalculatePages();
-			$this->BuildVariablesString();
-			$this->SetBeginEndItems();
+			if($this->Options["DisableCSS"] == false)
+				$this->HTML .= $this->GetCSS();
 			
-			$this->HTML = "";
-			$this->HTML .= "<div class='pagination'>";
-
-			if($this->TotalPages > 1 && $this->Options["show_first_last"])
-			{
-				$tag = ($this->CurrentPage == 1) ? "div" : "a";
-				$this->HTML .= "<".$tag." href='".$this->GetLink(1)."' class='item'>".$this->Options["first_page_text"]."</".$tag.">";
-			}
-				
-			for($i = 0; $i < $this->TotalPages; $i++)
-			{
-				if($i+1 > $this->MaxPages)
-					break;
-
-				$selectedInj = ($this->CurrentPage == $i+1) ? "selected" : "";
-				$this->HTML .= "<a href='".$this->GetLink($i+1)."' class='item ".$selectedInj."'>";
-				$this->HTML .= (string)($i+1);
-				$this->HTML .= "</a>";
-			}
-
-			if($this->TotalPages > 1 && $this->Options["show_first_last"])
-			{
-				$tag = ($this->CurrentPage == $this->TotalPages) ? "div" : "a";
-				$this->HTML .= "<".$tag." href='".$this->GetLink($this->TotalPages)."' class='item'>".$this->Options["last_page_text"]."</".$tag.">";
-			}
-
+			$this->HTML .= $this->GetButtons();
 			$this->HTML .= "</div>";
 
+			return $this->GetHTML();
+		}
+
+		public function GetHTML()
+		{
 			return $this->HTML;
 		}
+
+		public function SetCSS($Param1, $Param2, $Reset = false)
+		{
+			if($Reset)
+				$this->Options[$Param1] = array();
+
+			foreach($Param2 as $K => $V)
+				$this->Options[$Param1][$K] = $V;
+		}
+
+		// Private
+		private function GetCSS()
+		{
+			return "<style type='text/css'>
+				.".$this->Options["ContainerClass"]." {".$this->ArrayToStyleString($this->Options["ContainerCSS"])."}
+				.".$this->Options["ButtonClass"]." {".$this->ArrayToStyleString($this->Options["ButtonCSS"])."}
+				.".$this->Options["ButtonClass"].":hover {".$this->ArrayToStyleString($this->Options["HighlightedButtonCSS"])."}
+				.".$this->Options["ActiveButtonClass"]." {".$this->ArrayToStyleString($this->Options["ActiveButtonCSS"])."}
+			</style>";
+		}
+
+		private function GetButtons($Limits)
+		{
+			$html = "";
+
+			$Limits = $this->GetLimits();
+
+			if($Limits["From"] > 1)
+				$html .= "<a href='".$this->GetDecodedURL(1)."' class='".$this->Options["ButtonClass"]."'>1</a>";
+
+			if($Limits["From"] > 1 && $this->Options["GapJumper"] != null)
+				$html .= "<a href='".$this->GetDecodedURL($Limits["From"] - 1)."' class='".$this->Options["ButtonClass"]."'>".$this->Options["GapJumper"]."</a>";
+
+			for($I = $Limits["From"]; $I <= $Limits["To"]; $I++)
+			{
+				if($I == $this->CurrentPage)
+					$html .= "<div href='' class='".$this->Options["ButtonClass"]." ".$this->Options["ActiveButtonClass"]."'>".$I."</div>";
+				else
+					$html .= "<a href='".$this->GetDecodedURL($I)."' class='".$this->Options["ButtonClass"]."'>".$I."</a>";
+			}
+
+			if($Limits["To"] < $this->TotalPages && $this->Options["GapJumper"] != null)
+				$html .= "<a href='".$this->GetDecodedURL($Limits["To"] + 1)."' class='".$this->Options["ButtonClass"]."'>".$this->Options["GapJumper"]."</a>";
+
+			if($Limits["To"] < $this->TotalPages)
+				$html .= "<a href='".$this->GetDecodedURL($this->TotalPages)."' class='".$this->Options["ButtonClass"]."'>".$this->TotalPages."</a>";
+
+			return $html;
+		}
+
+		private function GetLimits()
+		{
+			$Limits = array("From" => 1, "To" => $this->TotalPages);
+
+			if($this->CurrentPage <= $this->Options["OverflowSides"])
+				$Limits = array("From" => 1, "To" => $this->Options["OverflowSides"] * 2 + 1);
+			else if($this->CurrentPage >= $this->TotalPages - $this->Options["OverflowSides"])
+				$Limits = array("From" => $this->TotalPages - $this->Options["OverflowSides"] * 2, "To" => $this->TotalPages);
+			else
+				$Limits = array("From" => $this->CurrentPage - $this->Options["OverflowSides"], "To" => $this->CurrentPage + $this->Options["OverflowSides"]);
+
+			if($Limits["From"] < 1)
+				$Limits["From"] = 1;
+
+			if($Limits["To"] > $this->TotalPages)
+				$Limits["To"] = $this->TotalPages;
+
+			return $Limits;
+		}
+
+		private function GetDecodedURL($I)
+		{
+			return str_replace($this->Options["PageVar"], $I, $this->Options["URL"]);
+		}
+
+		private function ArrayToStyleString($Array)
+		{
+			if(gettype($Array) == "string")
+				return $Array;
+
+			$Tmp = "";
+
+			foreach($Array as $K => $V)
+				$Tmp[] = $K.": ".$V.";";
+
+			return implode(" ", $Tmp);
+		}
 	}
-?>

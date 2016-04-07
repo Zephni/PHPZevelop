@@ -8,9 +8,12 @@
 	/* Config
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
+		// Strings
+		"SiteTitle"			=> "Admin",
+
 		// Structural
-		"LoadStyle"			=> "FileOrder",
-		"FileOrder"			=> array("inc/header", "[page]", "inc/footer")
+		"LoadStyle"			=> "Template",
+		"Template"			=> "main"
 	));
 
 	$PHPZevelop->CFG->Accounts = array(
@@ -20,9 +23,21 @@
 		)
 	);
 
-	$PHPZevelop->CFG->DB = (object) array(
-		"Host" => "",
-		"User" => "",
-		"Pass" => "",
-		"Name" => ""
-	);
+	if($PHPZevelop->CFG->SiteMode == SiteMode::Development)
+	{
+		$PHPZevelop->CFG->DB = (object) array(
+			"Host" => "",
+			"User" => "",
+			"Pass" => "",
+			"Name" => ""
+		);
+	}
+	elseif($PHPZevelop->CFG->SiteMode == SiteMode::Live)
+	{
+		$PHPZevelop->CFG->DB = (object) array(
+			"Host" => "",
+			"User" => "",
+			"Pass" => "",
+			"Name" => ""
+		);
+	}

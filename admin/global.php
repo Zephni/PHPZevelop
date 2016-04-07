@@ -1,7 +1,10 @@
 <?php
 	// User authentication
 	if((!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] != true) && $PHPZevelop->CFG->PagePath != "/login")
+	{
 		header("Location: ".$PHPZevelop->Path->GetPage("login", true));
+		die();
+	}
 
 	// Replenish $_SESSION variables
 	if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true){
@@ -17,8 +20,10 @@
 	/* Include all classes and functions
 	------------------------------*/
 	$SubLoader = new SubLoader($PHPZevelop->CFG->SiteDirRoot);
-	$SubLoader->RunIncludes(array("classes", "functions"));
+	$SubLoader->RunIncludes(array("classes", "functions", "../common"));
 	extract($SubLoader->DefinedVariables);
+
+	require($PHPZevelop->CFG->SiteDirRoot."/scripts/simpleImage/src/SimpleImage.php");
 
 	/* Instantiate
 	------------------------------*/

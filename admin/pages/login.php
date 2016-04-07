@@ -2,7 +2,7 @@
 	// Page setup
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"		=> "Login",
-		"FileOrder"		=> array("[page]")
+		"Template"		=> "none"
 	));
 
 	// Login attempts
@@ -12,7 +12,7 @@
 	if(isset($_POST["username"])){
 		$_SESSION["login_attempts"]++;
 
-		if(isset($_SESSION["login_attempts"]) && $_SESSION["login_attempts"] < 3)
+		if(isset($_SESSION["login_attempts"]) && $_SESSION["login_attempts"] < 4)
 		{
 			foreach($PHPZevelop->CFG->Accounts as $Account)
 			{
@@ -24,6 +24,7 @@
 						$_SESSION["loggedin"] = true;
 						$_SESSION["username"] = $_POST["username"];
 						header("Location: ".$PHPZevelop->Path->GetPage("", true));
+						die();
 					// Invalid pass
 					}else{
 						$msg = "<h4 style='color: red;'>Invalid username/password combination</h4>";

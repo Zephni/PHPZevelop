@@ -27,10 +27,10 @@
 	if(isset($_POST['action']) && $_POST['action'] == 'upload'){
 		$ufile = new UploadFile($_FILES['image']);
 		$ufile->limitToImage = true;
-		$ufile->process('../images'.$path.'/');
-		$page_msg = $ufile->getMsg();
+		$ufile->process($root.$path.'/');
+		$page_msg = $ufile->getMsg($root, "/images");
 	}elseif(isset($_POST['action']) && $_POST['action'] == 'delete'){
-		if(unlink('../images'.$path.'/'.$_POST['filename'])){
+		if(unlink($root.$path.'/'.$_POST['filename'])){
 			$page_msg = "<p style='color: green; font-size: small;'>'../images".$path."/".$_POST['filename']."' has been removed</p>";
 		}else{
 			$page_msg = "<p style='color: red; font-size: small;'>There was an error removing '../images".$path."/".$_POST['filename']."'</p>";
@@ -78,7 +78,7 @@
 	.container a {text-decoration: none; font-size: 13px;}
 	.container tbody tr {cursor: pointer;}		
 	.container .image {
-		display: block; margin: 0 auto; -moz-box-shadow: 0 0 5px 5px #BBB;-webkit-box-shadow: 0 0 5px 5px#BBB; box-shadow: 0 0 5px 5px #BBB;	
+		display: block; margin: 0 auto; -moz-box-shadow: 0 0 5px 5px #BBB;-webkit-box-shadow: 0 0 5px 5px#BBB; box-shadow: 0 0 5px 5px #BBB;
 	}
 	.container .image:hover {
 		cursor: move;

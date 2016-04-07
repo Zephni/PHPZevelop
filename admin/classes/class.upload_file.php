@@ -142,9 +142,9 @@
 			$this->validTypes = $array;
 		}
 		// getMsg() | Returns string of message whether it be a list of compiled errors or success
-		public function getMsg(){
+		public function getMsg($replace = "", $with = ""){
 			$this->compileMsg();
-			return $this->wrapErrorMsg[0].$this->msg.$this->wrapErrorMsg[1];
+			return str_replace($replace, $with, $this->wrapErrorMsg[0].$this->msg.$this->wrapErrorMsg[1]);
 		}
 		// checkErrors() | Returns if errors present
 		public function checkErrors(){
