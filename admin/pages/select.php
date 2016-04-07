@@ -45,7 +45,7 @@
 
 			if(array_key_exists($_GET["field"], $joinTableFields))
 			{
-				$tbl = $joinTableFields[$_GET["field"]]["table"];
+				$tbl = "jointbl".(string)(array_search($_GET["field"], array_keys($joinTableFields))+1);
 				$field = $joinTableFields[$_GET["field"]]["field"];
 			}
 
@@ -327,22 +327,26 @@
 	?>
 </div>
 
+<?php if(in_array("edit", $rowOptions)){ ?>
 <style type="text/css">
 	tr[href]:hover {cursor: pointer;}
 </style>
+<?php } ?>
 
 <script>
 	$(document).ready(function(){
-		$("tr[href]" ).hover(function(){
-			$(this).find("td").css({"background":"#E5E5FF"});
-			$(this).find("td").attr("oldbg", $(this).css("background"));
-		}, function(){
-			$(this).find("td").css({"background":$(this).find("td").attr("oldbg")});
-		});
+		<?php if(in_array("edit", $rowOptions)){ ?>
+			$("tr[href]" ).hover(function(){
+				$(this).find("td").css({"background":"#E5E5FF"});
+				$(this).find("td").attr("oldbg", $(this).css("background"));
+			}, function(){
+				$(this).find("td").css({"background":$(this).find("td").attr("oldbg")});
+			});
 
-		$("tr[href]" ).one("click", function(){
-			window.location.href = $(this).attr("href");
-		});
+			$("tr[href]" ).one("click", function(){
+				window.location.href = $(this).attr("href");
+			});
+		<?php } ?>
 
 		$(".delete").click(function(){
 			link = $(".delete").attr("href");
