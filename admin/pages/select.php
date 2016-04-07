@@ -63,14 +63,24 @@
 		
 		if(isset($forceFilter) && count((array)$forceFilter) > 0)
 		{
+			$i = 0;
 			foreach($forceFilter as $item)
 			{
+				$i++;
+
 				if(strpos($item["field"], '.') !== false)
 				{
 					$items = explode(".", $item["field"]);
-					$items[0] = "jointbl1";
-					$field = implode("_", $items);
+
+					if($items[0] != $table)
+					{
+						$items[0] = "jointbl".$i;
+						$field = implode("_", $items);
+					}
 				}
+				
+				if(!isset($field))
+					$field = str_replace(".", "_", $item["field"]);
 				
 				if($injWhere != "WHERE ")
 					$injWhere .= " AND ";
@@ -101,9 +111,6 @@
 				$joinTbl = "jointbl".$i;
 				$injJoinFields .= ",".$joinTbl.".id AS '_join_ID',".$joinTbl.".".$item["field"]." AS '_join_Field'";
 				$injJoinSQL .= " LEFT JOIN ".$item["table"]." AS ".$joinTbl." ON ".$table.".".$key."=".$joinTbl.".id";
-
-				// Temp
-				$injWhere = str_replace($item["table"], $joinTbl, $injWhere);
 			}
 		}
 
