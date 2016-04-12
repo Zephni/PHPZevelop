@@ -41,7 +41,7 @@
 			$this->RootPath = $rootPath;
 		}
 
-		public function RunIncludes($directories = null)
+		public function RunIncludes($directories = null, $recursive = false)
 		{
 			if($directories != null)
 				$this->Directories = $directories;
@@ -51,9 +51,10 @@
 
 			foreach($this->Directories as $item)
 			{
-				$this->IncludeFiles(
-					$this->GetRecursiveFileList(rtrim($this->RootPath, "/")."/".$item)
-				);
+				if(!$recursive)
+					$this->IncludeFiles($this->GetFileList(rtrim($this->RootPath, "/")."/".$item));
+				else
+					$this->IncludeFiles($this->GetRecursiveFileList(rtrim($this->RootPath, "/")."/".$item));
 			}
 		}
 
@@ -63,10 +64,9 @@
 			
 			try
 			{
-				
 				$RDI = new RecursiveDirectoryIterator($path);
 
-				foreach (new RecursiveIteratorIterator($RDI) as $item => $cur)
+				foreach(new RecursiveIteratorIterator($RDI) as $item => $cur)
 				{
 					if(basename($item) != ".." && basename($item) != "." && substr(basename($item), -4, 4) == FILE_EXT)
 				   		$array[] = $item;
@@ -75,6 +75,22 @@
 			catch(Exception $e)
 			{
 				// Do nothing
+			}
+
+			return $array;
+		}
+
+		public function GetFileList($path)
+		{
+			$array = array();
+
+			if(is_dir($path))
+			{
+				foreach(scandir($path) as $file)
+				{
+					if(is_file($path."/".$file))
+						$array[] = $path."/".$file;
+				}
 			}
 
 			return $array;

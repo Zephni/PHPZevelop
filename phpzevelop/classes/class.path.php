@@ -22,10 +22,10 @@
 			Where-as if you need the path string to be echo'ed directly to the page you would pass false as the second parameter, or leave blank in cases where $return is false by default:
 				<a href="<?php $PHPZevelop->Path->GetPage("article"); ?>">Link text</a>
 	*/
-
+	
 	class Path
 	{
-		public $CFG;
+		private $CFG;
 
 		public function __construct($CFG)
 		{

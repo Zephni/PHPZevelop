@@ -6,6 +6,11 @@
 		"PassParams" => true
 	));
 
+	$_SESSION["csv_data"] = array();	
+
+	$_GET = array_merge($_GET, $_POST);
+	unset($_POST);
+
 	if(isset($_GET["param_0"]))
 		$_GET["tbl"] = $_GET["param_0"];
 
@@ -15,7 +20,7 @@
 	------------------------------*/
 	$Pagination = new Pagination(array(
 		"PerPage" => 20,
-		"URL" => $PHPZevelop->Path->GetPage("select/".$_GET["tbl"]."?curpage=(PN)&".URLHelper::Array2URL($_GET, "&", array("curpage", "tbl", "param_0")), true)
+		"URL" => $PHPZevelop->Path->GetPage("select/".$_GET["tbl"]."?curpage=(PN)&".URLHelper::Array2QueryStr($_GET, "&", array("curpage", "tbl", "param_0")), true)
 	));
 
 	$Pagination->SetCSS("ContainerCSS", array("display" => "inline-block", "width" => "auto"));
@@ -127,7 +132,8 @@
 		$querySQL = "SELECT ".$table.".*".$injJoinFields." FROM ".$table." ".$injJoinSQL." ".$injWhere." ".$injOrder;
 
 		$Limit = ($_GET["limit"] != "No limit") ? "LIMIT 80" : "";
-		$Pagination->BuildHTML(count($DB->Query($querySQL." ".$Limit, $SQLarray)));
+		$_SESSION["csv_data"] = $DB->Query($querySQL." ".$Limit, $SQLarray);
+		$Pagination->BuildHTML(count($_SESSION["csv_data"]));
 
 		$DB->Data["tbl"] = $DB->Query($querySQL." LIMIT ".$Pagination->BeginItems.",".$Pagination->Options["PerPage"], $SQLarray);
 
@@ -144,8 +150,6 @@
 		}
 
 		$DB->Data["tbl"] = $temp;
-
-		
 
 		if(isset($_GET['filter']))
 			$injP = "&filter=".$_GET['filter'];
@@ -165,7 +169,7 @@
 
 	<?php echo $constMsg; ?>
 
-	<form action="" method="get" class='mainForm' style="padding-bottom: 10px;">
+	<form action="" method="post" class='mainForm' style="padding-bottom: 10px;">
 		<select name="field" style="width: 100px;"><?php
 			foreach($DB->Fields as $Item)
 				echo "<option ".(($_GET["field"] == $Item) ? "selected='selected'" : "").">".$Item."</option>";
@@ -180,7 +184,7 @@
 		
 		<div style="display: inline-block;">order by</div>
 		<select name="ordby" style="width: 100px;"><?php
-			foreach($DB->Fields as $Item)
+			foreach(array_merge($DB->Fields, array("RAND()")) as $Item)
 				echo "<option ".(($_GET["ordby"] == $Item) ? "selected='selected'" : "").">".$Item."</option>";
 		?></select>
 
@@ -207,6 +211,8 @@
 			<p style="margin: 14px 0px 0px 0px; font-size: 14px; padding-top: 5px; text-align: right;"><?php
 				echo "Viewing: ".($Pagination->BeginItems +1)." - ".((($Pagination->BeginItems + $Pagination->Options["PerPage"]) < $Pagination->TotalItems) ? ($Pagination->BeginItems + $Pagination->Options["PerPage"]) : $Pagination->TotalItems);
 				echo " of ".$Pagination->TotalItems;
+
+				echo " (<a href='".$PHPZevelop->Path->GetPage("download-csv/currentdata", true)."'>download csv</a>)";
 			?></p>
 
 			<?php
@@ -214,16 +220,23 @@
 			echo "<table class='tableList'>";
 			echo "<thead>";
 			
+			$FinalFields = array();
 			foreach($DB->Fields as $item)
 			{
 				if(!in_array($item, (array)$removeFields))
-					echo "<td>".$item."</td>";
+					$FinalFields[] = $item;
 			}
+
+			foreach($moveFields as $K => $V)
+				RepositionKV($FinalFields, array_search($K, $FinalFields), $V);
+
+			foreach($FinalFields as $item)
+				echo "<td>".$item."</td>";
 			
 			// Row options
 			if(in_array("comp_entries", $rowOptions)) echo "<td style='width: 100px;'>entries</td>";
 			if(in_array("download_entries", $rowOptions)) echo "<td style='width: 100px;'>download</td>";
-			if(in_array("edit", $rowOptions)) echo "<td style='width: 50px;'>&nbsp;</td>";
+			//if(in_array("edit", $rowOptions)) echo "<td style='width: 50px;'>&nbsp;</td>";
 			if(in_array("delete", $rowOptions)) echo "<td style='width: 50px;'>&nbsp;</td>";
 			
 			echo "</thead>";
@@ -232,7 +245,10 @@
 			foreach($DB->Data["tbl"] as $item)
 			{
 				echo "<tr href='".$PHPZevelop->Path->GetPage("edit/".$_GET["tbl"]."/".$item["id"], true)."' class='row".(($row == "1") ? "2" : "1")."'>";
-				
+
+				foreach($moveFields as $K => $V)
+					RepositionKV($item, $K, $V);
+
 				foreach($item as $k => $v)
 				{
 					if(!in_array($k, (array)$removeFields))
@@ -262,8 +278,8 @@
 
 						if(isset($showImageFields))
 						{
-							if(in_array($k, $showImageFields)){
-								$v = "<img src='".str_replace("../", "/", $fileUploadLocations[$k].$v)."' style='width: 150px; display: inline-block; margin: 0px; padding: 0px; vertical-align: bottom;' />";
+							if(array_key_exists($k, $showImageFields)){
+								$v = "<img src='".$PHPZevelop->CFG->FrontSiteLocal."/images/".$showImageFields[$k].$v."' style='width: 150px; display: inline-block; margin: 0px; padding: 0px; vertical-align: bottom;' />";
 								$applyTDStyle = "style='width: 150px;'";
 							}else{
 								$applyTDStyle = "";
@@ -283,7 +299,7 @@
 
 				if(in_array("comp_entries", $rowOptions)) echo "<td style='text-align: center;'>".count($optinEntries)." / ".count($totalEntries)."</td>";
 				if(in_array("download_entries", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("download-csv/comp_entries/comp_id/=/".$item["id"], true)."'>download</a></td>";
-				if(in_array("edit", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("edit/".$_GET["tbl"]."/".$item["id"], true)."'>edit</a></td>";
+				//if(in_array("edit", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("edit/".$_GET["tbl"]."/".$item["id"], true)."'>edit</a></td>";
 				if(in_array("delete", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("select/".$_GET["tbl"]."?action=delete&id=".$item["id"], true)."' class='delete'>delete</a></td>";
 
 				echo"</tr>";
@@ -321,6 +337,7 @@
 					$strArr[] = $k." = ".$v;
 		}
 		
+		// Implode
 		echo implode("<br />", $strArr);
 
 		echo "</div>";
@@ -328,9 +345,9 @@
 </div>
 
 <?php if(in_array("edit", $rowOptions)){ ?>
-<style type="text/css">
-	tr[href]:hover {cursor: pointer;}
-</style>
+	<style type="text/css">
+		tr[href]:hover {cursor: pointer;}
+	</style>
 <?php } ?>
 
 <script>

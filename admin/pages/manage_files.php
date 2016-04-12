@@ -106,15 +106,16 @@
 		background: #222222; opacity: 0.8; color: white; padding: 2px 7px 2px 7px;
 		border-radius: 5px 5px 0 0;
 	}
-	.container input[type=submit] {border: 1px solid #CCCCCC; background: #06C; padding: 2px; color: white; border-radius: 3px;}
+	.container input[type=submit] {border: 1px solid #CCCCCC; background: #00688B; padding: 2px; color: white; border-radius: 3px;}
 	.container input[type=submit].delete {padding: 0px 4px 2px 4px; border: 1px solid #CCCCCC; background: #D55; color: white; border-radius: 3px;}
 	.container input[type=submit]:hover {cursor: pointer;}
 	.container .close-button:hover {cursor: pointer;}
-	.container h2 {color: #06C; font-size: 28px;}
+	.container h2 {color: #00688B; font-size: 28px;}
 	
-	table.dir-list a {color: #06C;display: block;}
+	table.dir-list a {color: #00688B;display: block;}
 	table.dir-list {margin: 1px auto 10px auto;width: 800px;border: 1px solid #CCCCCC;border-collapse: collapse;}
-	table.dir-list thead tr {background: #06C;color: white;}
+	table.dir-list thead tr {background: #00688B;color: white;}
+	table.dir-list thead tr td {padding: 5px 3px;}
 	table.dir-list tbody tr td img.icon {}
 	table.dir-list tbody tr {border: 1px solid #CCCCCC;}
 	table.dir-list tbody tr.row1 {background: #F7F7F7;}
@@ -124,14 +125,18 @@
 
 <div id="pageContent">
 	<div class="container">
-		<a href="?p=manage_files"><h2><?php echo $PHPZevelop->CFG->SiteTitle; ?> Image Manager</h2></a>
+		<a href="?p=manage_files"><h1><?php echo $PHPZevelop->CFG->SiteTitle; ?> Image Manager</h1></a>
+
+		<br />
+
 	    <?php echo $page_msg; ?>
+
 	    <form action="" method="post" enctype="multipart/form-data" style="float: left; display: block;">
 	        <input type="hidden" name="action" value="upload" />
 	        <input type="file" name="image" required='required' />
-	        <input type="submit" value="Upload" />
+	        <input type="submit" value="Upload" style="padding: 4px 10px;" />
 	    </form>
-	    <br />
+
 	    <?php
 	    	if(file_exists($root.$path)){
 	    		$perms = substr(sprintf('%o', fileperms($root.$path)), -4);
@@ -139,10 +144,13 @@
 		        else{$perms = "<span style='color: green;'>".$perms."</span>";}
 	    	}
 	    ?>
-	    <span style='font-size: 12px; float: right; font-weight: normal; padding-top: 9px;'><?php echo '\''.$root.$path.'\''.' | Perms: \''.$perms.'\''; ?></span>
+	    <span style='font-size: 12px; float: right; font-weight: normal; padding-top: 6px;'><?php echo '\''.$root.$path.'\''.' | Perms: \''.$perms.'\''; ?></span>
+
+	    <div style="float: left; clear: both; width: 100%; padding: 10px;"></div>
+
 	    <div class='file-view-head'></div>
 	    <div class='file-view'></div>
-	    <div style="color: #06C;" class='img-src'></div>
+	    <div style="color: #00688B;" class='img-src'></div>
 	    <table class='dir-list'>
 	        <thead>
 	            <tr>
