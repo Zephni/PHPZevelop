@@ -1,8 +1,4 @@
 <?php
-	/*------------------------------
-	|       PHPZevelop V1.7        |
-	------------------------------*/
-
 	/* Include base classes
 	------------------------------*/
 	require_once(MAIN_DIR."/classes/class.subloader".FILE_EXT);

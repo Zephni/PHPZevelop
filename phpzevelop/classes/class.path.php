@@ -1,7 +1,6 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Ver:	1.4
 
 		// Properties:
 

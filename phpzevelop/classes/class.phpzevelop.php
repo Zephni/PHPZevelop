@@ -1,7 +1,6 @@
 <?php
 	/*
 		Author: Craig Dennis
-		Ver:	1.4
 
 		The PHPZevelop class is simply a collection of PHPZevelop dependant objects that are fundamental to the workings of the framework.
 
@@ -52,5 +51,10 @@
 				return $this->InternalData[$Key];
 			else
 				return null;
+		}
+
+		public function Process($Result, $Callback)
+		{
+			$Callback($Result);
 		}
 	}
