@@ -58,32 +58,40 @@
 	
 	/* Pass indexed parameters if file doesn't exist - but can find file in directory chain
 	------------------------------*/
-	$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->PagePath;
-	$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
-	$PHPZevelop->Set("URLParameters", array());
-
-	for($i = count($PathParts); $i >= 0; $i--)
+	function BulidPath($PHPZevelop)
 	{
-		$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $i));
+		$PHPZevelop->CFG->TestedPagePath = $PHPZevelop->CFG->PagePath;
+		$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
+		$PHPZevelop->Set("URLParameters", array());
 
-		if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath.FILE_EXT))
+		for($i = count($PathParts); $i >= 0; $i--)
 		{
-			break 1;
-		}
-		else
-		{
-			foreach($PHPZevelop->CFG->DefaultFiles as $item)
+			$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $i));
+
+			if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath.FILE_EXT))
 			{
-				if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath."/".$item.FILE_EXT)){
-					$PHPZevelop->CFG->ExistingFilePath = $PHPZevelop->CFG->ExistingFilePath."/".$item;
-					break 2;
-				}
+				break 1;
 			}
-			
-			if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $i > 0)
-				$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
+			else
+			{
+				foreach($PHPZevelop->CFG->DefaultFiles as $item)
+				{
+					if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath."/".$item.FILE_EXT)){
+						$PHPZevelop->CFG->ExistingFilePath = $PHPZevelop->CFG->ExistingFilePath."/".$item;
+						break 2;
+					}
+				}
+				
+				if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $i > 0)
+					$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
+			}
 		}
+
+		return $PHPZevelop;
 	}
+
+	$OrigionalPath = $PHPZevelop->CFG->PagePath;
+	$PHPZevelop = BulidPath($PHPZevelop);
 	
 	/* Path
 	------------------------------*/
@@ -91,10 +99,14 @@
 
 	/* Check if parameters have been passed
 	------------------------------*/
+	$KeysUsed = array();
 	if(count($PHPZevelop->Get("URLParameters")) > 0)
 	{
 		foreach(array_reverse($PHPZevelop->Get("URLParameters")) as $k => $v)
+		{
+			$KeysUsed[] = $PHPZevelop->CFG->PreParam.$k;
 			$_GET[$PHPZevelop->CFG->PreParam.$k] = $v;
+		}
 	}
 
 	/* Site specific
@@ -106,6 +118,27 @@
 	// Instantiate
 	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT))
 		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
+
+	// Check if path was changed
+	if($OrigionalPath != $PHPZevelop->CFG->PagePath)
+	{
+		$PHPZevelop = BulidPath($PHPZevelop);
+		$PHPZevelop->NewObject("Path", new Path($PHPZevelop->CFG));
+
+		/* Check if parameters have been passed
+		------------------------------*/
+		if(count($PHPZevelop->Get("URLParameters")) > 0)
+		{
+			if(count($KeysUsed) > 0)
+				foreach($KeysUsed as $Key)
+					unset($_GET[$Key]);
+			
+			foreach(array_reverse($PHPZevelop->Get("URLParameters")) as $k => $v)
+				$_GET[$PHPZevelop->CFG->PreParam.$k] = $v;
+		}
+	}
+
+	unset($KeysUsed);
 
 	/* Generate page
 	------------------------------*/

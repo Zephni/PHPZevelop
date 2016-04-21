@@ -47,9 +47,7 @@
 		$items = (string)implode(",", $items);
 
 		$finalarr["id"] = $id;
-		//var_dump($arr);
-		//echo "UPDATE ".$tbl." SET ".htmlentities($items)." ".$where;
-		//var_dump($finalarr);
+
 		$DB->QuerySingle("UPDATE ".$tbl." SET ".$items." ".$where, $finalarr);
 
 		if(count($DB->error) < 1)
