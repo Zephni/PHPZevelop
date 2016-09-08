@@ -1,43 +1,15 @@
 <?php
-	/* Config
-	------------------------------*/	
-	$PHPZevelop->CFG->FrontSite = "site";
-	$PHPZevelop->CFG->FrontSiteRoot = ROOT_DIR."/".$PHPZevelop->CFG->FrontSite;
-	$PHPZevelop->CFG->FrontSiteLocal = LOCAL_DIR."/".$PHPZevelop->CFG->FrontSite;
+	$PHPZevelop->CFG->SiteTitle = $PHPZevelop->CFG->SiteTitle." Administration";
 
-	/* Config
-	------------------------------*/
-	$PHPZevelop->OverrideObjectData("CFG", array(
-		// Strings
-		"SiteTitle"			=> "Admin",
+	// Database name
+	$DatabaseName = $PHPZevelop->CFG->DB->Name;
+	$FrontEndLocationRoot = ROOT_DIR."/site";
+	$FrontEndLocationLocal = LOCAL_DIR."/site";
+	$FrontEndImageLocationRoot = str_replace("//", "/", $FrontEndLocationRoot."/images");
+	$FrontEndImageLocationLocal = str_replace("//", "/", $FrontEndLocationLocal."/images");
 
-		// Structural
-		"LoadStyle"			=> "Template",
-		"Template"			=> "main"
-	));
-
-	$PHPZevelop->CFG->Accounts = array(
-		array(
-			"User" => "admin",
-			"Pass" => "pass"
-		)
-	);
-
-	if($PHPZevelop->CFG->SiteMode == SiteMode::Development)
+	// Constants
+	class DBTables
 	{
-		$PHPZevelop->CFG->DB = (object) array(
-			"Host" => "",
-			"User" => "",
-			"Pass" => "",
-			"Name" => ""
-		);
-	}
-	elseif($PHPZevelop->CFG->SiteMode == SiteMode::Live)
-	{
-		$PHPZevelop->CFG->DB = (object) array(
-			"Host" => "",
-			"User" => "",
-			"Pass" => "",
-			"Name" => ""
-		);
+		const Users = "administrators";
 	}

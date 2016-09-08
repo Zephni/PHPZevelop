@@ -2,376 +2,275 @@
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
-		"PageTitle"  => "Select",
+		"PageTitle"  => "Edit",
 		"PassParams" => true
 	));
 
-	$_SESSION["csv_data"] = array();	
+	if(isset($User) && !$User->LoggedIn())
+		$PHPZevelop->Location("login");
 
-	$_GET = array_merge($_GET, $_POST);
-	unset($_POST);
+	// Check if disabled
+	if(isset($TableOptions[$_GET["param_0"]]["Status"]) && $TableOptions[$_GET["param_0"]]["Status"] == "disabled")
+		die("Disabled");
 
-	if(isset($_GET["param_0"]))
-		$_GET["tbl"] = $_GET["param_0"];
-
-	$tableCfgPath = $PHPZevelop->CFG->SiteDirRoot."/config/".$_GET["tbl"].".php"; // Config path
-
-	/* Pagination
-	------------------------------*/
-	$Pagination = new Pagination(array(
-		"PerPage" => 20,
-		"URL" => $PHPZevelop->Path->GetPage("select/".$_GET["tbl"]."?curpage=(PN)&".URLHelper::Array2QueryStr($_GET, "&", array("curpage", "tbl", "param_0")), true)
-	));
-
-	$Pagination->SetCSS("ContainerCSS", array("display" => "inline-block", "width" => "auto"));
-	$Pagination->SetCSS("ActiveButtonCSS", array("background" => "#00688B", "color" => "#FFFFFF"));
-	$Pagination->SetCSS("HighlightedButtonCSS", array("background" => "#00688B", "color" => "#FFFFFF"));
-
-	$Pagination->SetPage($_GET["curpage"]);
-
-	/* Table config
-	------------------------------*/
-	if(file_exists($tableCfgPath))
+	// Defaults
+	if(!isset($_POST["Fields"]))
 	{
-		require($tableCfgPath);
-
-		if(!$table)
-			$table = $_GET["tbl"];
-
-		if(isset($_GET["action"]) && $_GET["action"] == "delete" && in_array("delete", $rowOptions))
-			$DB->QuerySingle("DELETE FROM ".$table." WHERE id=:id", array("id"=>$_GET["id"]));
-
-		// WHERE
-		$injWhere = "WHERE ";
-		if(isset($_GET["filter"]) && strlen($_GET["filter"]) > 0)
-		{
-			$field = $_GET["field"];
-			$tbl = $_GET["tbl"];
-
-			if(array_key_exists($_GET["field"], $joinTableFields))
-			{
-				$tbl = "jointbl".(string)(array_search($_GET["field"], array_keys($joinTableFields))+1);
-				$field = $joinTableFields[$_GET["field"]]["field"];
-			}
-
-			$injWhere .= $tbl.".".$field." ".$_GET["comp"]." :".$field." OR ";
-
-			if($_GET["comp"] == "LIKE")
-				$SQLarray[$field] = "%".$_GET["filter"]."%";
-			else
-				$SQLarray[$field] = $_GET["filter"];
-
-			$injWhere = substr($injWhere, 0, strlen($injWhere) - 4);
-
-			unset($tbl);
-		}
-		
-		if(isset($forceFilter) && count((array)$forceFilter) > 0)
-		{
-			$i = 0;
-			foreach($forceFilter as $item)
-			{
-				$i++;
-
-				if(strpos($item["field"], '.') !== false)
-				{
-					$items = explode(".", $item["field"]);
-
-					if($items[0] != $table)
-					{
-						$items[0] = "jointbl".$i;
-						$field = implode("_", $items);
-					}
-				}
-				
-				if(!isset($field))
-					$field = str_replace(".", "_", $item["field"]);
-				
-				if($injWhere != "WHERE ")
-					$injWhere .= " AND ";
-				
-				$comparison = (isset($item["comparison"])) ? $item["comparison"] : "=";
-				$injWhere .= $item["field"]." ".$comparison." :".$field;
-
-				if(strtolower(trim($comparison)) == "like")
-					$SQLarray[$field] = "%".$item["value"]."%";
-				else
-					$SQLarray[$field] = $item["value"];
-			}
-		}
-
-		if($injWhere == "WHERE ") // Reset if nothing appended
-			$injWhere = "";
-
-		// JOINS
-		if(isset($joinTableFields) && count((array)$joinTableFields) > 0)
-		{
-			$injJoinFields = "";
-			$injJoinSQL = "";
-
-			$i = 0;
-			foreach($joinTableFields as $key => $item)
-			{
-				$i++;
-				$joinTbl = "jointbl".$i;
-				$injJoinFields .= ",".$joinTbl.".id AS '_join_ID',".$joinTbl.".".$item["field"]." AS '_join_Field'";
-				$injJoinSQL .= " LEFT JOIN ".$item["table"]." AS ".$joinTbl." ON ".$table.".".$key."=".$joinTbl.".id";
-			}
-		}
-
-		// ORDER
-		if(isset($_GET["ordby"]) && strlen($_GET["ordby"]))
-			$injOrder = " ORDER BY ".$DB->Quote($_GET["ordby"])." ".$DB->Quote($_GET["ordsort"]);
-		else
-			$injOrder = "ORDER BY ".$table.".id DESC";
-
-		if(!isset($SQLarray)) $SQLarray = array();
-		if(!isset($injJoinFields)) $injJoinFields = "";
-		if(!isset($injJoinSQL)) $injJoinSQL = "";
-
-		$querySQL = "SELECT ".$table.".*".$injJoinFields." FROM ".$table." ".$injJoinSQL." ".$injWhere." ".$injOrder;
-
-		$Limit = ($_GET["limit"] != "No limit") ? "LIMIT 80" : "";
-		$_SESSION["csv_data"] = $DB->Query($querySQL." ".$Limit, $SQLarray);
-		$Pagination->BuildHTML(count($_SESSION["csv_data"]));
-
-		$DB->Data["tbl"] = $DB->Query($querySQL." LIMIT ".$Pagination->BeginItems.",".$Pagination->Options["PerPage"], $SQLarray);
-
-		//die($querySQL.print_r($SQLarray));
-
-		// Remove join fields if exists
-		$temp = array();
-
-		foreach($DB->Data["tbl"] as $item)
-		{
-			unset($item["_join_ID"]);
-			unset($item["_join_Field"]);
-			$temp[] = $item;
-		}
-
-		$DB->Data["tbl"] = $temp;
-
-		if(isset($_GET['filter']))
-			$injP = "&filter=".$_GET['filter'];
-
-		$available = true;
+		$_POST["Fields"] = (isset($TableOptions[$_GET["param_0"]]["DefaultFields"])) ? $TableOptions[$_GET["param_0"]]["DefaultFields"] : "*";
+		if(isset($_GET["Fields"])) $_POST["Fields"] = $_GET["Fields"];
 	}
-	else
+	if(!isset($_POST["Where"]))
 	{
-		$available = false;
+		$_POST["Where"] = (isset($TableOptions[$_GET["param_0"]]["DefaultWhere"])) ? $TableOptions[$_GET["param_0"]]["DefaultWhere"] : "";
+		if(isset($_GET["Where"])) $_POST["Where"] = $_GET["Where"];
+	}
+	if(!isset($_POST["Order"]))
+	{
+		$_POST["Order"] = (isset($TableOptions[$_GET["param_0"]]["DefaultOrder"])) ? $TableOptions[$_GET["param_0"]]["DefaultOrder"] : "id DESC";
+		if(isset($_GET["Order"])) $_POST["Order"] = $_GET["Order"];
+		if(substr($_POST["Order"], 0, 9) == "ORDER BY ") $_POST["Order"] = substr($_POST["Order"], 9);
+	}
+	if(!isset($_POST["Limit"]))
+	{
+		$_POST["Limit"] = (isset($TableOptions[$_GET["param_0"]]["DefaultLimit"])) ? $TableOptions[$_GET["param_0"]]["DefaultLimit"] : "0,40";
+		if(isset($_GET["Limit"])) $_POST["Limit"] = $_GET["Limit"];
 	}
 
-	$DB->GetColumnNames($_GET["tbl"]);	
+	// Columns
+	GetColumnsCommands($_GET["param_0"], $Columns, $ColumnCommands);
+	$ColumnNames = array();
+	foreach($Columns as $Item)
+		$ColumnNames[] = $Item["column_name"];
+
+	// Delete action
+	if(ArrGet($_GET, "delete") != "")
+	{
+		$DB->Query("DELETE FROM ".$_GET["param_0"]." WHERE id=:id", array("id" => $_GET["delete"]));
+		$DB->error = array();
+	}
 ?>
 
-<div id="pageContent">
-	<h1><a href="?p=select&amp;tbl=<?php echo $table; ?>">Browsing "<?php if(isset($title)) echo $title; else echo $_GET["tbl"]; ?>"</a></h1>
+<h2>Searching <?php echo ucfirst(str_replace("_", " ", $_GET["param_0"])); ?></h2>
+<br />
 
-	<?php echo $constMsg; ?>
+<?php
+	// SQL Form
+	$FormGen = new FormGen();
+	$FormGen->AddElement(array("name" => "Fields", "value" => $_POST["Fields"]), array("title" => "Fields"));
+	$FormGen->AddElement(array("name" => "Where", "value" => $_POST["Where"], "placeholder" => "id=27 AND key/value"), array("title" => "Where"));
+	$FormGen->AddElement(array("name" => "Order", "value" => $_POST["Order"]), array("title" => "Order"));
+	$FormGen->AddElement(array("name" => "Limit", "value" => $_POST["Limit"]), array("title" => "Limit"));
+	$FormGen->AddElement(array("type" => "submit", "value" => "Run query"));
+	echo $FormGen->Build(array("ColNum" => 5));
+?>
 
-	<form action="" method="post" class='mainForm' style="padding-bottom: 10px;">
-		<select name="field" style="width: 100px;"><?php
-			foreach($DB->Fields as $Item)
-				echo "<option ".(($_GET["field"] == $Item) ? "selected='selected'" : "").">".$Item."</option>";
-		?></select>
-		
-		<select name="comp" style="width: 60px;"><?php
-			foreach(array("LIKE", "=", "!=", ">", "<", ">=", "<=") as $Item)
-				echo "<option ".(($_GET["comp"] == $Item) ? "selected='selected'" : "").">".$Item."</option>";
-		?></select>
-		
-		<input type="text" name="filter" style="width: 155px;" value="<?php if(isset($_GET["filter"])) echo $_GET["filter"]; ?>" />
-		
-		<div style="display: inline-block;">order by</div>
-		<select name="ordby" style="width: 100px;"><?php
-			foreach(array_merge($DB->Fields, array("RAND()")) as $Item)
-				echo "<option ".(($_GET["ordby"] == $Item) ? "selected='selected'" : "").">".$Item."</option>";
-		?></select>
-
-		<select name="ordsort" style="width: 100px;"><?php
-			foreach(array("DESC", "ASC") as $Item)
-				echo "<option ".(($_GET["ordsort"] == $Item) ? "selected='selected'" : "").">".$Item."</option>";
-		?></select>
-
-		<select name="limit" style="width: 100px;"><?php $LimitOptions = array("true" => "Limit", "false" => "No limit");
-			foreach($LimitOptions as $K => $V)
-				echo "<option ".(($_GET["limit"] == $LimitOptions[$K]) ? "selected='selected'" : "").">".$V."</option>";
-		?></select>
-
-		<input type='submit' value='Search' style='width: 100px;' />
-	</form>
-
-	<?php
-		if($available)
-		{
-			echo $Pagination->GetHTML();
-
-			?>
-
-			<p style="margin: 14px 0px 0px 0px; font-size: 14px; padding-top: 5px; text-align: right;"><?php
-				echo "Viewing: ".($Pagination->BeginItems +1)." - ".((($Pagination->BeginItems + $Pagination->Options["PerPage"]) < $Pagination->TotalItems) ? ($Pagination->BeginItems + $Pagination->Options["PerPage"]) : $Pagination->TotalItems);
-				echo " of ".$Pagination->TotalItems;
-
-				echo " (<a href='".$PHPZevelop->Path->GetPage("download-csv/currentdata", true)."'>download csv</a>)";
-			?></p>
-
-			<?php
-
-			echo "<table class='tableList'>";
-			echo "<thead>";
-			
-			$FinalFields = array();
-			foreach($DB->Fields as $item)
-			{
-				if(!in_array($item, (array)$removeFields))
-					$FinalFields[] = $item;
-			}
-
-			foreach($moveFields as $K => $V)
-				RepositionKV($FinalFields, array_search($K, $FinalFields), $V);
-
-			foreach($FinalFields as $item)
-				echo "<td>".$item."</td>";
-			
-			// Row options
-			if(in_array("comp_entries", $rowOptions)) echo "<td style='width: 100px;'>entries</td>";
-			if(in_array("download_entries", $rowOptions)) echo "<td style='width: 100px;'>download</td>";
-			//if(in_array("edit", $rowOptions)) echo "<td style='width: 50px;'>&nbsp;</td>";
-			if(in_array("delete", $rowOptions)) echo "<td style='width: 50px;'>&nbsp;</td>";
-			
-			echo "</thead>";
-			
-			$row = "1";
-			foreach($DB->Data["tbl"] as $item)
-			{
-				echo "<tr href='".$PHPZevelop->Path->GetPage("edit/".$_GET["tbl"]."/".$item["id"], true)."' class='row".(($row == "1") ? "2" : "1")."'>";
-
-				foreach($moveFields as $K => $V)
-					RepositionKV($item, $K, $V);
-
-				foreach($item as $k => $v)
-				{
-					if(!in_array($k, (array)$removeFields))
-					{
-						if(isset($joinTableFields))
-						{
-							if(array_key_exists($k, $joinTableFields))
-							{
-								$temp = $DB->QuerySingle("SELECT ".$joinTableFields[$k]["field"]." FROM ".$joinTableFields[$k]["table"]." WHERE id='".$v."'");
-								$v = $temp[$joinTableFields[$k]["field"]];
-							}
-						}
-
-						// Check wether timestamp
-						if(isValidTimeStamp($v))
-							$v = date("d-m-Y h:ia", $v);
-						
-						// Substr > 100
-						if(strlen($v) > 100)
-							$v = substr($v, 0, 100)."..";
-
-						// HTML entities
-						$v = strip_tags($v);
-						
-						// Replace characters
-						$v = str_replace("Â", "", $v);
-
-						if(isset($showImageFields))
-						{
-							if(array_key_exists($k, $showImageFields)){
-								$v = "<img src='".$PHPZevelop->CFG->FrontSiteLocal."/images/".$showImageFields[$k].$v."' style='width: 150px; display: inline-block; margin: 0px; padding: 0px; vertical-align: bottom;' />";
-								$applyTDStyle = "style='width: 150px;'";
-							}else{
-								$applyTDStyle = "";
-							}
-						}
-
-						if(!isset($applyTDStyle))
-							$applyTDStyle = "";
-
-						echo "<td ".$applyTDStyle.">".$v."</td>";
-					}
-				}
-
-				// Row options
-				$totalEntries = $DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id", array("comp_id" => $item["id"]));
-				$optinEntries = $DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id AND options LIKE :options", array("comp_id" => $item["id"], "options" => "%, 1, %"));
-
-				if(in_array("comp_entries", $rowOptions)) echo "<td style='text-align: center;'>".count($optinEntries)." / ".count($totalEntries)."</td>";
-				if(in_array("download_entries", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("download-csv/comp_entries/comp_id/=/".$item["id"], true)."'>download</a></td>";
-				//if(in_array("edit", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("edit/".$_GET["tbl"]."/".$item["id"], true)."'>edit</a></td>";
-				if(in_array("delete", $rowOptions)) echo "<td style='text-align: center;'><a href='".$PHPZevelop->Path->GetPage("select/".$_GET["tbl"]."?action=delete&id=".$item["id"], true)."' class='delete'>delete</a></td>";
-
-				echo"</tr>";
-			}
-
-			echo "</table>";
-
-			if(count($DB->Data["tbl"]) < 1)
-				echo "<p style='text-align: center; margin-top: 15px; margin-bottom: 15px;'>No rows exist in this table or filter, please expand your search.</p>";
-
-		}
+<?php
+	// Checks
+	foreach(array("Fields", "Where", "Order") as $Key)
+	{
+		if($Key == "Fields" && strlen($_POST["Fields"]) == 0)
+			$Error = "Fields is empty, try *";
 		else
 		{
-			if(!file_exists($tableCfgPath))
-				echo "Cannot find config file for this table";
-
-			if(isset($DB->Data["tbl"]))
-				echo "<br /><br />Error with query: ".$DB->ErrorHandler();
+			foreach(array(";", "FROM", "DROP", "UNION", "DELETE", "REMOVE", "CREATE", "SHOW", "UPDATE", "FLUSH", "INSERT", "ALTER", "DESCRIBE", "LIMIT") as $BannedWord)
+			{
+				if(strstr(strtolower($_POST[$Key]), strtolower($BannedWord)) != false)
+					$Error = "Cannot use '".$BannedWord."' in MySQL statement";
+			}
 		}
+	}
 
-		// SQL text
-		echo "<div style='font-size: 12px; background: #CCCCCC; padding: 10px;'>".$querySQL."</div>";
+	// Build FinalWhere statement and data array
+	$FinalWhere = "";
+	$Data = array();
 
-		// $_GET description
-		$get = $_GET; unset($get["p"]); unset($get["tbl"]); unset($get["s"]); unset($get["curpage"]);
-		echo "<div style='font-size: 12px; background: #CCCCCC; padding: 10px; margin-bottom: 10px;'>";
-		var_dump($SQLarray); echo "<br />";
-		$strArr = array();
-		
-		if(count($get) > 0)
+	if(strlen(trim($_POST["Where"])) > 0)
+	{
+		$Parts = explode(" ", $_POST["Where"]);
+		foreach($Parts as $Item)
 		{
-			echo "<br />";
-			foreach($get as $k => $v)
-				if(strlen($v) > 0)
-					$strArr[] = $k." = ".$v;
+			if($Item == "AND" || $Item == "OR")
+			{
+				$FinalWhere .= " ".$Item;
+				continue;
+			}
+
+			$Item2 = explode("=", $Item);
+			if(count($Item2) == 2)
+			{
+				$FinalWhere .= " ".$Item2[0]."=:".$Item2[0];
+				$Data[$Item2[0]] = urldecode($Item2[1]);
+			}
+			elseif(count($Item2) == 1)
+			{
+				$Item2 = explode("/", $Item);
+				if(count($Item2)  == 2)
+				{
+					$FinalWhere .= " ".$Item2[0]." LIKE :".$Item2[0];
+					$Data[$Item2[0]] = "%".urldecode($Item2[1])."%";
+				}
+				else
+					$Error = "Invalid 'Where' statement";	
+			}
+			else
+				$Error = "Invalid 'Where' statement";
 		}
-		
-		// Implode
-		echo implode("<br />", $strArr);
+	}
+	
+	if($_POST["Fields"] != "*" && substr($_POST["Fields"], 0, 2) != "id")
+		$_POST["Fields"] = "id,".$_POST["Fields"];
+	if(count(explode(",", $_POST["Limit"])) == 2)
+		$_POST["Limit"] = " LIMIT ".$_POST["Limit"];
+	else
+		$Errors[] = "Invalid 'Limit; statement";
 
-		echo "</div>";
-	?>
-</div>
+	if(count($Data) > 0)
+		$FinalWhere = "WHERE ".$FinalWhere;
+	else
+		$FinalWhere = "";
 
-<?php if(in_array("edit", $rowOptions)){ ?>
-	<style type="text/css">
-		tr[href]:hover {cursor: pointer;}
-	</style>
+	$Rows = array();
+
+	// If no error run query
+	if(!isset($Error))
+	{
+		$_POST["Order"] = "ORDER BY ".$_POST["Order"]." ";
+		$Query = "SELECT ".$_POST["Fields"]." FROM ".$_GET["param_0"]." ".$FinalWhere." ".$_POST["Order"].$_POST["Limit"];
+		$Rows = $DB->Query($Query, $Data);
+
+		if(count($DB->error) > 0)
+			$Error = implode(" - ", $DB->error);
+	}
+
+	if(isset($_GET["param_1"]) && $_GET["param_1"] != 1 && count($Rows) == 0)
+		$PHPZevelop->Location("select/".$_GET["param_1"]."/1");
+
+	$Pagination->Options["URL"] = "/".ltrim($PHPZevelop->CFG->SiteDirLocal."/select/".$_GET["param_0"]."/(PN)", "/");
+	$Pagination->SetPage((isset($_GET["param_1"])) ? $_GET["param_1"] : 1);
+	$PaginationHTML = $Pagination->BuildHTML(count($Rows));
+
+	// Session
+	$_SESSION["Query"] = $Query;
+	$_SESSION["Data"] = $Data;
+
+	if(!isset($Error))
+	{
+		echo $PaginationHTML;
+		?>
+
+		<div style="float: right; display: inline-block; margin-top: 17px;">
+			Total results: <?php echo count($Rows); ?>&nbsp;&nbsp;&nbsp;
+			<?php $Link->Out("downloadcsv/".$_GET["param_0"], "Download CSV dataset", array("style" => "padding: 4px 10px; background: #009ACD; color: white; border: 5px; font-size: 16px;")); ?>
+		</div>
+
+		<div style="width: 100%; overflow: auto;">
+			<table style="width: 100%; font-size: 13px;">
+				<?php
+					for($I = $Pagination->BeginItems; $I < $Pagination->BeginItems + $Pagination->Options["PerPage"]; $I++)
+					{
+						if(!isset($Rows[$I]))
+							break;
+						
+						$Item = $Rows[$I];
+						$RowKeys = array_keys($Item);
+
+						// Bulid header
+						if($I == 0)
+						{
+							echo "<tr>";
+							foreach(array_merge(array_keys($Item), array("", "")) as $Field)
+								echo "<td style='font-weight: bold; padding: 5px; border-bottom: 1px solid #CCCCCC; word-wrap: break-word;'>".ucfirst(str_replace("_", " ", $Field))."</td>";
+							echo "</tr>";
+						}
+
+						// Build row
+						echo "<tr>";
+
+						$II = -1;
+						foreach($Item as $V)
+						{$II++;
+							
+							$Style = "padding: 5px; border-bottom: 1px solid #CCCCCC; max-width: 200px; word-wrap: break-word;";
+
+							// Manipulate value if needed
+							if(isset($ColumnCommands[$RowKeys[$II]]) && isset($ColumnCommands[$RowKeys[$II]]["join"]))
+							{
+								$V = $DB->QuerySingle("SELECT ".$ColumnCommands[$RowKeys[$II]]["join"][1]." FROM ".$ColumnCommands[$RowKeys[$II]]["join"][0]." WHERE id=:id", array("id" => $Item[$RowKeys[$II]]));
+								if(isset($V[$ColumnCommands[$RowKeys[$II]]["join"][1]]))
+									$V = $V[$ColumnCommands[$RowKeys[$II]]["join"][1]];
+								else
+									$V = "";
+							}
+							
+							if(strlen($V) > 60) $V = substr($V, 0, 57)."...";
+							$V = strip_tags($V);
+
+							if(ArrGet($ColumnCommands, $RowKeys[$II], "type", 0) == "image")
+							{
+								if(is_file($FrontEndImageLocationRoot."/".$ColumnCommands[$RowKeys[$II]]["filelocation"][0]."/".$V))
+								{
+									echo "<td style='".$Style." text-align: center;'>
+										<a href='".($FrontEndImageLocationLocal."/".$ColumnCommands[$RowKeys[$II]]["filelocation"][0]."/".$V)."' target='_blank'>
+											<img src='".($FrontEndImageLocationLocal."/".$ColumnCommands[$RowKeys[$II]]["filelocation"][0]."/".$V)."' style='height: 70px; margin: auto;' />
+										</a>
+									</td>";
+								}
+								else
+									echo "<td style='".$Style." text-align: center;'></td>";									
+							}
+							else
+							{
+								if(ArrGet($ColumnCommands, $RowKeys[$II], "type", 0) == "timestamp")
+									$V = date("Y-m-d G:i", $Item[$RowKeys[$II]]);
+
+								echo "<td style='".$Style."'>".$V."</td>";
+							}
+						}
+						
+						$Options = (ArrGet($TableOptions, $_GET["param_0"], "Options")) ? explode(",", $TableOptions[$_GET["param_0"]]["Options"]) : array();
+
+						if(in_array("entries", $Options))
+							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?Where=comp_id%3D".$Item["id"]."&Order=ORDER%20BY%20RAND()&Limit=", "entries")."</td>";
+
+						if(count($Options) == 0 || in_array("edit", $Options))
+							echo "<td style='".$Style." text-align: center;'>".$Link->Get("edit/".$_GET["param_0"]."/".$Item["id"], "edit")."</td>";
+
+						if(count($Options) == 0 || in_array("delete", $Options))
+							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/".$_GET["param_0"]."/?delete=".$Item["id"], "delete", array("class" => "delete"))."</td>";
+
+						echo "</tr>";
+					}
+				?>
+			</table>
+		</div>
+<?php }else{ ?>
+	<p style="text-align: center; padding-top: 20px; font-size: 26px;"><span style="color: #BD2B30;">Error:</span> <?php echo $Error; ?></p>
 <?php } ?>
 
-<script>
+<div style="background: #CCCCCC; font-size: 13px;">
+	<pre style="padding: 10px;">
+<?php
+if(isset($Query))
+{
+echo str_replace("  ", " ", $Query);
+foreach($Data as $K => $V)
+	echo "
+".$K." => ".$V;
+}
+else
+echo "Fatal error";
+?>
+	</pre>
+</div>
+
+<script type="text/javascript">
 	$(document).ready(function(){
-		<?php if(in_array("edit", $rowOptions)){ ?>
-			$("tr[href]" ).hover(function(){
-				$(this).find("td").css({"background":"#E5E5FF"});
-				$(this).find("td").attr("oldbg", $(this).css("background"));
-			}, function(){
-				$(this).find("td").css({"background":$(this).find("td").attr("oldbg")});
-			});
+		$("a.delete").click(function(event){
+			event.preventDefault();
+			var result = confirm("Are you sure you want to delete this item?");
 
-			$("tr[href]" ).one("click", function(){
-				window.location.href = $(this).attr("href");
-			});
-		<?php } ?>
-
-		$(".delete").click(function(){
-			link = $(".delete").attr("href");
-		    if(confirm("Are you sure you want to delete this item?")){
-		    	//alert(link);
-		    	window.location.href(link);
-		    }
-		    return false;
+			if(result)
+				window.location = $(this).attr("href");
 		});
 	});
 </script>

@@ -1,101 +1,58 @@
 <?php
-	// Page setup
+	/* Page setup
+	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
-		"PageTitle"		=> "Login",
-		"Template"		=> "none"
+		"PageTitle"  => "Login",
+		"Template"	 => "fullwidth"
 	));
 
-	// Login attempts
-	if(!isset($_SESSION["login_attempts"]))
-		$_SESSION["login_attempts"] = 0;
-
-	if(isset($_POST["username"])){
-		$_SESSION["login_attempts"]++;
-
-		if(isset($_SESSION["login_attempts"]) && $_SESSION["login_attempts"] < 4)
-		{
-			foreach($PHPZevelop->CFG->Accounts as $Account)
-			{
-				if($_POST["username"] == $Account["User"])
-				{
-					// Correct user/pass
-					if($_POST["password"] == $Account["Pass"])
-					{
-						$_SESSION["loggedin"] = true;
-						$_SESSION["username"] = $_POST["username"];
-						header("Location: ".$PHPZevelop->Path->GetPage("", true));
-						die();
-					// Invalid pass
-					}else{
-						$msg = "<h4 style='color: red;'>Invalid username/password combination</h4>";
-					}
-				// Invalid user
-				}else{
-					$msg = "<h4 style='color: red;'>Invalid username/password combination</h4>";
-				}
-			}
-		}
+	if(count($_POST) > 0)
+	{
+		$MSG = User::AttemptLogin($User, $_POST["username"], $_POST["password"]);
+		if($MSG === true)
+			AppendLog("Successful login");
 		else
-		{
-			$msg = "<h4 style='color: red;'>Too many login attempts. Please contact the administrator</h4>";
-		}
+			AppendLog("Failed login with username '".$_POST["username"]."'");
 	}
 
-	if(isset($tries) && $tries >= $maxTries)
-		$msg = "<h4 style='color: red;'>You have tried to log in too many times with an invalid username/password combination</h4>";
+	if(isset($_GET["param_0"]))
+	{
+		$Split = explode("-", $_GET["param_0"]);
+
+		if($Split[0] == "activated")
+		{
+			$ActivatedUser = User::Get(array("id" => $Split[1])); 
+			$_POST["username"] = $ActivatedUser->Data["username"];
+		} 
+	}
+	
+	if($User->LoggedIn())
+		$PHPZevelop->Location("home");
 ?>
 
-<!DOCTYPE html>
-<html>
-	<head>
-		<title><?php echo $PHPZevelop->CFG->SiteTitle; ?> login (<?php echo $_SESSION["login_attempts"]; ?>)</title>
-		<style type="text/css">
-			body, html {margin: 0px; padding: 0px; width: 100%; height: 100%;}
-			body {background: #EEEEEE; color: #444444; font-family: "Arial", Gadget, sans-serif;}
-			p, h1, h2, h3, h4, h5 {margin: 0px 0px 20px 0px; padding: 0px;}
-			h1 {border-bottom: 1px solid #CCCCCC; padding-bottom: 5px; color: #00688B;}
-			h2 {}
-			a {color: #00688B;}
+<style type="text/css">
+	#loginForm {width: 50%; margin: auto; background: #EEEEEE; border: 1px solid #009ACD; box-sizing: border-box; padding-bottom: 15px;}
+	#loginForm h2 {margin: 0px; padding: 15px;}
+	#loginForm h3 {margin: 0px; padding: 9px 13px;}
+	#loginForm table.FormGen {width: 95%; margin: auto;}
 
-			#body {position: relative; width: 100%; height: 100%;}
-			#box {padding: 15px; margin: -50px auto 0px auto; position: relative; top: 25%; border: 1px solid #CCCCCC; background: #FFFFFF; box-shadow: 2px 2px 2px 2px #CCCCCC; border-radius: 5px;}
+	@media screen and (max-width: 900px){
+		#loginForm {width: 100%;}
+	}
+</style>
 
-			form.general {margin: auto; width: 550px;}
-			form.general table {width: 100%;}
-			form.general input {width: 400px; padding: 5px; border: 1px solid #CCCCCC; border-radius: 5px;}
-			form.general input[type="submit"] {width: 412px; background: #00688B; color: white;}
-			form.general input[type="submit"]:hover {cursor: pointer;}
-		</style>
-	</head>
-	<body>
-		<div id="body">
-			<div id="box" style="width: 800px;">
-				<h1><?php echo $PHPZevelop->CFG->SiteTitle; ?> - Administration</h1>
-				<?php if(isset($msg)) echo $msg; ?>
-				<h2>Login to your account</h2>
-				<form action="<?php $PHPZevelop->Path->GetPage("login"); ?>" method="post" class="general">
-					<table>
-						<tr>
-							<td colspan="2">
-								<p style="text-align: justify;">Please log in with your account credentials, if you are having trouble logging in to your account
-								contact <a href="mailto:craig.dennis@burdamagazines.co.uk">craig.dennis@burdamagazines.co.uk</a>.</p>
-							</td>
-						</tr>
-						<tr>
-							<td style="width: 120px;">Username</td>
-							<td><input type="text" name="username" <?php if(!isset($_POST["username"])) echo 'autofocus="1"'; ?> required="required" value="<?php echo (isset($_POST["username"])) ? $_POST["username"] : ""; ?>" /></td>
-						</tr>
-						<tr>
-							<td>Password</td>
-							<td><input type="password" name="password" <?php if(isset($_POST["username"])) echo 'autofocus="1"'; ?> required="required" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td><input type="submit" value="Log in" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		</div>
-	</body>
-</html>
+<br />
+<div id="loginForm">
+	<h2>Login</h2>
+
+	<?php if(isset($MSG)) echo $MSG; ?>
+
+	<?php
+		$FormGen = new FormGen();
+		$FormGen->AddElement(array("type" => "text", "name" => "username", "autofocus" => "autofocus", "required" => "required"), array("title" => "Username"));
+		$FormGen->AddElement(array("type" => "password", "name" => "password", "required" => "required"), array("title" => "Password"));
+		$FormGen->AddElement(array("type" => "submit", "value" => "Login"));
+		unset($_POST["password"]);
+		echo $FormGen->Build(array("data" => $_POST));
+	?>
+</div>

@@ -1,0 +1,14 @@
+/*
+	FormGen
+*/
+
+table.FormGen {width: 100%;}
+table.FormGen tr td {padding: 5px;}
+table.FormGen tr td:first-of-type {padding-left: 0px;}
+table.FormGen tr td:last-of-type {padding-right: 0px;}
+table.FormGen input {width: 100%; padding: 6px; box-sizing: border-box; font-size: 16px;}
+table.FormGen textarea {width: 100%; padding: 6px; box-sizing: border-box; font-size: 16px; height: 100px;}
+table.FormGen select {width: 100%; padding: 6px; box-sizing: border-box; font-size: 16px;}
+table.FormGen img {width: 100%;}
+table.FormGen input[type="submit"].highlight {background: #009ACD; color: white; border: none; width: 100%; padding: 7px 25px;}
+table.FormGen input[type="submit"]:hover {cursor: pointer;}

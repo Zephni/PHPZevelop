@@ -64,9 +64,9 @@
 		$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
 		$PHPZevelop->Set("URLParameters", array());
 
-		for($i = count($PathParts); $i >= 0; $i--)
+		for($I = count($PathParts); $I >= 0; $I--)
 		{
-			$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $i));
+			$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $I));
 
 			if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath.FILE_EXT))
 			{
@@ -82,8 +82,8 @@
 					}
 				}
 				
-				if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $i > 0)
-					$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
+				if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $I > 0)
+					$PHPZevelop->Append("URLParameters", $PathParts[$I-1]);
 			}
 		}
 

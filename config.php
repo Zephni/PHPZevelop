@@ -32,3 +32,12 @@
 		"DefaultFiles"		=> array("index", "default", "home")
 	
 	));
+
+	/* Database
+	------------------------------*/	
+	$PHPZevelop->CFG->DB = (object) array(
+		"Host" => "",
+		"User" => "",
+		"Pass" => "",
+		"Name" => ""
+	);

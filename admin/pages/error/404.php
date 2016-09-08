@@ -6,7 +6,6 @@
 	));
 ?>
 
-<div id="pageContent">
-	<h1>Error 404</h1>
-	<p>The page you are looking for does not exist, please <a href="<?php $PHPZevelop->Path->GetPage(""); ?>">clik here</a> to return to the home page</p>
-</div>
+<h2>404</h2>
+
+<p>Check your PHPZevelop configuration and that the page exists in (<span style='color: green;'>pages<?php echo $PHPZevelop->CFG->TestedPagePath.FILE_EXT; ?></span>)</p>

@@ -11,12 +11,22 @@
 		<meta name="description" content="<?php echo $PHPZevelop->CFG->MetaDescription; ?>">
 		<meta name="keywords" content="<?php echo $PHPZevelop->CFG->MetaKeywords; ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
 		<!-- CSS -->
-		<link rel="stylesheet" type="text/css" href="<?php $PHPZevelop->Path->GetCSS("main.css"); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("style1.css"); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("formgen.css"); ?>">
 
 		<!-- JAVASCRIPT -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+		<script src="<?php echo $PHPZevelop->Path->GetScript("main.js"); ?>"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#content").css({
+					"min-height":$("#nav").height()+20
+				});
+			});
+		</script>
 
 		<!-- JQuery datetimepicker -->
 		<link rel="stylesheet" href="<?php $PHPZevelop->Path->GetScript("datetimepicker-master/jquery.datetimepicker.css"); ?>" />
@@ -28,102 +38,87 @@
 		</script>
 
 		<!-- TinyMCE -->
-		<script type="text/javascript" src="<?php $PHPZevelop->Path->GetScript("tiny_mce/tiny_mce_src.js"); ?>"></script>
-		<script type="text/javascript">
-			tinyMCE.init({
-				// General options
-				mode : "textareas",				
-				editor_deselector : "mceNoEditor",
-				theme : "advanced",
-				plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-
-				relative_urls : false,
-				remove_script_host : true,
-				document_base_url : "/",
-				convert_urls : true,
-				
-				relative_urls : 0,
-
-				// Theme options
-				theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-				theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-				theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-				theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft,visualblocks",
-				theme_advanced_toolbar_location : "top",
-				theme_advanced_toolbar_align : "left",
-				theme_advanced_statusbar_location : "bottom",
-				theme_advanced_resizing : true,
-				
-				// Example content CSS (should be your site CSS)
-				
-				// Drop lists for link/image/media/template dialogs
-				template_external_list_url : "lists/template_list.js",
-				external_link_list_url : "lists/link_list.js",
-				external_image_list_url : "lists/image_list.js",
-				media_external_list_url : "lists/media_list.js",
-				
-				// Style formats
-				style_formats : [
-					{title : 'Bold text', inline : 'b'},
-					{title : 'Red text', inline : 'span', styles : {color : '#ff0000'}},
-					{title : 'Red header', block : 'h1', styles : {color : '#ff0000'}},
-					{title : 'Example 1', inline : 'span', classes : 'example1'},
-					{title : 'Example 2', inline : 'span', classes : 'example2'},
-					{title : 'Table styles'},
-					{title : 'Table row 1', selector : 'tr', classes : 'tablerow1'}
-				],
-				
-				// Replace values for the template plugin
-				template_replace_values : {
-					username : "Some User",
-					staffid : "991234"
-				}
+		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+		<script>
+			tinymce.init({
+				selector:'textarea.wysiwyg',
+				plugins: "link image media code paste",
+				paste_auto_cleanup_on_paste : true,
+	            paste_remove_styles: true,
+	            paste_remove_styles_if_webkit: true,
+	            paste_strip_class_attributes: "all",
+				menubar: false,
+				statusbar: true,
+				height : 200,
+				toolbar: 'pastetext bold italic alignleft aligncenter alignright | link unlink | bullist numlist image fontsizeselect | code',
+  				fontsize_formats: '10pt 12pt 14pt 18pt 24pt 36pt',
+				automatic_uploads: false,
+				content_css: "<?php echo $PHPZevelop->Path->GetCSS('tinymce.css'); ?>"
 			});
 		</script>
-		<!-- /TinyMCE -->
 	</head>
 	<body>
-		<div id="outerContainer">
-			<div id="header" class="outerWrapper">
-				<div class="innerWrapper">
-					<div class="smallPadding">
-						<h2 style="display: inline;"><?php echo $PHPZevelop->CFG->SiteTitle; ?></h2>
-						<span style="float: right; padding-right: 0px;  padding-top: 3px; color: #333333;"> Logged in as <b><?php echo $_SESSION["username"]; ?></b> - <a href="<?php $PHPZevelop->Path->GetPage("logout"); ?>" style="background: #00688B; padding: 3px 7px 4px 7px; border-radius: 5px; color: white; text-decoration: none; font-weight: bold;">Log out</a></span>
-					</div>	
+		
+		<div class="outerContainer">
+			<div class="innerContainer">
+				<div id="header">
+					<div class="horizontalPadding">
+						<a href="<?php $PHPZevelop->Path->GetPage(""); ?>" style="text-decoration: none !important;">
+							<h1 style='font-size: 38px !important;'><?php echo $PHPZevelop->CFG->SiteTitle; ?></h1>
+						</a>
+						<hr />
+					</div>
 				</div>
-			</div>
-			<div class="outerWrapper">
-				<div class="innerWrapper">
+
+				<div id="body">
 					
-					<div id="leftColumn">
-						<div class="smallPadding">
-							<div id="nav">
-								<ul>
-									
-									<li><a href="<?php echo $PHPZevelop->Path->GetPage("", true); ?>">Home</a></li>
+					<div id="nav" class="nonMobileOnly">
+						<h2>Navigation</h2>
 
-									<li><a href="<?php echo $PHPZevelop->Path->GetPage("manage_files", true); ?>">Manage files</a></li>
-
-									<li>
-										<a href="<?php echo $PHPZevelop->Path->GetPage("select/pages", true); ?>">Pages</a>
-										<ul>
-											<li><a href="<?php echo $PHPZevelop->Path->GetPage("upload/pages", true); ?>">Add page</a></li>
-										</ul>
-									</li>
-
-								</ul>
-							</div>
+						<div>
+							<a href="<?php echo $PHPZevelop->Path->GetPage("file-manager", true) ?>" style="width: 100%;">File manager</a>
 						</div>
+						
+						<?php
+							foreach($Tables as $K => $V)
+							{
+								if(isset($TableOptions[$K]["Status"]) && ($TableOptions[$K]["Status"] == "disabled" || $TableOptions[$K]["Status"] == "hidden"))
+									continue;
+
+								echo '<div>
+									<a href="'.$PHPZevelop->Path->GetPage("select/".$K, true).'">'.$V.'</a>
+									<span>|</span>
+									<a href="'.$PHPZevelop->Path->GetPage("add/".$K, true).'">Add</a>
+								</div>';								
+
+								if(isset($TableOptions[$K]["Navigation"]))
+								{
+									foreach(explode("|", $TableOptions[$K]["Navigation"]) as $Item)
+									{
+										$Parts = explode(",", $Item);
+										echo '<div>
+											<a href="'.$PHPZevelop->Path->GetPage($Parts[1], true).'" style="padding-left: 20px; width: 100%;">- '.$Parts[0].'</a>
+										</div>';
+									}
+								}
+							}
+						?>
 					</div>
 
-					<div id="pageArea">
-
+					<div id="content">
 						<?php echo $PHPZevelop->PageContent; ?>
-
 					</div>
 					
+				</div>
+
+				<div id="footer">
+					<div class="horizontalPadding">
+						<hr />
+						<p style="font-size: 12px; margin-bottom: 0px;">&copy;  PHPZevelop <?php echo date("Y"); ?> - <?php $Link->Out("https://twitter.com/_Zephni", "@_Zephni"); ?> (Craig Dennis)</p>
+					</div>
 				</div>
 			</div>
 		</div>
+
 	</body>
 </html>
