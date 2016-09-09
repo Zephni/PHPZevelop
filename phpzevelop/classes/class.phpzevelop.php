@@ -57,4 +57,18 @@
 		{
 			$Callback($Result);
 		}
+
+		public function PrintR($Array, $Die = false)
+		{
+			if(!$Die)
+				echo "<pre>".print_r($Array, true)."</pre>";
+			else
+				die("<pre>".print_r($Array, true)."</pre>");
+		}
+
+		public function Location($Location)
+		{
+			header("Location: ".$this->Path->GetPage($Location, true));
+			die();
+		}
 	}

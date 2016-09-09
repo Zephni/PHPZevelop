@@ -64,9 +64,9 @@
 		$PathParts = explode("/", $PHPZevelop->CFG->PagePath);
 		$PHPZevelop->Set("URLParameters", array());
 
-		for($I = count($PathParts); $I >= 0; $I--)
+		for($i = count($PathParts); $i >= 0; $i--)
 		{
-			$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $I));
+			$PHPZevelop->CFG->ExistingFilePath = implode("/", array_slice($PathParts, 0, $i));
 
 			if(is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath.FILE_EXT))
 			{
@@ -82,15 +82,15 @@
 					}
 				}
 				
-				if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $I > 0)
-					$PHPZevelop->Append("URLParameters", $PathParts[$I-1]);
+				if(!is_file($PHPZevelop->CFG->RootDirs->Pages."/".$PHPZevelop->CFG->ExistingFilePath) && $i > 0)
+					$PHPZevelop->Append("URLParameters", $PathParts[$i-1]);
 			}
 		}
 
 		return $PHPZevelop;
 	}
 
-	$OrigionalPath = $PHPZevelop->CFG->PagePath;
+	$OrrigionalPath = $PHPZevelop->CFG->PagePath;
 	$PHPZevelop = BulidPath($PHPZevelop);
 	
 	/* Path
@@ -120,7 +120,7 @@
 		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
 
 	// Check if path was changed
-	if($OrigionalPath != $PHPZevelop->CFG->PagePath)
+	if($OrrigionalPath != $PHPZevelop->CFG->PagePath)
 	{
 		$PHPZevelop = BulidPath($PHPZevelop);
 		$PHPZevelop->NewObject("Path", new Path($PHPZevelop->CFG));
