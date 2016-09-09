@@ -3,7 +3,7 @@
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Login",
-		"Template"	 => "fullwidth"
+		"Template"	 => "style2/fullwidth"
 	));
 
 	if(count($_POST) > 0)

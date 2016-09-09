@@ -34,9 +34,9 @@
 		//IMAGE
 		foreach($ColumnNames as $Column)
 		{
-			if(isset($ColumnCommands[$Column]["type"]) && $ColumnCommands[$Column]["type"][0] != "image") continue;
+			if(ArrGet($ColumnCommands, $Column, "type", 0) != "image" || ArrGet($ColumnCommands, $Column, "type", 0) != "file") continue;
 
-			if(isset($_FILES[$Column]) && strlen($_FILES[$Column]["name"]) > 0)
+			if(ArrGet($_FILES, $Column, "name") != "")
 			{
 				$Image = new upload($_FILES[$Column]);
 
@@ -85,7 +85,7 @@
 
 		if($Type == "select")
 		{
-			$Options = array();
+			$Options = array("0" => " - none -");
 			if(isset($ColumnCommands[$Item["column_name"]]["join"]))
 			{
 				foreach($DB->Query("SELECT id,".$ColumnCommands[$Item["column_name"]]["join"][1]." FROM ".$ColumnCommands[$Item["column_name"]]["join"][0]) as $Option)
@@ -116,6 +116,21 @@
 			$PreHTML = "<table style='width: 100%;'><tr><td style='width: 12%;'><img src='".$ImagePreview."' class='PreviewImage' /></td><td>";
 			$PostHTML = "</td></tr></table>";
 			$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => "ImageSelector ".$Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
+		}
+		elseif($Type == "file")
+		{
+			$PreHTML = $PostHTML = "";
+			if(is_file($FrontEndImageLocationRoot."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]))
+			{
+				$PreHTML = "<table style='width: 100%;'><tr><td style='width: 6%;'>
+					<a href='".$FrontEndImageLocationLocal."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]."' target='_blank'>
+						<img src='https://cdn3.iconfinder.com/data/icons/brands-applications/512/File-512.png' style='width: 100%;' />
+					</a>
+				</td><td>";
+				$PostHTML = "</td></tr></table>";
+			}
+
+			$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
 		}
 		else
 		{

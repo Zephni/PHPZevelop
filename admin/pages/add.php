@@ -22,7 +22,7 @@
 		$ColumnNames[] = $Item["column_name"];
 
 	// On post
-	if( isset($_POST) && count($_POST) > 0)
+	if(isset($_POST) && count($_POST) > 0)
 	{
 		foreach($ColumnNames as $Item)
 		{
@@ -37,7 +37,7 @@
 		//IMAGE
 		foreach($ColumnNames as $Column)
 		{
-			if(ArrGet($ColumnCommands, $Column, "type", 0) != "image") continue;
+			if(ArrGet($ColumnCommands, $Column, "type", 0) != "image" || ArrGet($ColumnCommands, $Column, "type", 0) != "file") continue;
 			
 			if(ArrGet($_FILES, $Column, "name") != "")
 			{
@@ -92,7 +92,7 @@
 
 		if($Type == "select")
 		{
-			$Options = array();
+			$Options = array("0" => " - none -");
 			if(isset($ColumnCommands[$Item["column_name"]]["join"]))
 			{
 				foreach($DB->Query("SELECT id,".$ColumnCommands[$Item["column_name"]]["join"][1]." FROM ".$ColumnCommands[$Item["column_name"]]["join"][0]) as $Option)

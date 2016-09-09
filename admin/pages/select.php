@@ -14,26 +14,28 @@
 		die("Disabled");
 
 	// Defaults
-	if(!isset($_POST["Fields"]))
+	foreach(array("Fields" => "*", "Where" => "", "Order" => "id DESC", "Limit" => "0,40") as $K => $V)
 	{
-		$_POST["Fields"] = (isset($TableOptions[$_GET["param_0"]]["DefaultFields"])) ? $TableOptions[$_GET["param_0"]]["DefaultFields"] : "*";
-		if(isset($_GET["Fields"])) $_POST["Fields"] = $_GET["Fields"];
-	}
-	if(!isset($_POST["Where"]))
-	{
-		$_POST["Where"] = (isset($TableOptions[$_GET["param_0"]]["DefaultWhere"])) ? $TableOptions[$_GET["param_0"]]["DefaultWhere"] : "";
-		if(isset($_GET["Where"])) $_POST["Where"] = $_GET["Where"];
-	}
-	if(!isset($_POST["Order"]))
-	{
-		$_POST["Order"] = (isset($TableOptions[$_GET["param_0"]]["DefaultOrder"])) ? $TableOptions[$_GET["param_0"]]["DefaultOrder"] : "id DESC";
-		if(isset($_GET["Order"])) $_POST["Order"] = $_GET["Order"];
-		if(substr($_POST["Order"], 0, 9) == "ORDER BY ") $_POST["Order"] = substr($_POST["Order"], 9);
-	}
-	if(!isset($_POST["Limit"]))
-	{
-		$_POST["Limit"] = (isset($TableOptions[$_GET["param_0"]]["DefaultLimit"])) ? $TableOptions[$_GET["param_0"]]["DefaultLimit"] : "0,40";
-		if(isset($_GET["Limit"])) $_POST["Limit"] = $_GET["Limit"];
+		if(!isset($_POST[$K]))
+		{
+			if(isset($TableOptions[$_GET["param_0"]]["Default".$K]))
+			{
+				$_POST[$K] = $TableOptions[$_GET["param_0"]]["Default".$K];
+			}
+			else
+			{
+				if(isset($_SESSION[$_GET["param_0"]."_select_".$K]))
+					$_POST[$K] = $_SESSION[$_GET["param_0"]."_select_".$K];
+				else
+					$_POST[$K] = $V;
+			}
+
+			if(isset($_GET[$K])) $_POST[$K] = $_GET[$K];
+
+			$_POST[$K] = str_replace("ORDER BY ", "", $_POST[$K]);
+		}
+
+		$_SESSION[$_GET["param_0"]."_select_".$K] = $_POST[$K];
 	}
 
 	// Columns
@@ -166,6 +168,7 @@
 		<div style="width: 100%; overflow: auto;">
 			<table style="width: 100%; font-size: 13px;">
 				<?php
+					$StartedOn = $Pagination->BeginItems;
 					for($I = $Pagination->BeginItems; $I < $Pagination->BeginItems + $Pagination->Options["PerPage"]; $I++)
 					{
 						if(!isset($Rows[$I]))
@@ -175,7 +178,7 @@
 						$RowKeys = array_keys($Item);
 
 						// Bulid header
-						if($I == 0)
+						if($I == $StartedOn)
 						{
 							echo "<tr>";
 							foreach(array_merge(array_keys($Item), array("", "")) as $Field)
@@ -229,8 +232,13 @@
 						
 						$Options = (ArrGet($TableOptions, $_GET["param_0"], "Options")) ? explode(",", $TableOptions[$_GET["param_0"]]["Options"]) : array();
 
+						// Special
 						if(in_array("entries", $Options))
-							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?Where=comp_id%3D".$Item["id"]."&Order=ORDER%20BY%20RAND()&Limit=", "entries")."</td>";
+						{
+							$Optins = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id AND `options` LIKE :options", array("comp_id" => $Item["id"], "options" => "%optin:1%")));
+							$Total = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id", array("comp_id" => $Item["id"])));
+							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?Where=comp_id%3D".$Item["id"]."&Order=ORDER%20BY%20RAND()&Limit=", "entries (".$Optins."/".$Total.")")."</td>";
+						}
 
 						if(count($Options) == 0 || in_array("edit", $Options))
 							echo "<td style='".$Style." text-align: center;'>".$Link->Get("edit/".$_GET["param_0"]."/".$Item["id"], "edit")."</td>";

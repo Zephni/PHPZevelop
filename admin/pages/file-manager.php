@@ -99,12 +99,12 @@
 ?>
 
 <style type="text/css">
-	.item {height: 58px; box-sizing: border-box; width: 90%; display: inline-block;}
-	.item a {color: #333333; width: 100%; height: 100%; display: inline-block; padding: 6px; box-sizing: border-box;}
-	.item img {display: inline-block; height: 45px;}
-	.item span {display: inline-block; line-height: 48px; vertical-align: top; padding-left: 15px;}
-	.item:hover {background: #76B5F9;}
-	.item:hover span {color: white;}
+	.file-manager-item {height: 58px; box-sizing: border-box; width: 90%; display: inline-block;}
+	.file-manager-item a {color: #333333; width: 100%; height: 100%; display: inline-block; padding: 6px; box-sizing: border-box;}
+	.file-manager-item img {display: inline-block; height: 45px;}
+	.file-manager-item span {display: inline-block; line-height: 48px; vertical-align: top; padding-left: 15px;}
+	.file-manager-item:hover {background: #76B5F9;}
+	.file-manager-item:hover span {color: white;}
 	
 	.delete {height: 58px; box-sizing: border-box; width: 5%; display: inline-block; vertical-align: top; text-align: center;}
 	.delete a {line-height: 58px; color: white; background: #BA1F24; padding: 1px 9px 3px 8px;}
@@ -146,7 +146,7 @@
 			$Target = "target='_blank'";
 		}
 
-		echo "<div class='item'><a href='".$ALink."' ".$Target.">
+		echo "<div class='file-manager-item'><a href='".$ALink."' ".$Target.">
 			<img src='".$PHPZevelop->Path->GetImage("components/".$Icon, true)."' />
 			<span>".$Item."</span>
 			</a>

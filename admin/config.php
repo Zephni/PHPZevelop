@@ -8,6 +8,12 @@
 	$FrontEndImageLocationRoot = str_replace("//", "/", $FrontEndLocationRoot."/images");
 	$FrontEndImageLocationLocal = str_replace("//", "/", $FrontEndLocationLocal."/images");
 
+	// Style
+	$DefaultStyle = "style2";
+
+	// Template
+	$PHPZevelop->CFG->Template = $DefaultStyle."/main";
+
 	// Constants
 	class DBTables
 	{
