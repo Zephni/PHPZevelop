@@ -6,6 +6,8 @@
 	));
 
 	$User->Logout();
+	CookieHelper::Remove(User::$UsernameSessionField);
+	CookieHelper::Remove(User::$PasswordSessionField);
 
 	header("Location: ".$PHPZevelop->CFG->SiteDirLocal);
 	die();

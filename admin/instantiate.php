@@ -46,10 +46,19 @@
 	if(true && class_exists("User"))
 	{
 		User::$UsernameSessionField = "admin_username";
-		User::$PasswordSessionField = "admin_password";
+ 		User::$PasswordSessionField = "admin_password";
+ 		
+		if(!isset($_SESSION[User::$UsernameSessionField]))
+		{
+			$_SESSION[User::$UsernameSessionField] = CookieHelper::Get(User::$UsernameSessionField);
+			$_SESSION[User::$PasswordSessionField] = CookieHelper::Get(User::$PasswordSessionField);
+		}
 
 		if(isset($_SESSION[User::$UsernameSessionField]))
 		{
+			CookieHelper::Set(User::$UsernameSessionField, $_SESSION[User::$UsernameSessionField]);
+			CookieHelper::Set(User::$PasswordSessionField, $_SESSION[User::$PasswordSessionField]);
+
 			$User = User::Get(array("username" => $_SESSION[User::$UsernameSessionField]));
 
 			if(substr($User->Data["last_active"], 1) > time()-User::$InactiveTime)
