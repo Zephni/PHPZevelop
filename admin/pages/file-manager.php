@@ -6,10 +6,6 @@
 		"PassParams" => true
 	));
 
-	// Go to login if not logged in
-	if(isset($User) && !$User->LoggedIn())
-		$PHPZevelop->Location("login");
-
 	// Delete
 	if(isset($_GET["param_".((string)count($_GET)-1)]) && substr($_GET["param_".((string)count($_GET)-1)], 0, 8) == "fdelete=" && strlen($_GET["param_".((string)count($_GET)-1)]) > 0)
 	{

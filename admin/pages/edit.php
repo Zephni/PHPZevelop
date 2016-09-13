@@ -6,10 +6,6 @@
 		"PassParams" => true
 	));
 
-	// Go to login if not logged in
-	if(isset($User) && !$User->LoggedIn())
-		$PHPZevelop->Location("login");
-
 	// Build $Options and check if disabled
 	$Options = (isset($TableOptions[$_GET["param_0"]]["Options"])) ? explode(",", $TableOptions[$_GET["param_0"]]["Options"]) : array();
 	if(ArrGet($TableOptions, $_GET["param_0"], "Status") == "disabled" || (count($Options) > 0 && !in_array("edit", $Options)))
@@ -34,7 +30,7 @@
 		//IMAGE
 		foreach($ColumnNames as $Column)
 		{
-			if(ArrGet($ColumnCommands, $Column, "type", 0) != "image" || ArrGet($ColumnCommands, $Column, "type", 0) != "file") continue;
+			if(ArrGet($ColumnCommands, $Column, "type", 0) != "image" && ArrGet($ColumnCommands, $Column, "type", 0) != "file") continue;
 
 			if(ArrGet($_FILES, $Column, "name") != "")
 			{

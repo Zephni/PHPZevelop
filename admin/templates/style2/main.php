@@ -112,38 +112,38 @@
 
 		<div id="leftPanel">
 			<div class="topPadding"></div>
-			<div class="padding">
+			<div class="padding" style="padding-top: 0px; margin-top: 20px; overflow-y: auto; max-height: 80%;">
 				
-				<table style="width: 100%;">
+				<table style="width: 100%; height: 100%;">
 					<tr>
 						<td><a href="<?php $PHPZevelop->Path->GetPage("file-manager") ?>">File explorer</a></td>
 						<td></td>
 					</tr>
 
-				<?php
-					foreach($Tables as $K => $V)
-					{
-						if(isset($TableOptions[$K]["Status"]) && ($TableOptions[$K]["Status"] == "disabled" || $TableOptions[$K]["Status"] == "hidden"))
-							continue;
-
-						echo '<tr>
-							<td><a href="'.$PHPZevelop->Path->GetPage("select/".$K, true).'">'.$V.'</a></td>
-							<td><a href="'.$PHPZevelop->Path->GetPage("add/".$K, true).'">Add</a></td>
-						</tr>';								
-
-						if(isset($TableOptions[$K]["Navigation"]))
+					<?php
+						foreach($Tables as $K => $V)
 						{
-							foreach(explode("|", $TableOptions[$K]["Navigation"]) as $Item)
+							if(isset($TableOptions[$K]["Status"]) && ($TableOptions[$K]["Status"] == "disabled" || $TableOptions[$K]["Status"] == "hidden"))
+								continue;
+
+							echo '<tr>
+								<td><a href="'.$PHPZevelop->Path->GetPage("select/".$K, true).'">'.$V.'</a></td>
+								<td><a href="'.$PHPZevelop->Path->GetPage("add/".$K, true).'">Add</a></td>
+							</tr>';								
+
+							if(isset($TableOptions[$K]["Navigation"]))
 							{
-								$Parts = explode(",", $Item);
-								echo '<tr>
-									<td><a href="'.$PHPZevelop->Path->GetPage($Parts[1], true).'" style="padding-left: 20px; width: 100%;">- '.$Parts[0].'</a></td>
-									<td></td>
-								</tr>';
+								foreach(explode("|", $TableOptions[$K]["Navigation"]) as $Item)
+								{
+									$Parts = explode(",", $Item);
+									echo '<tr>
+										<td><a href="'.$PHPZevelop->Path->GetPage($Parts[1], true).'" style="padding-left: 20px; width: 100%;">- '.$Parts[0].'</a></td>
+										<td></td>
+									</tr>';
+								}
 							}
 						}
-					}
-				?>
+					?>
 				</table>
 
 			</div>

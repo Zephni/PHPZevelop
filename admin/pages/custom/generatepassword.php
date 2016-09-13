@@ -4,9 +4,6 @@
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Edit"
 	));
-
-	if(!$User->LoggedIn())
-		$PHPZevelop->Location("login");
 ?>
 
 <h2>Generate a password for the user system</h2>

@@ -9,6 +9,10 @@
 	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT))
 		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
 
+	// Logout if restricted
+	if($PHPZevelop->CFG->PagePath != "/login" && isset($User) && !$User->LoggedIn())
+		$PHPZevelop->Location("login");
+
 	// Find Tables
 	$TablesReal = array();
 	$Tables = array();
@@ -40,5 +44,3 @@
 			}
 		}
 	}
-
-	//die("<pre>".print_r($TableOptions, true)."</pre>");

@@ -4,9 +4,6 @@
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Home"
 	));
-
-	if(isset($User) && !$User->LoggedIn())
-		$PHPZevelop->Location("login");
 ?>
 
 <h2>Welcome TO PHPZAdmin!</h2>

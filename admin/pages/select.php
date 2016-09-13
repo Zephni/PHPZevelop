@@ -6,9 +6,6 @@
 		"PassParams" => true
 	));
 
-	if(isset($User) && !$User->LoggedIn())
-		$PHPZevelop->Location("login");
-
 	// Check if disabled
 	if(isset($TableOptions[$_GET["param_0"]]["Status"]) && $TableOptions[$_GET["param_0"]]["Status"] == "disabled")
 		die("Disabled");

@@ -35,9 +35,27 @@
 
 	/* Database
 	------------------------------*/	
-	$PHPZevelop->CFG->DB = (object) array(
-		"Host" => "",
-		"User" => "",
-		"Pass" => "",
-		"Name" => ""
-	);
+	if($PHPZevelop->CFG->SiteMode == SiteMode::Development)
+	{
+		$PHPZevelop->CFG->DB = (object) array(
+			"Host" => "",
+			"User" => "",
+			"Pass" => "",
+			"Name" => ""
+		);
+
+		$PHPZevelop->CFG->Domain = "";
+		$PHPZevelop->CFG->SiteTitle = "";
+	}
+	else if($PHPZevelop->CFG->SiteMode == SiteMode::Live)
+	{
+		$PHPZevelop->CFG->DB = (object) array(
+			"Host" => "",
+			"User" => "",
+			"Pass" => "",
+			"Name" => ""
+		);
+
+		$PHPZevelop->CFG->Domain = "";
+		$PHPZevelop->CFG->SiteTitle = "";
+	}
