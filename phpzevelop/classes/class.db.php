@@ -39,12 +39,13 @@
 				$preparedQuery = $this->DBO->prepare($query);
 				$preparedQuery->execute($Data);
 				$this->LastInsertId = $this->DBO->LastInsertId();
-				if(substr($query, 0, 6) == "UPDATE" || substr($query, 0, 6) == "INSERT" || substr($query, 0, 4) == "SHOW"){
+				if(substr($query, 0, 6) == "UPDATE" || substr($query, 0, 6) == "INSERT"){
 					return true;
 				}else{
 					if($options == NULL) $return = $preparedQuery->fetchAll(PDO::FETCH_ASSOC/*, $options*/);
 					elseif(count($return) > 0) $return = $preparedQuery->fetchAll($options);
-					if($forceSingle == true) $return = $return[0];
+					if($forceSingle == true && count($return) > 0) $return = $return[0];
+					else if($forceSingle == true) return array();
 					return $return;
 				}
 			}catch(PDOException $e){
@@ -93,6 +94,94 @@
 	        } catch (Exception $e){
 	                return $e->getMessage(); //return exception
 	        }        
-	    }  
+	    }
+
+	    function Select($Fields, $From, $Where = array(), $Single = false)
+		{
+			$Arr = array();
+			$Str = "SELECT";
+			$Str .= " ".((is_array($Fields)) ? implode(",", $Fields) : $Fields);
+			$Str .= " FROM ".$From;
+
+			$Wheres = 0;
+
+			$Str .= (count($Where) > 0) ? " WHERE" : "";
+			foreach($Where as $K => $V)
+			{
+				if(!is_array($V))
+				{
+					$Str .= " ".$V;
+				}
+				else
+				{
+					$Wheres++;
+					$Str .= " ".$V[0]." ".$V[1]." :w".$Wheres;
+					$Arr["w".$Wheres] = $V[2];
+				}
+			}
+
+			if(!$Single)
+				return $this->Query($Str, $Arr);
+			else
+				return $this->QuerySingle($Str, $Arr);
+		}
+
+		function Insert($Table, $Values)
+		{
+			$Str = "INSERT INTO ".$Table." SET ";
+
+			$Sets = 0;
+
+			$Temp = array();
+			foreach($Values as $K => $V)
+			{
+				$Sets++;
+				$Temp[] = $K." = :"."s".$Sets;
+				$Arr["s".$Sets] = $V;
+			}
+
+			$Str .= implode(", ", $Temp);
+
+			$DB->Query(Str, $Arr);
+			return $DB->LastInsertId;
+		}
+
+		function Update($Table, $Values, $Where = null)
+		{
+			if(!is_array($Where) || count($Where) == 0)
+				die("Where can not be empty in DB->Update");
+
+			$Str = "UPDATE ".$Table." SET ";
+
+			$Sets = 0;
+			$Wheres = 0;
+
+			$Temp = array();
+			foreach($Values as $K => $V)
+			{
+				$Sets++;
+				$Temp[] = $K." = :"."s".$Sets;
+				$Arr["s".$Sets] = $V;
+			}
+
+			$Str .= implode(", ", $Temp);
+
+			$Str .= (count($Where) > 0) ? " WHERE" : "";
+			foreach($Where as $K => $V)
+			{
+				if(!is_array($V))
+				{
+					$Str .= " ".$V;
+				}
+				else
+				{
+					$Wheres++;
+					$Str .= " ".$V[0]." ".$V[1]." :w".$Wheres;
+					$Arr["w".$Wheres] = $V[2];
+				}
+			}
+
+			return $DB->QuerySingle(Str, $Arr);
+		}
 	}	
 ?>

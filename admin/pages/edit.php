@@ -138,7 +138,20 @@
 ?>
 
 <h2>Editing item #<?php echo $_GET["param_1"]; ?> in <?php echo ucfirst(str_replace("_", "", $_GET["param_0"])); ?></h2>
-<br />
+
+<?php
+	// File manager
+	if(ArrGet($TableOptions, $_GET["param_0"], "FileManager") == "true")
+	{
+		if(!isset($TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"]))
+			$TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"] = "";
+	?>
+	<iframe src="<?php $PHPZevelop->Path->GetPage("file-manager-full/".$TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"]); ?>"
+		style="width: 99.5%; height: 90px; border: none; margin: auto; background: none;"></iframe>
+	<?php
+	}
+?>
+
 <?php if(isset($TableOptions[$_GET["param_0"]]["EditLink"])) {
 	$Parts = explode("|", $TableOptions[$_GET["param_0"]]["EditLink"]);
 	$Parts[0] = str_replace("[id]", $_GET["param_1"], $Parts[0]);
@@ -153,24 +166,4 @@
 	}
 
 	echo $FormGen->Build(array("data" => $Data));
-?>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		SetImagePreview(".ImageSelector", ".PreviewImage");
-	});
-</script>
-
-<?php
-	// File manager
-	if(ArrGet($TableOptions, $_GET["param_0"], "FileManager") == "true")
-	{
-		if(!isset($TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"]))
-			$TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"] = "";
-	?>
-	<br /><br />
-	<iframe src="<?php $PHPZevelop->Path->GetPage("file-manager-full/".$TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"]); ?>"
-		style="width: 99.5%; height: 185px; border: 1px solid #CCCCCC; margin: auto; background: white;"></iframe>
-	<?php
-	}
 ?>

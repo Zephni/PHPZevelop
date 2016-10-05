@@ -28,6 +28,10 @@
 				$('.datetimepicker').datetimepicker();
 			});
 		</script>
+
+		<style type="text/css">
+			html,body {padding: 0px; margin: 0px;}
+		</style>
 	</head>
 	<body>
 		

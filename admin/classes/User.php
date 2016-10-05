@@ -318,7 +318,13 @@
 				if(isset($this->Data["image"]) && strlen($this->Data["image"]) > 0 && file_exists($PHPZevelop->CFG->RootDirs->Images."/".$this->ImageLocation."/".$this->Data["image"]))
 					return $PHPZevelop->Path->GetImage($this->ImageLocation."/".$this->Data["image"], true);
 				else
-					return $PHPZevelop->Path->GetImage("components/default_company_logo.png", true);
+				{
+					if(!isset($this->Data["type"]) || $this->Data["type"] == "Recruiter")
+						return $PHPZevelop->Path->GetImage("components/default_company_logo.png", true);
+					else
+						return $PHPZevelop->Path->GetImage("components/default_seeker_logo.png", true);
+				}
+					
 			}
 		}
 	//}

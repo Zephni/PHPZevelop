@@ -59,10 +59,13 @@
 						for($X = 0; $X < $BuildOptions["ColNum"]; $X++)
 						{
 							$I = ($Y * $BuildOptions["ColNum"]) + $X;
-							$HTML .= "<td>";
-							if(isset($this->Elements[$I]) && isset($this->Elements[$I]["Options"]["title"]))
-								$HTML .= $this->Elements[$I]["Options"]["title"];
-							$HTML .= "</td>";
+							if($BuildOptions["ColNum"] > 1 || (isset($this->Elements[$I]) && isset($this->Elements[$I]["Options"]["title"]) && $this->Elements[$I]["Options"]["title"] != ""))
+							{
+								$HTML .= "<td>";
+								if(isset($this->Elements[$I]) && isset($this->Elements[$I]["Options"]["title"]))
+									$HTML .= $this->Elements[$I]["Options"]["title"];
+								$HTML .= "</td>";
+							}
 						}
 							
 						$HTML .= "</tr><tr>";
@@ -92,15 +95,21 @@
 				if(!isset($Item["Attributes"]["type"]) || !is_string($Item["Attributes"]["type"]))
 					return "";
 
+				if($Item["Attributes"]["type"] == "html")
+					return $Item["Attributes"]["value"];
+
+				if(!isset($Item["Options"]["prehtml"])) $Item["Options"]["prehtml"] = "";
+				if(!isset($Item["Options"]["posthtml"])) $Item["Options"]["posthtml"] = "";
+
 				$HTML = "";
 
 				if($Item["Attributes"]["type"] == "text")
 				{
-					$HTML .= "<input ".$this->BuildAttributes($Item["Attributes"])." />";
+					$HTML .= $Item["Options"]["prehtml"]."<input ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
 				}
 				else if($Item["Attributes"]["type"] == "textarea")
 				{
-					$Value = $Item["Attributes"]["value"];
+					$Value = (isset($Item["Attributes"]["value"])) ? $Item["Attributes"]["value"] : "";
 					if(isset($Item["Attributes"]["name"]) && isset($this->PrepopData[$Item["Attributes"]["name"]]))
 						$Value = $this->PrepopData[$Item["Attributes"]["name"]];
 
@@ -117,7 +126,7 @@
 						unset($Item["Attributes"]["value"]);
 					}
 
-					$HTML .= "<select ".$this->BuildAttributes($Item["Attributes"]).">";
+					$HTML .= $Item["Options"]["prehtml"]."<select ".$this->BuildAttributes($Item["Attributes"]).">";
 					foreach($Item["Options"]["data"] as $K => $V)
 					{
 						if(isset($this->PrepopData[$Item["Attributes"]["name"]]))
@@ -132,7 +141,7 @@
 						}
 					}
 						
-					$HTML .= "</select>";
+					$HTML .= "</select>".$Item["Options"]["posthtml"];
 				}
 				else if($Item["Attributes"]["type"] == "file")
 				{
@@ -141,11 +150,11 @@
 				}
 				else if($Item["Attributes"]["type"] == "submit")
 				{
-					$HTML .= "<input ".$this->BuildAttributes($Item["Attributes"])." />";
+					$HTML .= $Item["Options"]["prehtml"]."<input ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
 				}
 				else
 				{
-					$HTML .= "<input ".$this->BuildAttributes($Item["Attributes"])." />";
+					$HTML .= $Item["Options"]["prehtml"]."<input ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
 				}
 
 				return $HTML;

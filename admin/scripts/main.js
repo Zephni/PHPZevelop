@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	// Common Javascript
+	SetImagePreview(".ImageSelector", ".PreviewImage");
 
 	/*
 		POPUP MESSAGES

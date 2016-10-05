@@ -46,6 +46,7 @@
 	{
 		$DB->Query("DELETE FROM ".$_GET["param_0"]." WHERE id=:id", array("id" => $_GET["delete"]));
 		$DB->error = array();
+		$PHPZevelop->Location("select/".$_GET["param_0"]);
 	}
 ?>
 
@@ -56,7 +57,7 @@
 	// SQL Form
 	$FormGen = new FormGen();
 	$FormGen->AddElement(array("name" => "Fields", "value" => $_POST["Fields"]), array("title" => "Fields"));
-	$FormGen->AddElement(array("name" => "Where", "value" => $_POST["Where"], "placeholder" => "id=27 AND key/value"), array("title" => "Where"));
+	$FormGen->AddElement(array("name" => "Where", "value" => $_POST["Where"], "placeholder" => "key=value"), array("title" => "Where", "postHTML" => "test"));
 	$FormGen->AddElement(array("name" => "Order", "value" => $_POST["Order"]), array("title" => "Order"));
 	$FormGen->AddElement(array("name" => "Limit", "value" => $_POST["Limit"]), array("title" => "Limit"));
 	$FormGen->AddElement(array("type" => "submit", "value" => "Run query"));
@@ -85,34 +86,30 @@
 
 	if(strlen(trim($_POST["Where"])) > 0)
 	{
-		$Parts = explode(" ", $_POST["Where"]);
-		foreach($Parts as $Item)
+		$AndOrStack = array();
+		foreach(explode(" ", $_POST["Where"]) as $Item)
 		{
-			if($Item == "AND" || $Item == "OR")
-			{
-				$FinalWhere .= " ".$Item;
-				continue;
-			}
+			if($Item == "AND") $AndOrStack[] = " AND ";
+			else if($Item == "OR") $AndOrStack[] = " OR ";
+		}
 
-			$Item2 = explode("=", $Item);
-			if(count($Item2) == 2)
+		foreach(preg_split( "/ AND | OR /i", $_POST["Where"]) as $Item)
+		{
+			if(strstr($Item, "==") !== false)
 			{
-				$FinalWhere .= " ".$Item2[0]."=:".$Item2[0];
-				$Data[$Item2[0]] = urldecode($Item2[1]);
-			}
-			elseif(count($Item2) == 1)
+				$Item = explode("==", $Item);
+				$Data[$Item[0]] = $Item[1];
+				$FinalWhere .= $Item[0]."=:".$Item[0];
+			}			
+			else if(strstr($Item, "=") !== false)
 			{
-				$Item2 = explode("/", $Item);
-				if(count($Item2)  == 2)
-				{
-					$FinalWhere .= " ".$Item2[0]." LIKE :".$Item2[0];
-					$Data[$Item2[0]] = "%".urldecode($Item2[1])."%";
-				}
-				else
-					$Error = "Invalid 'Where' statement";	
+				$Item = explode("=", $Item);
+				$Data[$Item[0]] = "%".$Item[1]."%";
+				$FinalWhere .= $Item[0]." LIKE :".$Item[0];
 			}
-			else
-				$Error = "Invalid 'Where' statement";
+			
+			if(count($AndOrStack) > 0)
+				$FinalWhere .= array_shift($AndOrStack);
 		}
 	}
 	
@@ -144,13 +141,16 @@
 	if(isset($_GET["param_1"]) && $_GET["param_1"] != 1 && count($Rows) == 0)
 		$PHPZevelop->Location("select/".$_GET["param_1"]."/1");
 
-	$Pagination->Options["URL"] = "/".ltrim($PHPZevelop->CFG->SiteDirLocal."/select/".$_GET["param_0"]."/(PN)", "/");
+	$Pagination->Options["URL"] = $PHPZevelop->Path->GetPage("select/".$_GET["param_0"]."/(PN)", true);
 	$Pagination->SetPage((isset($_GET["param_1"])) ? $_GET["param_1"] : 1);
 	$PaginationHTML = $Pagination->BuildHTML(count($Rows));
 
 	// Session
-	$_SESSION["Query"] = $Query;
-	$_SESSION["Data"] = $Data;
+	if(isset($Query) && isset($Data))
+	{
+		$_SESSION["Query"] = $Query;
+		$_SESSION["Data"] = $Data;
+	}
 
 	if(!isset($Error))
 	{
@@ -234,7 +234,7 @@
 						{
 							$Optins = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id AND `options` LIKE :options", array("comp_id" => $Item["id"], "options" => "%optin:1%")));
 							$Total = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id", array("comp_id" => $Item["id"])));
-							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?Where=comp_id%3D".$Item["id"]."&Order=ORDER%20BY%20RAND()&Limit=", "entries (".$Optins."/".$Total.")")."</td>";
+							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?Where=comp_id%3D%3D".$Item["id"]."&Order=ORDER%20BY%20RAND()&Limit=", "entries (".$Optins."/".$Total.")")."</td>";
 						}
 
 						if(count($Options) == 0 || in_array("edit", $Options))

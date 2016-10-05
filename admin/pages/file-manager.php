@@ -12,10 +12,13 @@
 		$DeleteItem = $_GET["param_".((string)count($_GET)-1)];
 		unset($_GET["param_".((string)count($_GET)-1)]);
 		$CurrentDirectory = array();
-		for($I = 0; $I < count($_GET); $I++){
+		
+		for($I = 0; $I < count($_GET); $I++)
+		{
 			if(isset($_GET["param_".$I]) && strlen($_GET["param_".$I]) > 0) $CurrentDirectory[] = $_GET["param_".$I];
 			else break;
 		}
+		
 		$DeleteItem = explode("=", $DeleteItem);
 		$DeleteItemRoot = $FrontEndImageLocationRoot."/".implode("/", $CurrentDirectory)."/".urldecode(str_replace("-specialfullstop-", ".", $DeleteItem[1]));
 		unlink($DeleteItemRoot);
@@ -86,6 +89,15 @@
 	$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;"));
 	$FormGen->AddElement(array("type" => "submit", "value" => "Upload", "class" => "highlight"));
 	echo $FormGen->Build(array("ColNum" => 3));
+
+	$Dirs = glob(str_replace("//", "/", $RootDirectory."/*"), GLOB_ONLYDIR);
+	$Files = glob(str_replace("//", "/", $RootDirectory."/*.*"));
+
+	$FormGen = new FormGen();
+	$FormGen->AddElement(array("name" => "search", "placeholder" => "File name"));
+	$FormGen->AddElement(array("type" => "submit", "value" => "Search", "class" => "highlight"));
+	$FormGen->AddElement(array("type" => "html", "value" => "Total directories: ".count($Dirs).", files: ".count($Files).((count($Files) > 100) ? " (limited to 100)" : "")));
+	echo $FormGen->Build(array("ColNum" => 3, "data" => $_POST));
 ?>
 </div>
 
@@ -108,13 +120,22 @@
 
 <?php
 	//$Listings = scandir($RootDirectory);
-	$Listings = array("..");
-	foreach(glob(str_replace("//", "/", $RootDirectory."/*"), GLOB_ONLYDIR) as $Dir)
-		$Listings[] = basename($Dir);
 
-	foreach(glob(str_replace("//", "/", $RootDirectory."/*.*")) as $File)
+	$Listings = array("..");
+	foreach($Dirs as $Dir)
+	{
+		if(!isset($_POST["search"]) || $_POST["search"] == "" || (isset($_POST["search"]) && strstr(basename($Dir), $_POST["search"]) !== false))
+			$Listings[] = basename($Dir);
+	}
+	
+	foreach(array_slice($Files, 0, 100) as $File)
+	{
 		if(is_file($File))
-			$Listings[] = basename($File);
+		{
+			if(!isset($_POST["search"]) || $_POST["search"] == "" || (isset($_POST["search"]) && strstr(basename($File), $_POST["search"]) !== false))
+				$Listings[] = basename($File);
+		}
+	}
 
 	foreach($Listings as $Item)
 	{

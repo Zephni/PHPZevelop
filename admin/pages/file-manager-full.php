@@ -3,7 +3,7 @@
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Manage images",
-		"Template"	 => "fullwidthempty",
+		"Template" => "none",
 		"PassParams" => true
 	));
 
@@ -78,20 +78,43 @@
 		echo "<h3 style='color: #BA1F24;'>".$Error."</h3>";
 ?>
 
-<div style="width: 50%;">
-<?php
-	$FormGen = new FormGen();
-	$PreHTML = "<table style='width: 100%;'><tr><td><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' style='width: 100px;' class='PreviewImage' /></td><td>";
-	$PostHTML = "</td></tr></table>";
-	$FormGen->AddElement(array("type" => "file", "name" => "image", "class" => "ImageSelector"), array("prehtml" => $PreHTML, "posthtml" => $PostHTML));
-	$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;"));
-	$FormGen->AddElement(array("type" => "submit", "value" => "Upload", "class" => "highlight"));
-	echo $FormGen->Build(array("ColNum" => 3));
-?>
-</div>
+<html>
+<head>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			SetImagePreview(".ImageSelector", ".PreviewImage");
+		});
+	</script>
+	<style type="text/css">
+		table.FormGen {width: 100%;}
+		table.FormGen tr td {padding: 5px;}
+		table.FormGen tr td:first-of-type {padding-left: 0px;}
+		table.FormGen tr td:last-of-type {padding-right: 0px;}
+		table.FormGen input {width: 100%; padding: 6px; box-sizing: border-box; font-size: 16px;}
+		table.FormGen textarea {width: 100%; padding: 6px; box-sizing: border-box; font-size: 16px; height: 100px;}
+		table.FormGen select {width: 100%; padding: 6px; box-sizing: border-box; font-size: 16px;}
+		table.FormGen img {width: 100%;}
+		table.FormGen input[type="submit"].highlight {background: #009ACD; color: white; border: none; width: 100%; padding: 7px 25px;}
+		table.FormGen input[type="submit"]:hover {cursor: pointer;}
+	</style>
+</head>
+<body style="margin: 0px; overflow: hidden; background: none;">
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		SetImagePreview(".ImageSelector", ".PreviewImage");
-	});
-</script>
+		<table style="position: relative; left: -10px;">
+			<tr>
+				<td>
+					<?php
+						$FormGen = new FormGen();
+						//$PreHTML = "<table style='width: 100%;'><tr><td><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' style='width: 100px;' class='PreviewImage' /></td><td>";
+						//$PostHTML = "</td></tr></table>";
+						$FormGen->AddElement(array("type" => "file", "name" => "image"), array("prehtml" => $PreHTML, "posthtml" => $PostHTML));
+						$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;"));
+						$FormGen->AddElement(array("type" => "submit", "value" => "Upload", "class" => "highlight"));
+						echo $FormGen->Build(array("ColNum" => 3));
+					?>
+				</td>
+			</tr>
+		</table>
+
+</body>
+</html>

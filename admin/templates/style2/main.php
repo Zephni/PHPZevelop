@@ -25,6 +25,19 @@
 				$("#content").css({
 					"min-height":$("#nav").height()+20
 				});
+
+				$(window).resize(function(){
+					ResizeLeftSpacer();
+				});
+
+				ResizeLeftSpacer();
+
+				function ResizeLeftSpacer()
+				{
+					var left = $("#leftPanel").width()+40;
+					var width = ($(window).width() - left);
+					$("#content").css({"left":(left)+"px", "width":(width)+"px"});
+				}
 			});
 		</script>
 
@@ -42,7 +55,7 @@
 		<script>
 			tinymce.init({
 				selector:'textarea.wysiwyg',
-				plugins: "link image media code paste",
+				plugins: "link image media code paste table",
 				paste_auto_cleanup_on_paste : true,
 	            paste_remove_styles: true,
 	            paste_remove_styles_if_webkit: true,
@@ -50,14 +63,15 @@
 				menubar: false,
 				statusbar: true,
 				height : 200,
-				toolbar: 'pastetext bold italic alignleft aligncenter alignright alignjustified fontsizeselect | link unlink | bullist numlist image | code',
+				toolbar: 'pastetext | bold italic alignleft aligncenter alignright alignjustified fontsizeselect | link unlink | bullist numlist image table | code',
   				fontsize_formats: '10pt 12pt 14pt 18pt 24pt 36pt',
 				automatic_uploads: false,
 				content_css: "<?php echo $PHPZevelop->Path->GetCSS('tinymce.css'); ?>",
 
 				// Image stuff
 				convert_urls : false,
-				image_caption: true
+				image_caption: true,
+				image_advtab: true
 			});
 		</script>
 	</head>
@@ -72,6 +86,13 @@
 			</div>
 
 			<div style="position: absolute; right: 0px; top: 0px;">
+
+				<div class="item">
+					<a href="<?php $PHPZevelop->Path->GetPage("../") ?>">
+						<img src="<?php echo $PHPZevelop->Path->GetImage("components/arrow-icon.png"); ?>">
+						<span>Go to front end</span>
+					</a>
+				</div>
 
 				<div class="item">
 					<a href="<?php $PHPZevelop->Path->GetPage("") ?>">
@@ -150,12 +171,9 @@
 		</div>
 
 		<div id="content">
-			<div class="leftSpacer"></div>
 			<div class="contentBox">
 				<div class="topPadding"></div>
-				<div class="padding">
-					<?php echo $PHPZevelop->PageContent; ?>
-				</div>
+				<?php echo $PHPZevelop->PageContent; ?>
 			</div>
 		</div>
 
