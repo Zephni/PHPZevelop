@@ -59,7 +59,7 @@
 			CookieHelper::Set(User::$UsernameSessionField, $_SESSION[User::$UsernameSessionField]);
 			CookieHelper::Set(User::$PasswordSessionField, $_SESSION[User::$PasswordSessionField]);
 
-			$User = User::Get(array("username" => $_SESSION[User::$UsernameSessionField]));
+			$User = User::Get(array(array("username", "=", $_SESSION[User::$UsernameSessionField])));
 
 			if(substr($User->Data["last_active"], 1) > time()-User::$InactiveTime)
 				$User->Login();

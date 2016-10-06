@@ -2,7 +2,7 @@
 	/* Include all classes
 	------------------------------*/
 	$SubLoader = new SubLoader($PHPZevelop->CFG->SiteDirRoot);
-	$SubLoader->RunIncludes(array("classes/base", "../common/", "../common/classes", "../common/functions", "classes", "functions"));
+	$SubLoader->RunIncludes(array("../common/", "classes", "functions"));
 	extract($SubLoader->DefinedVariables);
 
 	// Early instantiate

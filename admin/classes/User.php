@@ -1,42 +1,9 @@
 <?php
-	/*
-		EXAMPLE USAGE:
-	
-		// NOTE: REQUIRED FIELD IN TABLE BY DEFAULT ARE: username, password, salt, email, last_active, active
-
-		// Upload a new user
-		$User = new User(array("username" => "Zephni"));
-		$User->SetPassword("tester34");
-		$User->Upload();
-
-		// Get user from database
-		$User = $User = User::Get(array("username" => "Zephni")); // Note you can use any array elements to select a user, you can use % wildcards
-
-		// Update user details
-		$User = User::Get(array("username" => "Zephni"));
-		$User->Data["username"] = "somenewname";
-		$User->SetPassword("tester34");
-		$User->Update();
-
-		// Sync from database
-		$User = User::Get(array("username" => "Zephni"));
-		$User->Data["username"] = "Billy";
-		$User->Sync(); // This will reset the username back to Zephni
-
-		// Check password
-		$User = User::Get(array("username" => "Zephni"));
-		return ($User->CheckPassword("tester34")) ? true : false;
-
-		// Check if user exists
-		return (User::CheckExists(array("username" => "Zephni"))) ? true : false;
-	*/
-
 	//if(!class_exists("User"))
 	//{
 		class User extends DBItem
 		{
 			private $ActualPass = null;
-			public $Table = "";
 			public $ImageLocation = "users";
 			public static $UsernameSessionField = "username";
 			public static $PasswordSessionField = "password";
@@ -45,7 +12,7 @@
 			// Initiate
 			public function Initiate()
 			{
-				$this->Table = DBTables::Users;
+				$this->Config["Table"] = "users";
 				self::$InactiveTime = (60*20);
 			}
 
@@ -137,7 +104,7 @@
 			public static function AttemptLogin(&$User, $Username, $Password)
 			{
 				$MSG = null;
-				$UserLogin = User::Get(array("username" => $Username, "email" => $Username), "OR");
+				$UserLogin = User::Get(array(array("username", "LIKE", $Username), "OR", array("email", "LIKE", $Username)));
 
 				// Attempts
 				$AllowedAttempts = 5;
@@ -221,19 +188,11 @@
 				if(!isset($_SESSION[self::$PasswordSessionField]) || !isset($this->Data["id"]) || strlen($this->Data["id"]) == 0)
 					return false;
 
-				$TempUser = User::Get(array("username" => $_SESSION[self::$UsernameSessionField]));
+				$TempUser = User::Get(array(array("username", "=", $_SESSION[self::$UsernameSessionField])));
 				if(isset($TempUser->Data) && $_SESSION[self::$PasswordSessionField] == $TempUser->Data["password"])
 					return true;
 
 				return false;
-			}
-
-			public function Delete()
-			{
-				if(!isset($this->Data["id"]))
-					die("Cannot remove user, id not set");
-
-				self::$DB->QuerySingle("DELETE FROM ".self::$Table." WHERE id=:id", array("id" => $this->Data["id"]));
 			}
 
 			public function CheckRelocate()
@@ -276,7 +235,7 @@
 					$Data["activated"] = "0";
 				}
 
-				foreach(@$DB->Query("SELECT * FROM ".self::$Table." ".$Where, $Data) as $User)
+				foreach(@$DB->Query("SELECT * FROM ".$this->Config["Table"]." ".$Where, $Data) as $User)
 					$Users[] = new User($User);
 
 				return $Users;

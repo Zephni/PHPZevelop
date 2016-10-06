@@ -142,8 +142,8 @@
 
 			$Str .= implode(", ", $Temp);
 
-			$DB->Query(Str, $Arr);
-			return $DB->LastInsertId;
+			$this->Query($Str, $Arr);
+			return $this->LastInsertId;
 		}
 
 		function Update($Table, $Values, $Where = null)
@@ -181,7 +181,7 @@
 				}
 			}
 
-			return $DB->QuerySingle(Str, $Arr);
+			return $this->QuerySingle($Str, $Arr);
 		}
 	}	
 ?>

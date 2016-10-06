@@ -43,9 +43,6 @@
 			"Pass" => "",
 			"Name" => ""
 		);
-
-		$PHPZevelop->CFG->Domain = "";
-		$PHPZevelop->CFG->SiteTitle = "";
 	}
 	else if($PHPZevelop->CFG->SiteMode == SiteMode::Live)
 	{
@@ -55,7 +52,4 @@
 			"Pass" => "",
 			"Name" => ""
 		);
-
-		$PHPZevelop->CFG->Domain = "";
-		$PHPZevelop->CFG->SiteTitle = "";
 	}
