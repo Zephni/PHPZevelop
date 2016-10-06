@@ -8,7 +8,7 @@
 
 <h2>Welcome TO PHPZAdmin!</h2>
 
-<p>Logged in as: <?php echo $User->Data["username"]; ?> (<?php $Link->Out("signout", "sign out"); ?>)</p>
+<p>Logged in as: <?php echo $Administrator->Data["username"]; ?> (<?php $Link->Out("signout", "sign out"); ?>)</p>
 
 <p>For information on implementing PHPZAdmin: <?php $Link->Out("howto.txt"); ?></p>
 

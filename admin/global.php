@@ -10,7 +10,7 @@
 		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
 
 	// Logout if restricted
-	if($PHPZevelop->CFG->PagePath != "/login" && isset($User) && !$User->LoggedIn())
+	if($PHPZevelop->CFG->PagePath != "/login" && isset($Administrator) && !$Administrator->LoggedIn())
 		$PHPZevelop->Location("login");
 
 	// Find Tables

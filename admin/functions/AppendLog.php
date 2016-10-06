@@ -2,10 +2,10 @@
  	function AppendLog($Text)
  	{
  		global $PHPZevelop;
- 		global $User;
+ 		global $Administrator;
  		$File = $PHPZevelop->CFG->SiteDirRoot."/log.txt";
 
- 		$UName = ($User->LoggedIn()) ? $UName = $User->Data["username"]." at " : "";
+ 		$UName = ($Administrator->LoggedIn()) ? $UName = $Administrator->Data["username"]." at " : "";
 
  		if(@touch($File))
  		{

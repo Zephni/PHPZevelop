@@ -96,7 +96,7 @@
 	        }        
 	    }
 
-	    function Select($Fields, $From, $Where = array(), $Single = false)
+	    function Select($Fields, $From, $Where = array(), $Single = false, $Die = false)
 		{
 			$Arr = array();
 			$Str = "SELECT";
@@ -119,6 +119,9 @@
 					$Arr["w".$Wheres] = $V[2];
 				}
 			}
+
+			if($Die)
+				die($Str."<br /><br />".print_r($Arr));
 
 			if(!$Single)
 				return $this->Query($Str, $Arr);

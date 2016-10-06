@@ -97,7 +97,7 @@
 				<div class="item">
 					<a href="<?php $PHPZevelop->Path->GetPage("") ?>">
 						<img src="<?php echo $PHPZevelop->Path->GetImage("components/user-icon.png"); ?>">
-						<span>Hello, <?php echo $User->Data["username"]; ?>!</span>
+						<span>Hello, <?php echo $Administrator->Data["username"]; ?>!</span>
 					</a>
 				</div>
 

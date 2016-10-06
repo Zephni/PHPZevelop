@@ -53,12 +53,14 @@
 			$DB->QuerySingle("DELETE FROM ".$this->Config["Table"]." WHERE id=:id", array("id" => $this->Data["id"]));
 		}
 
-		public static function Get($Where = array())
+		public static function Get()
 		{
 			global $DB;
 
-			if(is_numeric($Where))
-				$Where = array(array("id", "=", $Where));
+			$Where = func_get_args();
+
+			if(is_numeric($Where[0]))
+				$Where = array(array("id", "=", $Where[0]));
 
 			$ClassName = get_called_class();
 			$Temp = new $ClassName();
@@ -66,9 +68,7 @@
 			$GetData = $DB->Select("*", $Temp->Config["Table"], $Where);
 
 			if(!isset($GetData[0]))
-				return null;
-			else if(!isset($GetData[1]) || !is_array($GetData[1]))
-				return new $ClassName($GetData[0]);
+				return array();
 			else
 			{
 				$Items = array();
@@ -77,5 +77,18 @@
 
 				return $Items;
 			}
+		}
+
+		public static function GetSingle()
+		{
+			$Where = func_get_args();
+			$ClassName = get_called_class();
+
+			$Items = call_user_func_array($ClassName."::Get", $Where);
+
+			if(isset($Items[0]))
+				return $Items[0];
+			else
+				return new $ClassName();
 		}
 	}
