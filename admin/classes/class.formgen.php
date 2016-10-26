@@ -147,10 +147,10 @@
 				{
 					foreach($Item["Options"]["data"] as $K => $V)
 					{
-						if(isset($this->PrepopData[$Item["Attributes"]["name"]]) && strstr($this->PrepopData[$Item["Attributes"]["name"]], $V) !== false)
-							$HTML .= "<input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 5px;' checked='checked' /><span style='position: relative; top: -4px;'>".$V."</span>";
+						if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && strstr($this->PrepopData[$Item["Attributes"]["name"]], $V) !== false)
+							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 5px;' checked='checked' /><span style='position: relative; top: -4px;'>".$V."</span></div>";
 						else
-							$HTML .= "<input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 5px;' /><span style='position: relative; top: -4px;'>".$V."</span>";
+							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 5px;' /><span style='position: relative; top: -4px;'>".$V."</span></div>";
 					}
 				}
 				else if($Item["Attributes"]["type"] == "file")
