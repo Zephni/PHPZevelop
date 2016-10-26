@@ -157,9 +157,14 @@
 								foreach(explode("|", $TableOptions[$K]["Navigation"]) as $Item)
 								{
 									$Parts = explode(",", $Item);
+
+									$Extra = "";
+									if(isset($Item[2]))
+										$Extra = '<a href="'.$PHPZevelop->Path->GetPage($Parts[3], true).'" style="width: 100%;">'.$Parts[2].'</a>';
+
 									echo '<tr>
 										<td><a href="'.$PHPZevelop->Path->GetPage($Parts[1], true).'" style="padding-left: 20px; width: 100%;">- '.$Parts[0].'</a></td>
-										<td></td>
+										<td>'.$Extra.'</td>
 									</tr>';
 								}
 							}

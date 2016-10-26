@@ -10,7 +10,7 @@
 	/* Config
 	------------------------------*/
 	$PHPZevelop->NewObject("CFG", (object) array(
-
+		
 		// Site specific
 		"SiteMode"			=> SiteMode::Development,
 		
@@ -20,7 +20,7 @@
 		"MetaTitle"			=> "",
 		"MetaDescription"	=> "",
 		"MetaKeywords"		=> "",
-
+		
 		// Structural
 		"Site"				=> "site",
 		"MultiSite"			=> array("howto", "admin"),
@@ -30,7 +30,7 @@
 		"PreParam"			=> "param_",
 		"Page404"			=> "error/404",
 		"DefaultFiles"		=> array("index", "default", "home")
-	
+		
 	));
 
 	/* Database

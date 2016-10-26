@@ -24,6 +24,9 @@
 		{
 			if(isset($ColumnCommands[$Item]["type"][0]) && $ColumnCommands[$Item]["type"][0] == "timestamp")
 				$_POST[$Item] = strtotime($_POST[$Item]);
+
+			if(is_array($_POST[$Item]))
+				$_POST[$Item] = implode(",", $_POST[$Item]);
 		}
 
 		InsertQueryFromArray($_GET["param_0"], $_POST);
@@ -72,7 +75,7 @@
 	}
 ?>
 
-<h2>Adding to table <?php echo ucfirst(str_replace("_", "", $_GET["param_0"])); ?></h2>
+<h2>Adding to table <?php echo ucfirst(str_replace("_", " ", $_GET["param_0"])); ?></h2>
 <br />
 
 <?php
@@ -107,6 +110,34 @@
 				foreach($DB->Query("SELECT id,".$ColumnCommands[$Item["column_name"]]["join"][1]." FROM ".$ColumnCommands[$Item["column_name"]]["join"][0]) as $Option)
 					$Options[$Option["id"]] = $Option[$ColumnCommands[$Item["column_name"]]["join"][1]];
 			}
+			else if(isset($ColumnCommands[$Item["column_name"]]["configkv"]))
+			{
+				$ConfigKV = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["configkv"][0])));
+				$Temp1 = explode(($ConfigKV["delimiter_1"] == "PHP_EOL") ? PHP_EOL : $ConfigKV["delimiter_1"], $ConfigKV["_value"]);
+
+				foreach($Temp1 as $Temp2)
+				{
+					$Temp2 = explode($ConfigKV["delimiter_2"], $Temp2);
+					$Options[$Temp2[0]] = $Temp2[1];
+				}
+				unset($ConfigKV, $Temp1, $Temp2);
+			}
+			else if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
+			{
+				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
+				
+				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
+				{
+					$Temp1 = explode("\r\n", $Temp1);
+					
+					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
+					{
+						unset($Temp1[0]);
+						foreach($Temp1 as $Temp2)
+							$Options[$Temp2] = $Temp2;
+					}
+				}
+			}
 			else if(isset($ColumnCommands[$Item["column_name"]]["values"]))
 			{
 				foreach($ColumnCommands[$Item["column_name"]]["values"] as $Val)
@@ -117,6 +148,29 @@
 			}
 
 			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "value" => $Item["column_default"], "class" => $Class), array("title" => $Title, "data" => $Options));
+		}
+		elseif($Type == "checkbox")
+		{
+			$Options = array();
+
+			if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
+			{
+				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
+				
+				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
+				{
+					$Temp1 = explode("\r\n", $Temp1);
+					
+					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
+					{
+						unset($Temp1[0]);
+						foreach($Temp1 as $Temp2)
+							$Options[$Temp2] = $Temp2;
+					}
+				}
+			}
+
+			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "data" => $Options));
 		}
 		elseif($Type == "timestamp")
 		{
