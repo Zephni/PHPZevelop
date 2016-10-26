@@ -25,6 +25,9 @@
 		{
 			if(isset($ColumnCommands[$Item]["type"][0]) && $ColumnCommands[$Item]["type"][0] == "timestamp")
 				$_POST[$Item] = strtotime($_POST[$Item]);
+
+			if(is_array($_POST[$Item]))
+				$_POST[$Item] = implode(",", $_POST[$Item]);
 		}
 
 		//IMAGE
