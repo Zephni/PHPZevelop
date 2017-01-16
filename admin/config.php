@@ -13,3 +13,9 @@
 
 	// Template
 	$PHPZevelop->CFG->Template = $DefaultStyle."/main";
+
+	// Constants
+	class DBTables
+	{
+		const Users = "administrators";
+	}

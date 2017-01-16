@@ -2,7 +2,7 @@
 	/* Include all classes
 	------------------------------*/
 	$SubLoader = new SubLoader($PHPZevelop->CFG->SiteDirRoot);
-	$SubLoader->RunIncludes(array("../common/", "classes", "functions"));
+	$SubLoader->RunIncludes(array("classes/base", "../common/", "../common/classes", "../common/functions", "classes", "functions"));
 	extract($SubLoader->DefinedVariables);
 
 	// Early instantiate
@@ -10,7 +10,7 @@
 		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
 
 	// Logout if restricted
-	if($PHPZevelop->CFG->PagePath != "/login" && isset($Administrator) && !$Administrator->LoggedIn())
+	if($PHPZevelop->CFG->PagePath != "/login" && isset($User) && !$User->LoggedIn())
 		$PHPZevelop->Location("login");
 
 	// Find Tables

@@ -10,99 +10,36 @@
 	if(isset($TableOptions[$_GET["param_0"]]["Status"]) && $TableOptions[$_GET["param_0"]]["Status"] == "disabled")
 		die("Disabled");
 
+	// Defaults
+	foreach(array("Fields" => "*", "Where" => "", "Order" => "id DESC", "Limit" => "40") as $K => $V)
+	{
+		if(!isset($_POST[$K]))
+		{
+			if(isset($TableOptions[$_GET["param_0"]]["Default".$K]))
+			{
+				$_POST[$K] = $TableOptions[$_GET["param_0"]]["Default".$K];
+			}
+			else
+			{
+				if(isset($_SESSION[$_GET["param_0"]."_select_".$K]))
+					$_POST[$K] = $_SESSION[$_GET["param_0"]."_select_".$K];
+				else
+					$_POST[$K] = $V;
+			}
+
+			if(isset($_GET[$K])) $_POST[$K] = $_GET[$K];
+
+			$_POST[$K] = str_replace("ORDER BY ", "", $_POST[$K]);
+		}
+
+		$_SESSION[$_GET["param_0"]."_select_".$K] = $_POST[$K];
+	}
+
 	// Columns
 	GetColumnsCommands($_GET["param_0"], $Columns, $ColumnCommands);
 	$ColumnNames = array();
 	foreach($Columns as $Item)
 		$ColumnNames[] = $Item["column_name"];
-
-	// Session saving and last search type
-	if(isset($_GET["SQL"]))
-	{
-		$_SESSION[$_GET["param_0"]."_LASTSEARCH"] = "ADVANCED";
-		$_SESSION[$_GET["param_0"]."_SQL"] = $_GET["SQL"];
-		$_SESSION[$_GET["param_0"]."_DATA"] = array();
-	}
-	else if(isset($_POST["SQL"]))
-	{
-		$_SESSION[$_GET["param_0"]."_LASTSEARCH"] = "ADVANCED";
-		$_SESSION[$_GET["param_0"]."_SQL"] = $_POST["SQL"];
-		$_SESSION[$_GET["param_0"]."_DATA"] = $_POST["DATA"];
-	}
-	else if(isset($_POST["FIELD"]))
-	{
-		$_SESSION[$_GET["param_0"]."_LASTSEARCH"] = "SIMPLE";
-		$_SESSION[$_GET["param_0"]."_FIELD"] = $_POST["FIELD"];
-		$_SESSION[$_GET["param_0"]."_STYPE"] = $_POST["STYPE"];
-		$_SESSION[$_GET["param_0"]."_VALUE"] = $_POST["VALUE"];
-	}
-	else if(!isset($_GET["param_1"]))
-	{
-		unset($_SESSION[$_GET["param_0"]."_LASTSEARCH"], $_SESSION[$_GET["param_0"]."_FIELD"], $_SESSION[$_GET["param_0"]."_STYPE"], $_SESSION[$_GET["param_0"]."_VALUE"]);
-	}
-
-	// Session loading
-	if(isset($_SESSION[$_GET["param_0"]."_LASTSEARCH"]))
-	{
-		if($_SESSION[$_GET["param_0"]."_LASTSEARCH"] == "ADVANCED")
-		{
-			$_POST["SQL"] = $_SESSION[$_GET["param_0"]."_SQL"];
-			$_POST["DATA"] = $_SESSION[$_GET["param_0"]."_DATA"];
-		}
-		else if($_SESSION[$_GET["param_0"]."_LASTSEARCH"] = "SIMPLE")
-		{
-			$_POST["FIELD"] = $_SESSION[$_GET["param_0"]."_FIELD"];
-			$_POST["STYPE"] = $_SESSION[$_GET["param_0"]."_STYPE"];
-			$_POST["VALUE"] = $_SESSION[$_GET["param_0"]."_VALUE"];
-		}
-	}
-
-	// Build query and data
-	if(isset($_POST["SQL"]))
-	{
-		$Query = $_POST["SQL"];
-		$Data = json_decode(str_replace("'", '"', $_POST["DATA"]), true); // FIX THIS
-	}
-	else if(isset($_POST["FIELD"]))
-	{
-		if(isset($ColumnCommands[$_POST["FIELD"]]) && isset($ColumnCommands[$_POST["FIELD"]]["join"]))
-			$Query = "SELECT ".$_GET["param_0"].".*,".$ColumnCommands[$_POST["FIELD"]]["join"][0].".".$ColumnCommands[$_POST["FIELD"]]["join"][1]." FROM ".$_GET["param_0"]." LEFT JOIN ".$ColumnCommands[$_POST["FIELD"]]["join"][0]." ON ".$ColumnCommands[$_POST["FIELD"]]["join"][0].".id=".$_GET["param_0"].".".$_POST["FIELD"]." WHERE ".$ColumnCommands[$_POST["FIELD"]]["join"][0].".".$ColumnCommands[$_POST["FIELD"]]["join"][1]." ".$_POST["STYPE"]." :".$_POST["FIELD"];
-		else
-			$Query = "SELECT * FROM ".$_GET["param_0"]." WHERE `".$_POST["FIELD"]."` ".$_POST["STYPE"]." :".$_POST["FIELD"];
-
-		if($_POST["STYPE"] == "LIKE")
-			$Data = array($_POST["FIELD"] => "%".$_POST["VALUE"]."%");
-		else
-			$Data = array($_POST["FIELD"] => $_POST["VALUE"]);
-	}
-	else
-	{
-		if(isset($TableOptions[$_GET["param_0"]]["DefaultQuery"]))
-		{
-			$Query = $TableOptions[$_GET["param_0"]]["DefaultQuery"];
-			$Data = array();
-		}
-		else
-		{
-			$Query = "SELECT * FROM ".$_GET["param_0"]." ORDER BY ".((isset($TableOptions[$_GET["param_0"]]["DefaultOrder"])) ? $TableOptions[$_GET["param_0"]]["DefaultOrder"] : "id DESC")." LIMIT 100";
-			$Data = array();
-		}
-	}
-
-	// Fix data as array
-	if(!isset($Data) || !is_array($Data))
-		$Data = array();
-
-	// Set FIELD if none set and title exists
-	if(in_array("title", $ColumnNames))
-		$_POST["FIELD"] = "title";
-
-	// Illegals
-	foreach(array("UPDATE", "DELETE", "INSERT") as $Item)
-	{
-		if(strstr($Query, $Item) != false)
-			die("Illegal");
-	}
 
 	// Delete action
 	if(ArrGet($_GET, "delete") != "")
@@ -116,66 +53,83 @@
 <h2>Searching <?php echo ucfirst(str_replace("_", " ", $_GET["param_0"])); ?></h2>
 <br />
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("#advSearchButton").click(function(){
-			if(!$("#advSearch").is(":visible") && !$("#advSearch").is(':animated'))
-			{
-				$("#splSearch").slideUp(300);
-				$("#advSearch").slideDown(300);
-			}
-			else if(!$("#advSearch").is(':animated'))
-			{
-				$("#splSearch").slideDown(300);
-				$("#advSearch").slideUp(300);
-			}
-		});
-
-		<?php if(isset($_SESSION[$_GET["param_0"]."_LASTSEARCH"]) && $_SESSION[$_GET["param_0"]."_LASTSEARCH"] == "ADVANCED"){ ?>
-			$("#splSearch").slideUp(0);
-			$("#advSearch").slideDown(0);
-		<?php } ?>
-	});
-</script>
-<div id="advSearchButton" style="color: #009ACD;">Advanced -></div>
-<div id="splSearch">
-<?php
-	$ColumnNamesTemp = array();
-	foreach($ColumnNames as $Item)
-		$ColumnNamesTemp[$Item] = $Item;
- 
-	// SQL Form
-	$FormGen = new FormGen();
-	$FormGen->AddElement(array("name" => "FIELD", "value" => (isset($_POST["FIELD"])) ? $_POST["FIELD"] : "event", "type" => "select"), array("title" => "Where", "data" => $ColumnNamesTemp));
-	$FormGen->AddElement(array("name" => "STYPE", "type" => "select", "value" => $_POST["STYPE"]), array("data" => array("LIKE" => "LIKE", "=" => "=", "!=" => "!=", ">=" => ">=", "<=" => "<=")));
-	$FormGen->AddElement(array("name" => "VALUE", "value" => (isset($_POST["VALUE"])) ? trim($_POST["VALUE"], "%") : "", "type" => "text"));
-	$FormGen->AddElement(array("type" => "submit", "value" => "Run"));
-	echo $FormGen->Build(array("ColNum" => 4));
-?>
-</div>
-<div id="advSearch" style="display: none;">
 <?php
 	// SQL Form
 	$FormGen = new FormGen();
-	$FormGen->AddElement(array("name" => "SQL", "value" => $Query), array("title" => "SQL"));
-	$FormGen->AddElement(array("name" => "DATA", "value" => json_encode($Data)), array("title" => "Data"));
+	$FormGen->AddElement(array("name" => "Fields", "value" => $_POST["Fields"]), array("title" => "Fields"));
+	$FormGen->AddElement(array("name" => "Where", "value" => $_POST["Where"], "placeholder" => "key=value"), array("title" => "Where", "postHTML" => "test"));
+	$FormGen->AddElement(array("name" => "Order", "value" => $_POST["Order"]), array("title" => "Order"));
+	$FormGen->AddElement(array("name" => "Limit", "value" => $_POST["Limit"]), array("title" => "Limit"));
 	$FormGen->AddElement(array("type" => "submit", "value" => "Run query"));
-	echo $FormGen->Build(array("ColNum" => 1));
+	echo $FormGen->Build(array("ColNum" => 5));
 ?>
-</div>
 
 <?php
 	// Checks
-	foreach(array(";", "DROP", "UNION", "DELETE", "REMOVE", "CREATE", "SHOW", "UPDATE", "FLUSH", "INSERT", "ALTER", "DESCRIBE") as $BannedWord)
+	foreach(array("Fields", "Where", "Order") as $Key)
 	{
-		if(strstr($Query, $BannedWord) !== false)
-			$Error = "Cannot use '".$BannedWord."' in MySQL statement";
+		if($Key == "Fields" && strlen($_POST["Fields"]) == 0)
+			$Error = "Fields is empty, try *";
+		else
+		{
+			foreach(array(";", "FROM", "DROP", "UNION", "DELETE", "REMOVE", "CREATE", "SHOW", "UPDATE", "FLUSH", "INSERT", "ALTER", "DESCRIBE", "LIMIT") as $BannedWord)
+			{
+				if(strstr(strtolower($_POST[$Key]), strtolower($BannedWord)) != false)
+					$Error = "Cannot use '".$BannedWord."' in MySQL statement";
+			}
+		}
 	}
 
-	// If no error run query
+	// Build FinalWhere statement and data array
+	$FinalWhere = "";
+	$Data = array();
+
+	if(strlen(trim($_POST["Where"])) > 0)
+	{
+		$AndOrStack = array();
+		foreach(explode(" ", $_POST["Where"]) as $Item)
+		{
+			if($Item == "AND") $AndOrStack[] = " AND ";
+			else if($Item == "OR") $AndOrStack[] = " OR ";
+		}
+
+		foreach(preg_split( "/ AND | OR /i", $_POST["Where"]) as $Item)
+		{
+			if(strstr($Item, "==") !== false)
+			{
+				$Item = explode("==", $Item);
+				$Data[$Item[0]] = $Item[1];
+				$FinalWhere .= $Item[0]."=:".$Item[0];
+			}			
+			else if(strstr($Item, "=") !== false)
+			{
+				$Item = explode("=", $Item);
+				$Data[$Item[0]] = "%".$Item[1]."%";
+				$FinalWhere .= $Item[0]." LIKE :".$Item[0];
+			}
+			
+			if(count($AndOrStack) > 0)
+				$FinalWhere .= array_shift($AndOrStack);
+		}
+	}
+	
+	if($_POST["Fields"] != "*" && substr($_POST["Fields"], 0, 2) != "id")
+		$_POST["Fields"] = "id,".$_POST["Fields"];
+
+	$_POST["Limit"] = " LIMIT ".$_POST["Limit"];
+
+	if(count($Data) > 0)
+		$FinalWhere = "WHERE ".$FinalWhere;
+	else
+		$FinalWhere = "";
+
 	$Rows = array();
+
+	// If no error run query
 	if(!isset($Error))
 	{
+		$_POST["Order"] = "ORDER BY ".$_POST["Order"]." ";
+		$Query = "SELECT ".$_POST["Fields"]." FROM ".$_GET["param_0"]." ".$FinalWhere." ".$_POST["Order"].$_POST["Limit"];
 		$Rows = $DB->Query($Query, $Data);
 		
 		if(count($DB->error) > 0)
@@ -240,7 +194,10 @@
 							if(isset($ColumnCommands[$RowKeys[$II]]) && isset($ColumnCommands[$RowKeys[$II]]["join"]))
 							{
 								$V = $DB->QuerySingle("SELECT ".$ColumnCommands[$RowKeys[$II]]["join"][1]." FROM ".$ColumnCommands[$RowKeys[$II]]["join"][0]." WHERE id=:id", array("id" => $Item[$RowKeys[$II]]));
-								$V = (isset($V[$ColumnCommands[$RowKeys[$II]]["join"][1]])) ? $V[$ColumnCommands[$RowKeys[$II]]["join"][1]] : "";
+								if(isset($V[$ColumnCommands[$RowKeys[$II]]["join"][1]]))
+									$V = $V[$ColumnCommands[$RowKeys[$II]]["join"][1]];
+								else
+									$V = "";
 							}
 							
 							if(strlen($V) > 60) $V = substr($V, 0, 57)."...";
@@ -275,15 +232,15 @@
 						{
 							$Optins = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id AND `options` LIKE :options", array("comp_id" => $Item["id"], "options" => "%optin:1%")));
 							$Total = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id", array("comp_id" => $Item["id"])));
-							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?SQL=".urlencode("SELECT * FROM comp_entries WHERE comp_id='".$Item["id"]."' ORDER BY RAND()"), "entries (".$Optins."/".$Total.")")."</td>";
+							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?Where=comp_id%3D%3D".$Item["id"]."&Order=ORDER%20BY%20RAND()&Limit=100000", "entries (".$Optins."/".$Total.")")."</td>";
 						}
-						
+
 						if(count($Options) == 0 || in_array("edit", $Options))
 							echo "<td style='".$Style." text-align: center;'>".$Link->Get("edit/".$_GET["param_0"]."/".$Item["id"], "edit")."</td>";
-						
+
 						if(count($Options) == 0 || in_array("delete", $Options))
 							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/".$_GET["param_0"]."/?delete=".$Item["id"], "delete", array("class" => "delete"))."</td>";
-						
+
 						echo "</tr>";
 					}
 				?>

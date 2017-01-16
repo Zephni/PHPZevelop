@@ -15,10 +15,7 @@
 
 			public static function Get($Name)
 			{
-				if(isset($_COOKIE[$Name]))
-					return $_COOKIE[$Name];
-				else
-					return null;
+				return $_COOKIE[$Name];
 			}
 
 			public static function GetAll()

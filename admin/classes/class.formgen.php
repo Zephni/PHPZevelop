@@ -143,16 +143,6 @@
 						
 					$HTML .= "</select>".$Item["Options"]["posthtml"];
 				}
-				else if($Item["Attributes"]["type"] == "checkbox")
-				{
-					foreach($Item["Options"]["data"] as $K => $V)
-					{
-						if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && strstr($this->PrepopData[$Item["Attributes"]["name"]], $V) !== false)
-							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 5px;' checked='checked' /><span style='position: relative; top: -4px;'>".$V."</span></div>";
-						else
-							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 5px;' /><span style='position: relative; top: -4px;'>".$V."</span></div>";
-					}
-				}
 				else if($Item["Attributes"]["type"] == "file")
 				{
 					$Item["Attributes"]["style"] = "width: auto;";

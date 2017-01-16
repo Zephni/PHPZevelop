@@ -41,37 +41,37 @@
 		*/
 	}
 
-	/* Administrator
+	/* User
 	------------------------------*/
-	if(true && class_exists("Administrator"))
+	if(true && class_exists("User"))
 	{
-		Administrator::$UsernameSessionField = "admin_username";
- 		Administrator::$PasswordSessionField = "admin_password";
+		User::$UsernameSessionField = "admin_username";
+ 		User::$PasswordSessionField = "admin_password";
  		
-		if(!isset($_SESSION[Administrator::$UsernameSessionField]))
+		if(!isset($_SESSION[User::$UsernameSessionField]))
 		{
-			$_SESSION[Administrator::$UsernameSessionField] = CookieHelper::Get(Administrator::$UsernameSessionField);
-			$_SESSION[Administrator::$PasswordSessionField] = CookieHelper::Get(Administrator::$PasswordSessionField);
+			$_SESSION[User::$UsernameSessionField] = CookieHelper::Get(User::$UsernameSessionField);
+			$_SESSION[User::$PasswordSessionField] = CookieHelper::Get(User::$PasswordSessionField);
 		}
 
-		if(isset($_SESSION[Administrator::$UsernameSessionField]))
+		if(isset($_SESSION[User::$UsernameSessionField]))
 		{
-			CookieHelper::Set(Administrator::$UsernameSessionField, $_SESSION[Administrator::$UsernameSessionField]);
-			CookieHelper::Set(Administrator::$PasswordSessionField, $_SESSION[Administrator::$PasswordSessionField]);
+			CookieHelper::Set(User::$UsernameSessionField, $_SESSION[User::$UsernameSessionField]);
+			CookieHelper::Set(User::$PasswordSessionField, $_SESSION[User::$PasswordSessionField]);
 
-			$Administrator = Administrator::GetSingle(array("username", "=", $_SESSION[Administrator::$UsernameSessionField]));
+			$User = User::Get(array("username" => $_SESSION[User::$UsernameSessionField]));
 
-			if(substr($Administrator->Data["last_active"], 1) > time()-Administrator::$InactiveTime)
-				$Administrator->Login();
+			if(substr($User->Data["last_active"], 1) > time()-User::$InactiveTime)
+				$User->Login();
 			else
-				$Administrator->Logout();
+				$User->Logout();
 		}
 
-		if(!isset($Administrator) || !$Administrator->LoggedIn())
-			$Administrator =	new Administrator();
+		if(!isset($User) || !$User->LoggedIn())
+			$User =	new User();
 	}
 	else if(true) // Change to false to disable user loggin
-		die("Administrator class required");
+		die("User class required");
 
 	/* Pagination
 	------------------------------*/

@@ -55,7 +55,8 @@
 		<script>
 			tinymce.init({
 				selector:'textarea.wysiwyg',
-				plugins: "link image media code paste table",
+				plugins: "link image media code paste",
+				paste_as_text : true,
 				paste_auto_cleanup_on_paste : true,
 	            paste_remove_styles: true,
 	            paste_remove_styles_if_webkit: true,
@@ -97,7 +98,7 @@
 				<div class="item">
 					<a href="<?php $PHPZevelop->Path->GetPage("") ?>">
 						<img src="<?php echo $PHPZevelop->Path->GetImage("components/user-icon.png"); ?>">
-						<span>Hello, <?php echo $Administrator->Data["username"]; ?>!</span>
+						<span>Hello, <?php echo $User->Data["username"]; ?>!</span>
 					</a>
 				</div>
 
@@ -157,14 +158,9 @@
 								foreach(explode("|", $TableOptions[$K]["Navigation"]) as $Item)
 								{
 									$Parts = explode(",", $Item);
-
-									$Extra = "";
-									if(isset($Item[2]))
-										$Extra = '<a href="'.$PHPZevelop->Path->GetPage($Parts[3], true).'" style="width: 100%;">'.$Parts[2].'</a>';
-
 									echo '<tr>
 										<td><a href="'.$PHPZevelop->Path->GetPage($Parts[1], true).'" style="padding-left: 20px; width: 100%;">- '.$Parts[0].'</a></td>
-										<td>'.$Extra.'</td>
+										<td></td>
 									</tr>';
 								}
 							}

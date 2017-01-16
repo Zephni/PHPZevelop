@@ -8,8 +8,7 @@
 
 	if(count($_POST) > 0)
 	{
-		$MSG = Administrator::AttemptLogin($Administrator, $_POST["username"], $_POST["password"]);
-		
+		$MSG = User::AttemptLogin($User, $_POST["username"], $_POST["password"]);
 		if($MSG === true)
 			AppendLog("Successful login");
 		else
@@ -22,13 +21,12 @@
 
 		if($Split[0] == "activated")
 		{
-			$ActivatedUser = Administrator::GetSingle(array("id", "=", $Split[1]));
-
+			$ActivatedUser = User::Get(array("id" => $Split[1])); 
 			$_POST["username"] = $ActivatedUser->Data["username"];
 		} 
 	}
-
-	if($Administrator->LoggedIn())
+	
+	if($User->LoggedIn())
 		$PHPZevelop->Location("home");
 ?>
 
