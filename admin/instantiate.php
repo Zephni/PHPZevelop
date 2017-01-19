@@ -10,6 +10,10 @@
 			if(!$DB->Connected)
 				die($DB->ErrorHandler());
 		}
+		else
+		{
+			die("Database must be setup first. See config.php");
+		}
 	}
 
 	/* Link
