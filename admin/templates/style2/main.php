@@ -55,12 +55,14 @@
 		<script>
 			tinymce.init({
 				selector:'textarea.wysiwyg',
-				plugins: "link image media code paste",
-				paste_as_text : true,
+				plugins: "link image media code paste table",
 				paste_auto_cleanup_on_paste : true,
 	            paste_remove_styles: true,
 	            paste_remove_styles_if_webkit: true,
 	            paste_strip_class_attributes: "all",
+	            allow_html_in_named_anchor: true,
+	            allow_unsafe_link_target: true,
+	            enable_elements:"*[*]",
 				menubar: false,
 				statusbar: true,
 				height : 200,
@@ -75,6 +77,24 @@
 				image_advtab: true
 			});
 		</script>
+
+		<link rel="apple-touch-icon" sizes="57x57" href="/site/images/favicons/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/site/images/favicons/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/site/images/favicons/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/site/images/favicons/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/site/images/favicons/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/site/images/favicons/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/site/images/favicons/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/site/images/favicons/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/site/images/favicons/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="/site/images/favicons/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/site/images/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="/site/images/favicons/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/site/images/favicons/favicon-16x16.png">
+		<link rel="manifest" href="/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
 	</head>
 	<body>
 		
@@ -98,7 +118,7 @@
 				<div class="item">
 					<a href="<?php $PHPZevelop->Path->GetPage("") ?>">
 						<img src="<?php echo $PHPZevelop->Path->GetImage("components/user-icon.png"); ?>">
-						<span>Hello, <?php echo $User->Data["username"]; ?>!</span>
+						<span>Hello, <?php echo $Administrator->Data["username"]; ?>!</span>
 					</a>
 				</div>
 
@@ -129,9 +149,9 @@
 				</div>
 
 			</div>
-
+			
 		</div>
-
+		
 		<div id="leftPanel">
 			<div class="topPadding"></div>
 			<div class="padding" style="padding-top: 0px; margin-top: 20px; overflow-y: auto; max-height: 80%;">
@@ -151,23 +171,28 @@
 							echo '<tr>
 								<td><a href="'.$PHPZevelop->Path->GetPage("select/".$K, true).'">'.$V.'</a></td>
 								<td><a href="'.$PHPZevelop->Path->GetPage("add/".$K, true).'">Add</a></td>
-							</tr>';								
-
+							</tr>';
+							
 							if(isset($TableOptions[$K]["Navigation"]))
 							{
 								foreach(explode("|", $TableOptions[$K]["Navigation"]) as $Item)
 								{
 									$Parts = explode(",", $Item);
+
+									$Extra = "";
+									if(isset($Item[2]))
+										$Extra = '<a href="'.$PHPZevelop->Path->GetPage($Parts[3], true).'" style="width: 100%;">'.$Parts[2].'</a>';
+
 									echo '<tr>
 										<td><a href="'.$PHPZevelop->Path->GetPage($Parts[1], true).'" style="padding-left: 20px; width: 100%;">- '.$Parts[0].'</a></td>
-										<td></td>
+										<td>'.$Extra.'</td>
 									</tr>';
 								}
 							}
 						}
 					?>
 				</table>
-
+				
 			</div>
 		</div>
 

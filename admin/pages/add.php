@@ -24,6 +24,9 @@
 		{
 			if(isset($ColumnCommands[$Item]["type"][0]) && $ColumnCommands[$Item]["type"][0] == "timestamp")
 				$_POST[$Item] = strtotime($_POST[$Item]);
+
+			if(isset($_POST[$Item]) && is_array($_POST[$Item]))
+				$_POST[$Item] = implode(",", $_POST[$Item]);
 		}
 
 		InsertQueryFromArray($_GET["param_0"], $_POST);
@@ -72,7 +75,7 @@
 	}
 ?>
 
-<h2>Adding to table <?php echo ucfirst(str_replace("_", "", $_GET["param_0"])); ?></h2>
+<h2>Adding to table <?php echo ucfirst(str_replace("_", " ", $_GET["param_0"])); ?></h2>
 <br />
 
 <?php
@@ -99,6 +102,12 @@
 		$Type = (isset($ColumnCommands[$Item["column_name"]]["type"][0])) ? $ColumnCommands[$Item["column_name"]]["type"][0] : "text";
 		$Class = (isset($ColumnCommands[$Item["column_name"]]["class"][0])) ? $ColumnCommands[$Item["column_name"]]["class"][0] : "";
 
+		if(substr($Item["column_default"], 0, 7) == "Config:")
+		{
+			$Item["column_default"] = $DB->Select("*", "config", array(array("_key", "=", substr($Item["column_default"], 7))), true);
+			$Item["column_default"] = $Item["column_default"]["_value"];
+		}
+
 		if($Type == "select")
 		{
 			$Options = array("0" => " - none -");
@@ -106,6 +115,34 @@
 			{
 				foreach($DB->Query("SELECT id,".$ColumnCommands[$Item["column_name"]]["join"][1]." FROM ".$ColumnCommands[$Item["column_name"]]["join"][0]) as $Option)
 					$Options[$Option["id"]] = $Option[$ColumnCommands[$Item["column_name"]]["join"][1]];
+			}
+			else if(isset($ColumnCommands[$Item["column_name"]]["configkv"]))
+			{
+				$ConfigKV = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["configkv"][0])));
+				$Temp1 = explode(($ConfigKV["delimiter_1"] == "PHP_EOL") ? PHP_EOL : $ConfigKV["delimiter_1"], $ConfigKV["_value"]);
+
+				foreach($Temp1 as $Temp2)
+				{
+					$Temp2 = explode($ConfigKV["delimiter_2"], $Temp2);
+					$Options[$Temp2[0]] = $Temp2[1];
+				}
+				unset($ConfigKV, $Temp1, $Temp2);
+			}
+			else if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
+			{
+				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
+				
+				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
+				{
+					$Temp1 = explode("\r\n", $Temp1);
+					
+					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
+					{
+						unset($Temp1[0]);
+						foreach($Temp1 as $Temp2)
+							$Options[$Temp2] = $Temp2;
+					}
+				}
 			}
 			else if(isset($ColumnCommands[$Item["column_name"]]["values"]))
 			{
@@ -118,15 +155,45 @@
 
 			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "value" => $Item["column_default"], "class" => $Class), array("title" => $Title, "data" => $Options));
 		}
+		elseif($Type == "checkbox")
+		{
+			$Options = array();
+
+			if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
+			{
+				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
+				
+				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
+				{
+					$Temp1 = explode("\r\n", $Temp1);
+					
+					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
+					{
+						unset($Temp1[0]);
+						foreach($Temp1 as $Temp2)
+							$Options[$Temp2] = $Temp2;
+					}
+				}
+			}
+
+			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "data" => $Options));
+		}
 		elseif($Type == "timestamp")
 		{
 			$FormGen->AddElement(array("type" => "text", "name" => $Item["column_name"], "value" => date("Y/m/d G:i"), "class" => "datetimepicker ".$Class), array("title" => $Title));
 		}
-		elseif($Item["column_name"] == "image")
+		elseif($Type == "image")
 		{
-			$PreHTML = "<table style='width: 100%;'><tr><td style='width: 12%;'><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' class='PreviewImage' /></td><td>";
-			$PostHTML = "</td></tr></table>";
-			$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => "ImageSelector ".$Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
+			if(isset($ColumnCommands[$Item["column_name"]]["nopreview"]) && $ColumnCommands[$Item["column_name"]]["nopreview"] == true)
+			{
+				$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => $Class), array("title" => $Title));
+			}
+			else
+			{
+				$PreHTML = "<table style='width: 100%;'><tr><td style='width: 12%;'><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' class='PreviewImage' /></td><td>";
+				$PostHTML = "</td></tr></table>";
+				$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => "ImageSelector ".$Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
+			}
 		}
 		else
 		{

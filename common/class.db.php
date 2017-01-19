@@ -121,12 +121,23 @@
 			}
 
 			if($Die)
-				die($Str."<br /><br />".print_r($Arr));
+			{
+				$FullQ = $Str;
+				foreach($Arr as $K => $V)
+					$FullQ = str_replace(":".$K, $V, $FullQ);
+
+				PrintDie($Str, print_r($Arr, true), $FullQ);
+			}
 
 			if(!$Single)
 				return $this->Query($Str, $Arr);
 			else
 				return $this->QuerySingle($Str, $Arr);
+		}
+
+		function SelectSingle($Fields, $From, $Where = array(), $Die = false)
+		{
+			return $this->Select($Fields, $From, $Where, true, $Die);
 		}
 
 		function Insert($Table, $Values)

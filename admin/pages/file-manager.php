@@ -36,7 +36,7 @@
 
 	$DirectoryString = implode("/", $CurrentDirectory);
 	$RootDirectory = $FrontEndImageLocationRoot."/".$DirectoryString;
-
+	
 	if(!file_exists($RootDirectory))
 		$PHPZevelop->Location("file-manager");
 

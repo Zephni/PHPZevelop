@@ -80,11 +80,6 @@
 
 <html>
 <head>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			SetImagePreview(".ImageSelector", ".PreviewImage");
-		});
-	</script>
 	<style type="text/css">
 		table.FormGen {width: 100%;}
 		table.FormGen tr td {padding: 5px;}
@@ -107,7 +102,7 @@
 						$FormGen = new FormGen();
 						//$PreHTML = "<table style='width: 100%;'><tr><td><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' style='width: 100px;' class='PreviewImage' /></td><td>";
 						//$PostHTML = "</td></tr></table>";
-						$FormGen->AddElement(array("type" => "file", "name" => "image"), array("prehtml" => $PreHTML, "posthtml" => $PostHTML));
+						$FormGen->AddElement(array("type" => "file", "name" => "image"));
 						$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;"));
 						$FormGen->AddElement(array("type" => "submit", "value" => "Upload", "class" => "highlight"));
 						echo $FormGen->Build(array("ColNum" => 3));

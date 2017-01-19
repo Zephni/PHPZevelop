@@ -5,9 +5,9 @@
 		"PageTitle"  => "Sign out"
 	));
 
-	$User->Logout();
-	CookieHelper::Remove(User::$UsernameSessionField);
-	CookieHelper::Remove(User::$PasswordSessionField);
+	$Administrator->Logout();
+	CookieHelper::Remove(Administrator::$UsernameSessionField);
+	CookieHelper::Remove(Administrator::$PasswordSessionField);
 
 	header("Location: ".$PHPZevelop->CFG->SiteDirLocal);
 	die();

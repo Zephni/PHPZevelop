@@ -47,6 +47,7 @@
 	            paste_remove_styles: true,
 	            paste_remove_styles_if_webkit: true,
 	            paste_strip_class_attributes: "all",
+	            image_dimensions: false,
 				menubar: false,
 				statusbar: true,
 				height : 200,

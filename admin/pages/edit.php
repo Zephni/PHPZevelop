@@ -17,7 +17,7 @@
 
 	// Build $Columns and $ColumnCommands
 	GetColumnsCommands($_GET["param_0"], $Columns, $ColumnCommands);
-
+	
 	// On post
 	if(isset($_POST) && count($_POST) > 0)
 	{
@@ -25,6 +25,9 @@
 		{
 			if(isset($ColumnCommands[$Item]["type"][0]) && $ColumnCommands[$Item]["type"][0] == "timestamp")
 				$_POST[$Item] = strtotime($_POST[$Item]);
+
+			if(isset($_POST[$Item]) && is_array($_POST[$Item]))
+				$_POST[$Item] = implode(",", $_POST[$Item]);
 		}
 
 		//IMAGE
@@ -87,6 +90,34 @@
 				foreach($DB->Query("SELECT id,".$ColumnCommands[$Item["column_name"]]["join"][1]." FROM ".$ColumnCommands[$Item["column_name"]]["join"][0]) as $Option)
 					$Options[$Option["id"]] = $Option[$ColumnCommands[$Item["column_name"]]["join"][1]];
 			}
+			else if(isset($ColumnCommands[$Item["column_name"]]["configkv"]))
+			{
+				$ConfigKV = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["configkv"][0])));
+				$Temp1 = explode(($ConfigKV["delimiter_1"] == "PHP_EOL") ? PHP_EOL : $ConfigKV["delimiter_1"], $ConfigKV["_value"]);
+
+				foreach($Temp1 as $Temp2)
+				{
+					$Temp2 = explode($ConfigKV["delimiter_2"], $Temp2);
+					$Options[$Temp2[0]] = $Temp2[1];
+				}
+				unset($Temp1, $Temp2);
+			}
+			else if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
+			{
+				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
+				
+				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
+				{
+					$Temp1 = explode("\r\n", $Temp1);
+					
+					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
+					{
+						unset($Temp1[0]);
+						foreach($Temp1 as $Temp2)
+							$Options[$Temp2] = $Temp2;
+					}
+				}
+			}
 			else if(isset($ColumnCommands[$Item["column_name"]]["values"]))
 			{
 				foreach($ColumnCommands[$Item["column_name"]]["values"] as $Val)
@@ -98,20 +129,50 @@
 
 			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "data" => $Options));
 		}
+		elseif($Type == "checkbox")
+		{
+			$Options = array();
+
+			if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
+			{
+				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
+				
+				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
+				{
+					$Temp1 = explode("\r\n", $Temp1);
+					
+					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
+					{
+						unset($Temp1[0]);
+						foreach($Temp1 as $Temp2)
+							$Options[$Temp2] = $Temp2;
+					}
+				}
+			}
+
+			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "data" => $Options));
+		}
 		elseif($Type == "timestamp")
 		{
 			$FormGen->AddElement(array("type" => "text", "name" => $Item["column_name"], "value" => date("Y/m/d G:i"), "class" => "datetimepicker ".$Class), array("title" => $Title));
 		}
 		elseif($Type == "image")
 		{
-			if(is_file($FrontEndImageLocationRoot."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]))
-				$ImagePreview = $FrontEndImageLocationLocal."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]];
-			else
-				$ImagePreview = $PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true);
+			if(isset($ColumnCommands[$Item["column_name"]]["nopreview"]) && $ColumnCommands[$Item["column_name"]]["nopreview"] == true)
+			{
+				if(is_file($FrontEndImageLocationRoot."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]))
+					$ImagePreview = $FrontEndImageLocationLocal."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]];
+				else
+					$ImagePreview = $PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true);
 
-			$PreHTML = "<table style='width: 100%;'><tr><td style='width: 12%;'><img src='".$ImagePreview."' class='PreviewImage' /></td><td>";
-			$PostHTML = "</td></tr></table>";
-			$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => "ImageSelector ".$Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
+				$PreHTML = "<table style='width: 100%;'><tr><td style='width: 12%;'><img src='".$ImagePreview."' class='PreviewImage' /></td><td>";
+				$PostHTML = "</td></tr></table>";
+				$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => "ImageSelector ".$Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
+			}
+			else
+			{
+				$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => $Class), array("title" => $Title));
+			}
 		}
 		elseif($Type == "file")
 		{
@@ -137,7 +198,7 @@
 	$FormGen->AddElement(array("type" => "submit"));
 ?>
 
-<h2>Editing item #<?php echo $_GET["param_1"]; ?> in <?php echo ucfirst(str_replace("_", "", $_GET["param_0"])); ?></h2>
+<h2>Editing item #<?php echo $_GET["param_1"]; ?> in <?php echo ucfirst(str_replace("_", " ", $_GET["param_0"])); ?></h2>
 
 <?php
 	// File manager
@@ -155,6 +216,7 @@
 <?php if(isset($TableOptions[$_GET["param_0"]]["EditLink"])) {
 	$Parts = explode("|", $TableOptions[$_GET["param_0"]]["EditLink"]);
 	$Parts[0] = str_replace("[id]", $_GET["param_1"], $Parts[0]);
+	$Parts[0] = str_replace("[alias]", $Data["alias"], $Parts[0]);
 	echo "<a href='".$Parts[0]."' target='_blank'>".$Parts[1]."</a><br />";
 } ?>
 

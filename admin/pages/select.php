@@ -277,13 +277,13 @@
 							$Total = count($DB->Query("SELECT id FROM comp_entries WHERE comp_id=:comp_id", array("comp_id" => $Item["id"])));
 							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/comp_entries?SQL=".urlencode("SELECT * FROM comp_entries WHERE comp_id='".$Item["id"]."' ORDER BY RAND()"), "entries (".$Optins."/".$Total.")")."</td>";
 						}
-						
+
 						if(count($Options) == 0 || in_array("edit", $Options))
 							echo "<td style='".$Style." text-align: center;'>".$Link->Get("edit/".$_GET["param_0"]."/".$Item["id"], "edit")."</td>";
-						
+
 						if(count($Options) == 0 || in_array("delete", $Options))
 							echo "<td style='".$Style." text-align: center;'>".$Link->Get("select/".$_GET["param_0"]."/?delete=".$Item["id"], "delete", array("class" => "delete"))."</td>";
-						
+
 						echo "</tr>";
 					}
 				?>

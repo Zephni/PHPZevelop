@@ -12,10 +12,10 @@
 	$PHPZevelop->NewObject("CFG", (object) array(
 		
 		// Site specific
-		"SiteMode"			=> SiteMode::Development,
+		"SiteMode"			=> (strpos($_SERVER["SERVER_NAME"], "devserver") === false) ? SiteMode::Live : SiteMode::Development,
 		
-		// Strings
-		"SiteTitle"			=> "New project",
+		// Strings (Set in templates/main.php)
+		"SiteTitle"			=> "",
 		"PageTitle"			=> "",
 		"MetaTitle"			=> "",
 		"MetaDescription"	=> "",
@@ -23,7 +23,7 @@
 		
 		// Structural
 		"Site"				=> "site",
-		"MultiSite"			=> array("howto", "admin"),
+		"MultiSite"			=> array("admin"),
 		"LoadStyle"			=> "Template",
 		"Template"			=> "main",
 		"PassParams"		=> false,
@@ -43,6 +43,8 @@
 			"Pass" => "",
 			"Name" => ""
 		);
+
+		$PHPZevelop->CFG->Domain = "";
 	}
 	else if($PHPZevelop->CFG->SiteMode == SiteMode::Live)
 	{
@@ -52,4 +54,6 @@
 			"Pass" => "",
 			"Name" => ""
 		);
+
+		$PHPZevelop->CFG->Domain = "";
 	}
