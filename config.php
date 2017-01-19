@@ -23,7 +23,7 @@
 		
 		// Structural
 		"Site"				=> "site",
-		"MultiSite"			=> array("admin"),
+		"MultiSite"			=> array("admin", "howto"),
 		"LoadStyle"			=> "Template",
 		"Template"			=> "main",
 		"PassParams"		=> false,
