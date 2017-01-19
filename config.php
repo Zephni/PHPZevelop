@@ -15,7 +15,7 @@
 		"SiteMode"			=> (strpos($_SERVER["SERVER_NAME"], "devserver") === false) ? SiteMode::Live : SiteMode::Development,
 		
 		// Strings (Set in templates/main.php)
-		"SiteTitle"			=> "",
+		"SiteTitle"			=> "PHPZevelop",
 		"PageTitle"			=> "",
 		"MetaTitle"			=> "",
 		"MetaDescription"	=> "",
