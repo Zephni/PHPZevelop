@@ -3,58 +3,45 @@
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Login",
-		"Template"	 => "style2/fullwidth"
+		"PassParams" => false,
+		"Template"	 => "login"
 	));
 
-	if(count($_POST) > 0)
-	{
-		$MSG = Administrator::AttemptLogin($Administrator, $_POST["username"], $_POST["password"]);
-		
-		if($MSG === true)
-			AppendLog("Successful login");
-		else
-			AppendLog("Failed login with username '".$_POST["username"]."'");
-	}
+	$MSG = "Welcome to ".$PHPZevelop->CFG->SiteTitle.", please<br />use your login below.";
 
-	if(isset($_GET["param_0"]))
-	{
-		$Split = explode("-", $_GET["param_0"]);
-
-		if($Split[0] == "activated")
-		{
-			$ActivatedUser = Administrator::GetSingle(array("id", "=", $Split[1]));
-
-			$_POST["username"] = $ActivatedUser->Data["username"];
-		} 
-	}
+	if((count($_POST) > 0) && Administrator::AttemptLogin($Administrator, $_POST["username"], $_POST["password"]) !== true)
+		$MSG = "Failed login with username '<b>".$_POST["username"]."</b>'";
 
 	if($Administrator->LoggedIn())
+	{
+		ChangeLog("Logged in");
 		$PHPZevelop->Location("home");
+	}
 ?>
 
-<style type="text/css">
-	#loginForm {width: 50%; margin: auto; background: #EEEEEE; border: 1px solid #009ACD; box-sizing: border-box; padding-bottom: 15px;}
-	#loginForm h2 {margin: 0px; padding: 15px;}
-	#loginForm h3 {margin: 0px; padding: 9px 13px;}
-	#loginForm table.FormGen {width: 95%; margin: auto;}
+<div id="MiddleContainer">
+	<h1>Hello!</h1>
+	
+	<p><?php echo $MSG; ?></p>
 
-	@media screen and (max-width: 900px){
-		#loginForm {width: 100%;}
-	}
-</style>
-
-<br />
-<div id="loginForm">
-	<h2>Login</h2>
-
-	<?php if(isset($MSG)) echo $MSG; ?>
+	<br />
 
 	<?php
-		$FormGen = new FormGen();
-		$FormGen->AddElement(array("type" => "text", "name" => "username", "autofocus" => "autofocus", "required" => "required"), array("title" => "Username"));
-		$FormGen->AddElement(array("type" => "password", "name" => "password", "required" => "required"), array("title" => "Password"));
-		$FormGen->AddElement(array("type" => "submit", "value" => "Login"));
-		unset($_POST["password"]);
-		echo $FormGen->Build(array("data" => $_POST));
+		$Form = new FormGen();
+		$Form->DefaultBuildOptions["FormAttributes"]["action"] = "login";
+
+		$UserField = array("name" => "username", "type" => "text", "placeholder" => "Username");
+		$PassField = array("name" => "password", "type" => "password", "placeholder" => "Password");
+
+		if(CookieHelper::Get("keep_admin_username") == null) $UserField["autofocus"] = "autofocus";
+		else $PassField["autofocus"] = "autofocus";
+
+		$Form->AddElement($UserField);
+		$Form->AddElement($PassField);
+		$Form->AddElement(array("type" => "submit", "value" => "Login"));
+
+		echo $Form->Build(array("ColNum" => "1", "data" => array_merge(array("username" => CookieHelper::Get("keep_admin_username")), $_POST)));
 	?>
+	
+	<p><a href="#" onclick="alert('Then ask Craig...');">Forgot password</a></p>
 </div>

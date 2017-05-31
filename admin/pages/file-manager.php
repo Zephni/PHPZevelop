@@ -2,7 +2,7 @@
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
-		"PageTitle"  => "Manage images",
+		"PageTitle"  => "Manage files",
 		"PassParams" => true
 	));
 
@@ -34,9 +34,13 @@
 		else break;
 	}
 
-	$DirectoryString = implode("/", $CurrentDirectory);
+	if(isset($CustomFileManager) && strlen($CustomFileManager["DefaultLocation"]) > 0)
+		$DirectoryString = trim($CustomFileManager["DefaultLocation"])."/";
+	else
+		$DirectoryString = implode("/", $CurrentDirectory);
+
 	$RootDirectory = $FrontEndImageLocationRoot."/".$DirectoryString;
-	
+
 	if(!file_exists($RootDirectory))
 		$PHPZevelop->Location("file-manager");
 
@@ -71,7 +75,11 @@
 	}
 ?>
 
-<h2>File Manager</h2>
+<?php if(!isset($CustomFileManager) || $CustomFileManager["JustUpload"] != true){ ?>
+	<h1>File Manager</h1>
+<?php }else{ ?>
+	<h2>Upload a file <span style="font-size: 13px; font-weight: normal;">(Location: <?php echo $CustomFileManager["DefaultLocation"]; ?>)</span></h2>
+<?php } ?>
 
 <?php
 	if(!isset($Error) && ArrGet($_FILES, "image", "name") != "")
@@ -80,7 +88,7 @@
 		echo "<h3 style='color: #BA1F24;'>".$Error."</h3>";
 ?>
 
-<div style="width: 50%;">
+<div style="width: 60%;">
 <?php
 	$FormGen = new FormGen();
 	$PreHTML = "<table style='width: 100%;'><tr><td><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' style='width: 100px;' class='PreviewImage' /></td><td>";
@@ -89,92 +97,99 @@
 	$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;"));
 	$FormGen->AddElement(array("type" => "submit", "value" => "Upload", "class" => "highlight"));
 	echo $FormGen->Build(array("ColNum" => 3));
-
-	$Dirs = glob(str_replace("//", "/", $RootDirectory."/*"), GLOB_ONLYDIR);
-	$Files = glob(str_replace("//", "/", $RootDirectory."/*.*"));
-
-	$FormGen = new FormGen();
-	$FormGen->AddElement(array("name" => "search", "placeholder" => "File name"));
-	$FormGen->AddElement(array("type" => "submit", "value" => "Search", "class" => "highlight"));
-	$FormGen->AddElement(array("type" => "html", "value" => "Total directories: ".count($Dirs).", files: ".count($Files).((count($Files) > 100) ? " (limited to 100)" : "")));
-	echo $FormGen->Build(array("ColNum" => 3, "data" => $_POST));
 ?>
 </div>
+<hr />
 
-<?php
-	if(isset($OnlyUploadForm) && $OnlyUploadForm == true)
-		die();
-?>
+<?php if(!isset($CustomFileManager) || $CustomFileManager["JustUpload"] != true){ ?>
+	<div style="width: 60%;">
+	<?php
+		$Dirs = glob(str_replace("//", "/", $RootDirectory."/*"), GLOB_ONLYDIR);
+		$Files = glob(str_replace("//", "/", $RootDirectory."/*.*"));
 
-<style type="text/css">
-	.file-manager-item {height: 58px; box-sizing: border-box; width: 90%; display: inline-block;}
-	.file-manager-item a {color: #333333; width: 100%; height: 100%; display: inline-block; padding: 6px; box-sizing: border-box;}
-	.file-manager-item img {display: inline-block; height: 45px;}
-	.file-manager-item span {display: inline-block; line-height: 48px; vertical-align: top; padding-left: 15px;}
-	.file-manager-item:hover {background: #76B5F9;}
-	.file-manager-item:hover span {color: white;}
-	
-	.delete {height: 58px; box-sizing: border-box; width: 5%; display: inline-block; vertical-align: top; text-align: center;}
-	.delete a {line-height: 58px; color: white; background: #BA1F24; padding: 1px 9px 3px 8px;}
-</style>
+		$FormGen = new FormGen();
+		$FormGen->AddElement(array("name" => "search", "placeholder" => "File name"));
+		$FormGen->AddElement(array("type" => "submit", "value" => "Search", "class" => "highlight"));
+		$FormGen->AddElement(array("type" => "html", "value" => "&nbsp;&nbsp;&nbsp;Total directories: ".count($Dirs).", files: ".count($Files).((count($Files) > 100) ? " (limited to 100)" : "")));
+		echo $FormGen->Build(array("ColNum" => 3, "data" => $_POST));
+	?>
+	</div>
 
-<?php
-	//$Listings = scandir($RootDirectory);
+	<?php
+		if(isset($OnlyUploadForm) && $OnlyUploadForm == true)
+			die();
+	?>
 
-	$Listings = array("..");
-	foreach($Dirs as $Dir)
-	{
-		if(!isset($_POST["search"]) || $_POST["search"] == "" || (isset($_POST["search"]) && strstr(basename($Dir), $_POST["search"]) !== false))
-			$Listings[] = basename($Dir);
-	}
-	
-	foreach(array_slice($Files, 0, 100) as $File)
-	{
-		if(is_file($File))
+	<style type="text/css">
+		.file-manager-item {height: 58px; box-sizing: border-box; width: 90%; display: inline-block;}
+		.file-manager-item a {color: #333333; width: 100%; height: 100%; display: inline-block; padding: 6px; box-sizing: border-box;}
+		.file-manager-item img {display: inline-block; height: 45px;}
+		.file-manager-item span {display: inline-block; line-height: 48px; vertical-align: top; padding-left: 15px;}
+		.file-manager-item:hover {background: #76B5F9;}
+		.file-manager-item:hover span {color: white;}
+		
+		.delete {height: 58px; box-sizing: border-box; width: 5%; display: inline-block; vertical-align: top; text-align: center;}
+		.delete a {line-height: 58px; color: white; background: #BA1F24; padding: 1px 9px 3px 8px;}
+	</style>
+
+	<?php
+		//$Listings = scandir($RootDirectory);
+
+		$Listings = array("..");
+		foreach($Dirs as $Dir)
 		{
-			if(!isset($_POST["search"]) || $_POST["search"] == "" || (isset($_POST["search"]) && strstr(basename($File), $_POST["search"]) !== false))
-				$Listings[] = basename($File);
+			if(!isset($_POST["search"]) || $_POST["search"] == "" || (isset($_POST["search"]) && strstr(basename($Dir), $_POST["search"]) !== false))
+				$Listings[] = basename($Dir);
 		}
-	}
-
-	foreach($Listings as $Item)
-	{
-		if(($RootDirectory == $FrontEndImageLocationRoot."/" && $Item == "..") || $Item == ".")
-			continue;
-
-		$IsDirectory = (is_dir($FrontEndImageLocationRoot."/".$DirectoryString."/".$Item));
-		if($IsDirectory)
+		
+		foreach(array_slice($Files, 0, 100) as $File)
 		{
-			$Icon = "directory-icon.png";
-			$ALink = $PHPZevelop->CFG->SiteDirLocal."/file-manager/";
-			$ALink .= ($Item == "..") ? substr($DirectoryString, 0, strrchr("/", $DirectoryString)) : $DirectoryString."/".$Item;
-			$ALink = str_replace("//", "/", $ALink);
-			$Target = "";
-		}
-		else
-		{
-			$ALink = $FrontEndImageLocationLocal."/".$DirectoryString."/".$Item;
-			$ALink = str_replace("//", "/", $ALink);
-			$Parts = explode(".", $Item);
-			$Icon = ($Parts[count($Parts)-1] == "jpeg") ? "jpg" : $Parts[count($Parts)-1];
-			$Icon = strtolower($Icon."-icon.png");
-			if(!file_exists($PHPZevelop->Path->GetImageRoot("components/".$Icon, true)))
-				$Icon = "file-icon.png";
-			$Target = "target='_blank'";
+			if(is_file($File))
+			{
+				if(!isset($_POST["search"]) || $_POST["search"] == "" || (isset($_POST["search"]) && strstr(basename($File), $_POST["search"]) !== false))
+					$Listings[] = basename($File);
+			}
 		}
 
-		echo "<div class='file-manager-item'><a href='".$ALink."' ".$Target.">
-			<img src='".$PHPZevelop->Path->GetImage("components/".$Icon, true)."' />
-			<span>".$Item."</span>
-			</a>
-		</div>";
+		foreach($Listings as $Item)
+		{
+			if(($RootDirectory == $FrontEndImageLocationRoot."/" && $Item == "..") || $Item == ".")
+				continue;
 
-		if(!$IsDirectory)
-			echo "<div class='delete'>
-					<a href='".$PHPZevelop->Path->GetPage("file-manager/".$DirectoryString."/fdelete=".str_replace(".", "-specialfullstop-", urlencode($Item)), true)."'>x</a>
-				</div>";
-	}
-?>
+			$IsDirectory = (is_dir($FrontEndImageLocationRoot."/".$DirectoryString."/".$Item));
+			if($IsDirectory)
+			{
+				$Icon = "directory-icon.png";
+				$ALink = $PHPZevelop->CFG->SiteDirLocal."/file-manager/";
+				$ALink .= ($Item == "..") ? substr($DirectoryString, 0, strrchr("/", $DirectoryString)) : $DirectoryString."/".$Item;
+				$ALink = str_replace("//", "/", $ALink);
+				$Target = "";
+			}
+			else
+			{
+				$ALink = $FrontEndImageLocationLocal."/".$DirectoryString."/".$Item;
+				$ALink = str_replace("//", "/", $ALink);
+				$Parts = explode(".", $Item);
+				$Icon = ($Parts[count($Parts)-1] == "jpeg") ? "jpg" : $Parts[count($Parts)-1];
+				$Icon = strtolower($Icon."-icon.png");
+				if(!file_exists($PHPZevelop->Path->GetImageRoot("components/".$Icon, true)))
+					$Icon = "file-icon.png";
+				$Target = "target='_blank'";
+			}
+
+			echo "<div class='file-manager-item'><a href='".$ALink."' ".$Target.">
+				<img src='".$PHPZevelop->Path->GetImage("components/".$Icon, true)."' /><span>".$Item."</span>
+				</a>
+			</div>";
+
+			if(!$IsDirectory)
+				echo "<div class='delete'>
+						<a href='".$PHPZevelop->Path->GetPage("file-manager/".$DirectoryString."/fdelete=".str_replace(".", "-specialfullstop-", urlencode($Item)), true)."'>x</a>
+					</div>";
+		}
+	?>
+
+<?php } ?>
 
 <script type="text/javascript">
 	$(document).ready(function(){

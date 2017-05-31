@@ -7,25 +7,9 @@
 		"PassParams" => true
 	));
 
-	// Check if invalid
-	if(isset($_GET["param_0"]))
-		foreach($TableOptions as $K => $V)
-		{
-			if(strstr(str_replace(" ", "", $_SESSION["Query"]), "FROM".$K) !== false && (isset($V["Status"]) && $V["Status"] == "disabled"))
-				die("Invalid table");
-		}
-	else
-		die("Invalid table");
+	$Data = $DB->Select("*", $_GET["param_0"], $_SESSION["DBWhere"]);
 
-	AppendLog("Downloaded CSV dataset from ".$_GET["param_0"]);
-
-	$Data = $DB->Query($_SESSION["Query"], $_SESSION["Data"]);
-
-	// Get column commands
-	GetColumnsCommands($_GET["param_0"], $Columns, $ColumnCommands);
-	$ColumnNames = array();
-	foreach($Columns as $Item)
-		$ColumnNames[] = $Item["column_name"];
+	$Table = DBTool::GetTable($_GET["param_0"]);
 
 	// Build rows
 	$Rows = array();
@@ -33,16 +17,21 @@
 	{$I++;
 		$II = -1; foreach($Item as $K => $V)
 		{$II++;
+			$ColumnCommands = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
+			
 			// Manipulate value if needed
-			if(isset($ColumnCommands[$K]) && isset($ColumnCommands[$K]["join"]))
+			if(isset($ColumnCommands) && isset($ColumnCommands["join"]))
 			{
-				$V = $DB->QuerySingle("SELECT ".$ColumnCommands[$K]["join"][1]." FROM ".$ColumnCommands[$K]["join"][0]." WHERE id=:id", array("id" => $Item[$K]));
-				$V = $V[$ColumnCommands[$K]["join"][1]];
+				$V = $DB->QuerySingle("SELECT ".$ColumnCommands["join"][1]." FROM ".$ColumnCommands["join"][0]." WHERE id=:id", array("id" => $Item[$K]));
+				$V = $V[$ColumnCommands["join"][1]];
 			}
+
+			if(isset($ColumnCommands) && isset($ColumnCommands["type"]) && $ColumnCommands["type"][0] == "timestamp")
+				$V = date("Y/m/d H:ia", $V);
 			
 			if(strlen($V) > 60) $V = substr($V, 0, 57)."...";
 			$V = strip_tags($V);
-
+			
 			$Rows[$I][$K] = $V;
 		}
 	}

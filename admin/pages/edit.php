@@ -1,231 +1,74 @@
 <?php
+	$Table = DBTool::GetTable($_GET["param_0"]);
+	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
+	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
+
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
-		"PageTitle"  => "Edit",
+		"PageTitle"  => "Editing #".$Data["id"]." in ".$Table["name"],
 		"PassParams" => true
 	));
 
-	// Build $Options and check if disabled
-	$Options = (isset($TableOptions[$_GET["param_0"]]["Options"])) ? explode(",", $TableOptions[$_GET["param_0"]]["Options"]) : array();
-	if(ArrGet($TableOptions, $_GET["param_0"], "Status") == "disabled" || (count($Options) > 0 && !in_array("edit", $Options)))
-		die("Disabled");
-
-	// Get $Data and $ColumnNames
-	$Data = $DB->QuerySingle("SELECT * FROM ".$_GET["param_0"]." WHERE id=:id", array("id" => $_GET["param_1"]));
-	$ColumnNames = array_keys($Data);
-
-	// Build $Columns and $ColumnCommands
-	GetColumnsCommands($_GET["param_0"], $Columns, $ColumnCommands);
-	
-	// On post
-	if(isset($_POST) && count($_POST) > 0)
+	if(count($_POST) > 0)
 	{
-		foreach($ColumnNames as $Item)
-		{
-			if(isset($ColumnCommands[$Item]["type"][0]) && $ColumnCommands[$Item]["type"][0] == "timestamp")
-				$_POST[$Item] = strtotime($_POST[$Item]);
+		$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
 
-			if(isset($_POST[$Item]) && is_array($_POST[$Item]))
-				$_POST[$Item] = implode(",", $_POST[$Item]);
+		ValidateValues::Run($_POST, array());
+
+		foreach(array_merge(ValidateValues::$ValidPairs, $_FILES) as $K => $V){
+			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
+			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
+			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
+			if(ArrGet($ConfigArray, "type", 0) == "image") UploadImage($K, $ConfigArray, $V);
 		}
 
-		//IMAGE
-		foreach($ColumnNames as $Column)
-		{
-			if(ArrGet($ColumnCommands, $Column, "type", 0) != "image" && ArrGet($ColumnCommands, $Column, "type", 0) != "file") continue;
+		if(count(ValidateValues::$InvalidPairs) == 0)
+			$DB->Update($Table["real_name"], ValidateValues::$ValidPairs, array(array("id", "=", $_GET["param_1"])));
 
-			if(ArrGet($_FILES, $Column, "name") != "")
-			{
-				$Image = new upload($_FILES[$Column]);
-
-				if($Image->uploaded)
-				{
-					$Image->file_overwrite = true;
-					$Image->file_src_name_ext = "jpg";
-
-					foreach(array_keys($ColumnCommands[$Column]) as $Item)
-					{
-						if(substr($Item, 0, 3) == "io_")
-						{
-							$ImgOptionKey = substr($Item, 3);
-							$Val = $ColumnCommands[$Column]["io_".$ImgOptionKey][0];
-							$Val = str_replace("[id]", $_GET["param_1"], $Val);
-							$Val = str_replace("[timestamp]", time(), $Val);
-							$Image->$ImgOptionKey = $Val;
-						}
-					}
-					
-					$Image->process($FrontEndImageLocationRoot."/".(string)$ColumnCommands[$Column]["filelocation"][0]);
-
-					if($Image->processed)
-						$_POST[$Column] = $Image->file_dst_name_body.".".$Image->file_dst_name_ext;
-					else
-						die($Image->error."<br /><br />".$FrontEndImageLocationRoot."/".(string)$ColumnCommands[$Column]["filelocation"][0]);
-				}
-			}
-		}
-		//IMAGE
-
-		UpdateQueryFromArray($_GET["param_0"], $_POST, "WHERE id=:id", $_GET["param_1"]);
-		AppendLog("Edited item #".$_GET["param_1"]." in ".$_GET["param_0"]);
-		$Data = $DB->QuerySingle("SELECT * FROM ".$_GET["param_0"]." WHERE id=:id", array("id" => $_GET["param_1"]));
-	}
-
-	$FormGen = new FormGen();
-
-	foreach($Columns as $Item)
-	{
-		if(strtolower($Item["column_name"]) == "id") continue;
-
-		$Title = ucfirst(ltrim(str_replace("_", " ", $Item["column_name"]), " "));
-		$Type = (isset($ColumnCommands[$Item["column_name"]]["type"][0])) ? $ColumnCommands[$Item["column_name"]]["type"][0] : "text";
-		$Class = (isset($ColumnCommands[$Item["column_name"]]["class"][0])) ? $ColumnCommands[$Item["column_name"]]["class"][0] : "";
-
-		if($Type == "select")
-		{
-			$Options = array("0" => " - none -");
-			if(isset($ColumnCommands[$Item["column_name"]]["join"]))
-			{
-				foreach($DB->Query("SELECT id,".$ColumnCommands[$Item["column_name"]]["join"][1]." FROM ".$ColumnCommands[$Item["column_name"]]["join"][0]) as $Option)
-					$Options[$Option["id"]] = $Option[$ColumnCommands[$Item["column_name"]]["join"][1]];
-			}
-			else if(isset($ColumnCommands[$Item["column_name"]]["configkv"]))
-			{
-				$ConfigKV = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["configkv"][0])));
-				$Temp1 = explode(($ConfigKV["delimiter_1"] == "PHP_EOL") ? PHP_EOL : $ConfigKV["delimiter_1"], $ConfigKV["_value"]);
-
-				foreach($Temp1 as $Temp2)
-				{
-					$Temp2 = explode($ConfigKV["delimiter_2"], $Temp2);
-					$Options[$Temp2[0]] = $Temp2[1];
-				}
-				unset($Temp1, $Temp2);
-			}
-			else if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
-			{
-				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
-				
-				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
-				{
-					$Temp1 = explode("\r\n", $Temp1);
-					
-					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
-					{
-						unset($Temp1[0]);
-						foreach($Temp1 as $Temp2)
-							$Options[$Temp2] = $Temp2;
-					}
-				}
-			}
-			else if(isset($ColumnCommands[$Item["column_name"]]["values"]))
-			{
-				foreach($ColumnCommands[$Item["column_name"]]["values"] as $Val)
-				{
-					$Val = explode("|", $Val);
-					$Options[$Val[0]] = $Val[1];
-				}
-			}
-
-			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "data" => $Options));
-		}
-		elseif($Type == "checkbox")
-		{
-			$Options = array();
-
-			if(isset($ColumnCommands[$Item["column_name"]]["confignlgroup"]))
-			{
-				$ConfigNLGroups = $DB->SelectSingle("*", "config", array(array("_key", "=", $ColumnCommands[$Item["column_name"]]["confignlgroup"][0])));
-				
-				foreach(explode("\r\n\r\n", $ConfigNLGroups["_value"]) as $Temp1)
-				{
-					$Temp1 = explode("\r\n", $Temp1);
-					
-					if($Temp1[0] == $ColumnCommands[$Item["column_name"]]["confignlgroup"][1])
-					{
-						unset($Temp1[0]);
-						foreach($Temp1 as $Temp2)
-							$Options[$Temp2] = $Temp2;
-					}
-				}
-			}
-
-			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "data" => $Options));
-		}
-		elseif($Type == "timestamp")
-		{
-			$FormGen->AddElement(array("type" => "text", "name" => $Item["column_name"], "value" => date("Y/m/d G:i"), "class" => "datetimepicker ".$Class), array("title" => $Title));
-		}
-		elseif($Type == "image")
-		{
-			if(isset($ColumnCommands[$Item["column_name"]]["nopreview"]) && $ColumnCommands[$Item["column_name"]]["nopreview"] == true)
-			{
-				if(is_file($FrontEndImageLocationRoot."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]))
-					$ImagePreview = $FrontEndImageLocationLocal."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]];
-				else
-					$ImagePreview = $PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true);
-
-				$PreHTML = "<table style='width: 100%;'><tr><td style='width: 12%;'><img src='".$ImagePreview."' class='PreviewImage' /></td><td>";
-				$PostHTML = "</td></tr></table>";
-				$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => "ImageSelector ".$Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
-			}
-			else
-			{
-				$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => $Class), array("title" => $Title));
-			}
-		}
-		elseif($Type == "file")
-		{
-			$PreHTML = $PostHTML = "";
-			if(is_file($FrontEndImageLocationRoot."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]))
-			{
-				$PreHTML = "<table style='width: 100%;'><tr><td style='width: 6%;'>
-					<a href='".$FrontEndImageLocationLocal."/".$ColumnCommands[$Item["column_name"]]["filelocation"][0]."/".$Data[$Item["column_name"]]."' target='_blank'>
-						<img src='https://cdn3.iconfinder.com/data/icons/brands-applications/512/File-512.png' style='width: 100%;' />
-					</a>
-				</td><td>";
-				$PostHTML = "</td></tr></table>";
-			}
-
-			$FormGen->AddElement(array("type" => "file", "name" => $Item["column_name"], "class" => $Class), array("title" => $Title, "prehtml" => $PreHTML, "posthtml" => $PostHTML));
-		}
-		else
-		{
-			$FormGen->AddElement(array("type" => $Type, "name" => $Item["column_name"], "value" => $Item["column_default"], "class" => $Class), array("title" => $Title));
-		}
+		$LogString = array(); foreach(ValidateValues::$ValidPairs as $K => $V) if($Data[$K] != $V) $LogString[] = $K;
+		if(count($LogString) > 0) ChangeLog("Updated '".$Table["name"]."' #".$_GET["param_1"]." fields: ".implode(", ", $LogString));
 	}
 	
-	$FormGen->AddElement(array("type" => "submit"));
+	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
 ?>
 
-<h2>Editing item #<?php echo $_GET["param_1"]; ?> in <?php echo ucfirst(str_replace("_", " ", $_GET["param_0"])); ?></h2>
+<div class="breadcrumbs"><?php
+	Breadcrumbs::Build(array(
+		"" => "administration",
+		"select/".$Table["real_name"] => $Table["name"],
+		"edit" => "Editing #".$Data["id"]." in ".$Table["name"]
+	));
+?></div>
 
 <?php
-	// File manager
-	if(ArrGet($TableOptions, $_GET["param_0"], "FileManager") == "true")
+	if(isset($TableConfig["FileManager"][0]))
 	{
-		if(!isset($TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"]))
-			$TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"] = "";
-	?>
-	<iframe src="<?php $PHPZevelop->Path->GetPage("file-manager-full/".$TableOptions[$_GET["param_0"]]["FileManagerDefaultLocation"]); ?>"
-		style="width: 99.5%; height: 90px; border: none; margin: auto; background: none;"></iframe>
-	<?php
+		$CustomFileManager = array(
+			"JustUpload" => true,
+			"DefaultLocation" => trim($TableConfig["FileManagerDefaultLocation"][0])
+		);
+		
+		include("file-manager.php");
 	}
+
 ?>
 
-<?php if(isset($TableOptions[$_GET["param_0"]]["EditLink"])) {
-	$Parts = explode("|", $TableOptions[$_GET["param_0"]]["EditLink"]);
-	$Parts[0] = str_replace("[id]", $_GET["param_1"], $Parts[0]);
-	$Parts[0] = str_replace("[alias]", $Data["alias"], $Parts[0]);
-	echo "<a href='".$Parts[0]."' target='_blank'>".$Parts[1]."</a><br />";
-} ?>
+<h1>Editing #<?php echo $Data["id"]; ?> in <?php echo strtolower($Table["name"]); ?></h1>
 
 <?php
-	foreach($ColumnNames as $Item)
+	if(ArrGet($TableConfig, "EditLink", 0) != "")
 	{
-		if(isset($ColumnCommands[$Item]["type"][0]) && $ColumnCommands[$Item]["type"][0] == "timestamp")
-			$Data[$Item] = date("Y/m/d G:i", $Data[$Item]);
-	}
+		$TempEditLink = explode("|", $TableConfig["EditLink"][0]);
+		$TempEditLink[0] = str_replace("[id]", $_GET["param_1"], $TempEditLink[0]);
+		echo "<p><a href='".$TempEditLink[0]."' target='_blank'>".$TempEditLink[1]."</a></p>";
+	} unset($TempEditLink);
+?>
 
-	echo $FormGen->Build(array("data" => $Data));
+<?php
+	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
+		"Data" => $Data,
+		"HideFields" => array("id"), 
+		"SubmitText" => "Update"
+	));
 ?>

@@ -6,7 +6,7 @@
 	    const Development = 1;
 	    const Live = 2;
     }
-
+    
 	/* Config
 	------------------------------*/
 	$PHPZevelop->NewObject("CFG", (object) array(
@@ -17,9 +17,9 @@
 		// Strings (Set in templates/main.php)
 		"SiteTitle"			=> "PHPZevelop",
 		"PageTitle"			=> "",
-		"MetaTitle"			=> "",
-		"MetaDescription"	=> "",
-		"MetaKeywords"		=> "",
+		"MetaTitle"			=> "PHPZevelop Framework",
+		"MetaDescription"	=> "PHPZevelop is a PHP framework for ease of use and adaptability.",
+		"MetaKeywords"		=> "PHPZevelop, PHP, Framework",
 		
 		// Structural
 		"Site"				=> "site",
