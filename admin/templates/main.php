@@ -15,6 +15,14 @@
 			});
 		</script>
 
+		<!-- ZSwitch -->
+		<script src="<?php $PHPZevelop->Path->GetScript("ZSwitch.js"); ?>"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("input[type='ZSwitch']").ZSwitch(<?php echo (isset($Data["live"]) && $Data["live"] == "1") ? 1 : 0; ?>);
+			});
+		</script>
+
 		<!-- TinyMCE -->
 		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 		<script>
@@ -28,6 +36,8 @@
 	            allow_html_in_named_anchor: true,
 	            allow_unsafe_link_target: true,
 	            enable_elements:"*[*]",
+	            valid_elements:"*[*]",
+	            valid_children : "*[*]",
 				menubar: false,
 				statusbar: true,
 				height : 200,
@@ -35,7 +45,7 @@
   				fontsize_formats: '10pt 12pt 14pt 18pt 24pt 36pt',
 				automatic_uploads: false,
 				content_css: "<?php echo $PHPZevelop->Path->GetCSS('tinymce.css'); ?>",
-
+				
 				// Image stuff
 				convert_urls : false,
 				image_caption: true,
@@ -44,6 +54,9 @@
 		</script>
 		
 		<link rel="stylesheet" type="text/css" href="<?php $PHPZevelop->Path->GetCSS("style.php?c1=".urlencode($Administrator->Data["theme_color"])); ?>">
+
+		<!-- -->
+		<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
 	</head>
 	<body>
 

@@ -1,6 +1,6 @@
 <?php
 	$PHPZevelop->CFG->SiteTitle = $PHPZevelop->CFG->SiteTitle." Administration";
-
+	
 	// Database name
 	$DatabaseName = $PHPZevelop->CFG->DB->Name;
 	$FrontEndLocationRoot = ROOT_DIR."/site";

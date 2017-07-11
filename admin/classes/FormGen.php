@@ -155,7 +155,7 @@
 					{
 						if(strlen($V) > 0 && isset($Item["Options"]["forceselected"]) && strstr($Item["Options"]["forceselected"], $V) !== false)
 							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' checked='checked' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
-						else if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && strstr($this->PrepopData[$Item["Attributes"]["name"]], $V) !== false)
+						else if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && strstr(strtolower($this->PrepopData[$Item["Attributes"]["name"]]), strtolower($V)) !== false)
 							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' checked='checked' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
 						else
 							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
@@ -252,6 +252,16 @@
 								$KV = explode($TempConf["delimiter_2"], $KV);
 								$Data[trim($KV[0])] = trim($KV[1]);
 							}
+						}
+					}
+
+					// Checkbox
+					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "checkbox")
+					{
+						foreach($ColumnOptions["data"] as $V)
+						{
+							$Temp = explode("|", $V);
+							$Data[$Temp[0]] = $Temp[1];
 						}
 					}
 

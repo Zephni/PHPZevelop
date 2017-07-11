@@ -3,6 +3,7 @@
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Manage files",
+		"Template"	 => "none",
 		"PassParams" => true
 	));
 
@@ -44,14 +45,9 @@
 	if(!file_exists($RootDirectory))
 		$PHPZevelop->Location("file-manager");
 
-	$FinalDir = $FrontEndImageLocationRoot.str_replace("//", "/", "/".$DirectoryString);
-	$FC = count(glob($FinalDir."/*"));
-
 	// Upload
 	if(isset($_FILES["image"]) && strlen($_FILES["image"]["name"]) > 0)
 	{
-		
-
 		$Image = new upload($_FILES["image"]);
 		$Image->mime_check = true;
 		$Image->allowed = array('application/pdf', 'image/*');
@@ -59,15 +55,14 @@
 
 		if(isset($_POST["renameto"]) && strlen($_POST["renameto"]) > 0)
 		{
-			$NewName = $_POST["renameto"];
-			$NewName = str_replace("#", $FC+1, $NewName);
-			$Image->file_new_name_body = $NewName;
-			//$Image->file_new_name_ext  = implode(".", array_slice($NewName, count($NewName) -1));
+			$NewName = explode(".", $_POST["renameto"]);
+			$Image->file_new_name_body = implode(".", array_slice($NewName, 0, count($NewName) -1));
+			$Image->file_new_name_ext  = implode(".", array_slice($NewName, count($NewName) -1));
 		}
 
 		if($Image->uploaded)
 		{
-			$Image->process($FinalDir);
+			$Image->process($FrontEndImageLocationRoot.str_replace("//", "/", "/".$DirectoryString));
 
 			if($Image->processed)
 				$NewName = array($Image->file_dst_name_body, $Image->file_dst_name_ext);
@@ -99,8 +94,8 @@
 	$FormGen = new FormGen();
 	$PreHTML = "<table style='width: 100%;'><tr><td><img src='".$PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true)."' style='width: 100px;' class='PreviewImage' /></td><td>";
 	$PostHTML = "</td></tr></table>";
-	$FormGen->AddElement(array("type" => "file", "name" => "image", "class" => "ImageSelector", "required" => "required"), array("prehtml" => $PreHTML, "posthtml" => $PostHTML));
-	$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;", "value" => $DirectoryString."#"));
+	$FormGen->AddElement(array("type" => "file", "name" => "image", "class" => "ImageSelector"), array("prehtml" => $PreHTML, "posthtml" => $PostHTML));
+	$FormGen->AddElement(array("name" => "renameto", "placeholder" => "eg image.png", "style" => "width: 230px;"));
 	$FormGen->AddElement(array("type" => "submit", "value" => "Upload", "class" => "highlight"));
 	echo $FormGen->Build(array("ColNum" => 3));
 ?>
@@ -156,7 +151,7 @@
 					$Listings[] = basename($File);
 			}
 		}
-		
+
 		foreach($Listings as $Item)
 		{
 			if(($RootDirectory == $FrontEndImageLocationRoot."/" && $Item == "..") || $Item == ".")

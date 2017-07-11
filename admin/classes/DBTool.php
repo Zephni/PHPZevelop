@@ -11,9 +11,9 @@
 		{
 			global $PHPZevelop;
 			global $DB;
-
+			
 			$Tables = array();
-
+			
 			foreach($DB->Query("SELECT * FROM information_schema.tables t WHERE t.table_schema='".$PHPZevelop->CFG->DB->Name."'") as $Item)
 			{
 				if(isset($Item["TABLE_NAME"]))
@@ -149,6 +149,15 @@
 						}
 					}
 
+					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "select")
+					{
+						if(isset($FieldConfigArray["value"]))
+						{
+							$Field = $DB->Select($FieldConfigArray["join"][1], $FieldConfigArray["join"][0], array(array("id", "=", $Field)), true);
+							$Field = (isset($Field[$FieldConfigArray["join"][1]])) ? $Field[$FieldConfigArray["join"][1]] : "- none -";
+						}
+					}
+
 					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "timestamp")
 						$Field = date("Y/m/d H:i", $Field);
 
@@ -216,6 +225,7 @@
 			{
 				$StringParts = explode("::", $Item);
 				$Key = $StringParts[0];
+				if(!isset($StringParts[1])) continue;
 				$Value = explode(",", $StringParts[1]);
 				$FinalArray[$Key] = $Value;
 			}

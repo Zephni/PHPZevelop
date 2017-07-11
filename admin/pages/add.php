@@ -18,6 +18,7 @@
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
 			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
 			if(ArrGet($ConfigArray, "type", 0) == "image") UploadImage($K, $ConfigArray, $V);
+			if(ArrGet($ConfigArray, "type", 0) == "checkbox") ValidateValues::$ValidPairs[$K] = implode("|", $V);
 		}
 		
 		if(count(ValidateValues::$InvalidPairs) == 0){
@@ -44,7 +45,7 @@
 			"DefaultLocation" => trim($TableConfig["FileManagerDefaultLocation"][0])
 		);
 		
-		include("file-manager.php");
+		// Need to include here
 	}
 ?>
 

@@ -3,6 +3,8 @@
 	{
 		global $PHPZevelop;
 		global $Table;
+		global $FrontEndImageLocationRoot;
+		global $FrontEndImageLocationLocal;
 
 		if($File["name"] != "")
 		{
@@ -13,6 +15,8 @@
 				$Image->file_overwrite = true;
 				$Image->file_src_name_body = $Table["real_name"]."_".((isset($_GET["param_1"])) ? $_GET["param_1"] : $Table["information"]["auto_increment"]);
 				$Image->file_src_name_ext  = "jpg";
+				$Image->image_convert = 'jpg';
+				$Image->jpeg_quality = 100;
 				
 				foreach(array_keys($ColumnCommands) as $Item)
 				{
@@ -26,12 +30,12 @@
 					}
 				}
 
-				$Image->process(ltrim($PHPZevelop->Path->GetImage((string)$ColumnCommands["filelocation"][0], true), "/"));
+				$Image->process($FrontEndImageLocationRoot."/".(string)$ColumnCommands["filelocation"][0], true);
 
 				if($Image->processed)
 					ValidateValues::$ValidPairs[$ColumnKey] = $Image->file_dst_name_body.".".$Image->file_dst_name_ext;
 				else
-					die($Image->error."<br /><br />".ltrim($PHPZevelop->Path->GetImage((string)$ColumnCommands["filelocation"][0], true), "/"));
+					die($Image->error."<br /><br />".$FrontEndImageLocationRoot."/".(string)$ColumnCommands["filelocation"][0]);
 			}
 		}
 	}
