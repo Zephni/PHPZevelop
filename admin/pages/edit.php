@@ -57,14 +57,18 @@
 
 <h1>Editing #<?php echo $Data["id"]; ?> in <?php echo strtolower($Table["name"]); ?></h1>
 
-<?php
-	if(ArrGet($TableConfig, "EditLink", 0) != "")
-	{
-		$TempEditLink = explode("|", $TableConfig["EditLink"][0]);
-		$TempEditLink[0] = str_replace("[id]", $_GET["param_1"], $TempEditLink[0]);
-		echo "<p><a href='".$TempEditLink[0]."' target='_blank'>".$TempEditLink[1]."</a></p>";
-	} unset($TempEditLink);
-?>
+<p style="position: relative;">
+	<?php
+		if(ArrGet($TableConfig, "EditLink", 0) != "")
+		{
+			$TempEditLink = explode("|", $TableConfig["EditLink"][0]);
+			$TempEditLink[0] = str_replace("[id]", $_GET["param_1"], $TempEditLink[0]);
+			echo "<a href='".$TempEditLink[0]."' target='_blank' style='position: relative; left: 0px;'>".$TempEditLink[1]."</a>";
+		} unset($TempEditLink);
+	?>
+	
+	<a href="<?php $PHPZevelop->Path->GetPage("delete/".$_GET["param_0"]."/".$_GET["param_1"]); ?>" style='position: absolute; right: 0px;'>Delete this item</a>
+</p>
 
 <?php
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(

@@ -23,10 +23,11 @@
 
 <?php
 	// Passed search through GET
-	if(isset($_GET["search"]) && !is_numeric($_GET["search"]))
+	if(isset($_GET["search"]) || isset($_GET["page"]))
 	{
 		$_SESSION["temp_search"] = urldecode($_GET["search"]);
-		$PHPZevelop->Location("select/".$_GET["param_0"]."/");
+		$TempPage = (isset($_GET["page"])) ? $_GET["page"] : "1";
+		$PHPZevelop->Location("select/".$_GET["param_0"]."/".$TempPage);
 	}
 
 	if(isset($_SESSION["temp_search"]))
@@ -65,7 +66,7 @@
 	$_SESSION["DBWhere"] = $Where;
 
 	$Rows = $DB->Select("COUNT(id) as 'count'", $_GET["param_0"], $Where, true);
-	$Pagination->Options["URL"] = $PHPZevelop->Path->GetPage("select/".$_GET["param_0"]."/(PN)", true);
+	$Pagination->Options["URL"] = $PHPZevelop->Path->GetPage("select/".$_GET["param_0"]."?page=(PN)".(isset($_POST["search"]) ? "&search=".$_POST["search"] : ""), true);
 	$Pagination->SetPage((isset($_GET["param_1"])) ? $_GET["param_1"] : 1);
 	$PaginationHTML = $Pagination->BuildHTML($Rows["count"]);
 
