@@ -1,54 +1,77 @@
 <?php
 	class DBItem
 	{
-		// Data
+		public $TableName;
 		public $Data;
 
-		// DBTable
-		private $DBTable;
-
-		// Construct
-		public function __construct(&$DBTable, $Search = null)
+		public function __construct($TableName, $Data = array())
 		{
-			$this->Data = array();
-			$this->DBTable = $DBTable;
-
-			if($Search !== null)
-			{
-				if(is_numeric($Search))
-					$this->Data = $this->DBTable->SelectSingle(array(array("id", "=", $Search)));
-				else if(is_array($Search))
-					$this->Data = $this->DBTable->SelectSingle($Search);
-			}
+			$this->TableName = $TableName;
+			$this->Data = $Data;
 		}
 
-		// Insert
+		public function GetData($Where)
+		{
+			global $DB;
+			$this->Data = $DB->SelectSingle("*", $this->TableName, $Where);
+		}
+
 		public function Insert()
 		{
-			$this->DBTable->Insert($this->BuildCleanDataArray());
+			global $DB;
+
+			if(isset($this->Data["id"]))
+				unset($this->Data["id"]);
+
+			$DB->Insert($this->TableName, $this->Data);
 		}
 
-		// Update
 		public function Update()
 		{
-			$this->DBTable->Update($this->BuildCleanDataArray(), array(array("id", "=", $this->Data["id"])));
+			global $DB;
+
+			if(!isset($this->Data["id"]))
+				die("ID not set on embed object");
+
+			$DB->Update($this->TableName, $this->Data, array(array("id", "=", $this->Data["id"])));
 		}
 
-		// Update
-		public function Delete()
+		public function Remove()
 		{
-			$this->DBTable->Delete(array(array("id", "=", $this->Data["id"])));
+			global $DB;
+
+			if(!isset($this->Data["id"]))
+				die("ID not set on embed object");
+
+			$DB->QuerySingle("DELETE FROM ".$this->TableName." WHERE id=:id", array(array("id", "=", $this->Data["id"])));
 		}
 
-		// BuildCleanDataArray
-		private function BuildCleanDataArray()
+		public static function GetSingle()
 		{
-			$Array = array();
+			global $DB;
 
-			foreach($this->DBTable->GetFields() as $IField)
-				if($IField["column_name"] != "id")
-					$Array[$IField["column_name"]] = (array_key_exists($IField["column_name"], $this->Data)) ? $this->Data[$IField["column_name"]] : "";
+			$Args = func_get_args();
+			$TableName = $Args[0];
+			$Where = (count($Args) > 1) ? array_slice($Args, 1) : array();
+			
+			$Item = new DBItem($TableName);
+			$Item->GetData($Where);
+			return $Item;
+		}
 
-			return $Array;
+		public static function GetMultiple()
+		{
+			global $DB;
+			
+			$Args = func_get_args();
+			$TableName = $Args[0];
+			$Where = (count($Args) > 1) ? array_slice($Args, 1) : array();
+			
+			$Items = array();
+			
+			foreach($DB->Select("*", $TableName, $Where) as $K => $V)
+				$Items[] = new DBItem($TableName, $V);
+			
+			return $Items;
 		}
 	}

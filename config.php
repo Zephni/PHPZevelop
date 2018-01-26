@@ -38,10 +38,10 @@
 	if($PHPZevelop->CFG->SiteMode == SiteMode::Development)
 	{
 		$PHPZevelop->CFG->DB = (object) array(
-			"Host" => "",
-			"User" => "",
-			"Pass" => "",
-			"Name" => ""
+			"Host" => "84.45.18.210",
+			"User" => "landlove_user",
+			"Pass" => "kCeXQnEQMx8RCwP4X5XE",
+			"Name" => "landlove_database"
 		);
 
 		$PHPZevelop->CFG->Domain = "";

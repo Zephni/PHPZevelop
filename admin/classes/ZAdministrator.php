@@ -33,7 +33,7 @@
 
 	//if(!class_exists("User"))
 	//{
-		class Administrator extends DBItem
+		class Administrator extends DBRow
 		{
 			private $ActualPass = null;
 			public static $UsernameSessionField = "username";
