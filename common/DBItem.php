@@ -1,4 +1,8 @@
 <?php
+	// $Article = DBItem::GetSingle(array("id", "=", 1));
+	// $Article->Data["title"] = "New title";
+	// $Article->Update();
+
 	class DBItem
 	{
 		public $TableName;
