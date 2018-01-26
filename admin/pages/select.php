@@ -82,11 +82,22 @@
 			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/".$Table["real_name"]."/#", true)."'>edit</a></center>";
 		else if($Item == "delete")
 			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."'>delete</a></center>";
+		else if($Item == "preview")
+		{
+			if(ArrGet($TableConfig, "EditLink", 0) != "")
+			{
+				$TempEditLink = explode("|", $TableConfig["EditLink"][0]);
+				$TempEditLink[0] = str_replace("[id]", "#", $TempEditLink[0]);
+				$ExtraFields[] = "<a href='".$TempEditLink[0]."' target='_blank' style='position: relative; left: 0px;'>".$TempEditLink[1]."</a>";
+			} unset($TempEditLink);
+		}
 		else if($Item == "entries"){
 			$ExtraFields[] = "<center>
 				*special::showentries*<br />
 				<a href='".$PHPZevelop->Path->GetPage("select/comp_entries/?search=".urlencode("*comp_id = ")."#".urlencode(", options like optin:1"), true)."'>entries</a>
 			</center>";
+		}else if($Item == "projects"){
+			$ExtraFields[] = "<center>projects: *special::showprojectcount*</center>";
 		}
 	}
 ?>
@@ -100,7 +111,7 @@
 ?>
 
 <?php
-	$Order = (isset($TableConfig["DefaultOrder"]) && $TableConfig["DefaultOrder"][0] != "") ? "ORDER BY ".$TableConfig["DefaultOrder"][0] : "ORDER BY id DESC";
+	$Order = (isset($TableConfig["DefaultOrder"]) && $TableConfig["DefaultOrder"][0] != "") ? "ORDER BY ".implode(",", $TableConfig["DefaultOrder"]) : "ORDER BY id DESC";
 
 	echo DBTool::DisplayList(array(
 		"Table" => $Table["real_name"],

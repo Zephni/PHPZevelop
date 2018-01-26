@@ -11,9 +11,9 @@
 		{
 			global $PHPZevelop;
 			global $DB;
-			
+
 			$Tables = array();
-			
+
 			foreach($DB->Query("SELECT * FROM information_schema.tables t WHERE t.table_schema='".$PHPZevelop->CFG->DB->Name."'") as $Item)
 			{
 				if(isset($Item["TABLE_NAME"]))
@@ -55,8 +55,7 @@
 		{
 			global $DB;
 			global $Pagination;
-			global $FrontEndImageLocationLocal;
-			global $FrontEndImageLocationRoot;
+			global $PHPZevelop;
 
 			$Config = array_merge(array(
 				"Table" => null,
@@ -88,11 +87,8 @@
 				if(in_array($Item["column_name"], $Config["HideFields"]))
 					continue;
 
-				if(isset($TableConfig["DefaultFields"])){
-					foreach($TableConfig["DefaultFields"] as $K => $V) $TableConfig["DefaultFields"][$K] = trim($V);
-					if(!in_array($Item["column_name"], $TableConfig["DefaultFields"]))
-						continue;
-				}
+				if(isset($TableConfig["DefaultFields"]) && !in_array($Item["column_name"], $TableConfig["DefaultFields"]))
+					continue;
 
 				$ColumnComments[$Item["column_name"]] = $Item["column_comment"];
 				$HTML .= "<td>".self::NiceName($Item["column_name"])."</td>";
@@ -152,23 +148,14 @@
 						}
 					}
 
-					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "select")
-					{
-						if(isset($FieldConfigArray["value"]))
-						{
-							$Field = $DB->Select($FieldConfigArray["join"][1], $FieldConfigArray["join"][0], array(array("id", "=", $Field)), true);
-							$Field = (isset($Field[$FieldConfigArray["join"][1]])) ? $Field[$FieldConfigArray["join"][1]] : "- none -";
-						}
-					}
-
 					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "timestamp")
 						$Field = date("Y/m/d H:i", $Field);
 
 					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "image")
 					{
-						if(strlen($Field) > 0 && file_exists($FrontEndImageLocationRoot."/".$FieldConfigArray["filelocation"][0]."/".$Field))
+						if(strlen($Field) > 0 && file_exists($PHPZevelop->Path->GetImageRoot($FieldConfigArray["filelocation"][0]."/".$Field, true)))
 						{
-							$Field = "<center><img src='".$FrontEndImageLocationLocal."/".$FieldConfigArray["filelocation"][0]."/".$Field."' style='width: 100%; max-width: 250px;' /></center>";
+							$Field = "<center><img src='".$PHPZevelop->Path->GetImage($FieldConfigArray["filelocation"][0]."/".$Field, true)."' style='width: 100%; max-width: 250px;' /></center>";
 							$TDStyle = "padding: 0px;";
 						}
 						else
@@ -191,12 +178,6 @@
 							$Total = count($DB->Select("id", "comp_entries", array(array("comp_id", "=", $Row["id"]))));
 							$OptIns = count($DB->Select("id", "comp_entries", array(array("comp_id", "=", $Row["id"]), "AND", array("`options`", "LIKE", "%optin:1%"))));
 							$ExtraField = str_replace("*special::showentries*", $OptIns."/".$Total, $ExtraField);
-						}
-
-						if(strpos($ExtraField, "*special::showprojectcount*") !== false)
-						{
-							$Total = count($DB->Select("id", "projects", array(array("uid", "=", $Row["id"]))));
-							$ExtraField = str_replace("*special::showprojectcount*", $Total, $ExtraField);
 						}
 
 						$HTML .= "<td class='".$Config["ExtraFieldClass"]."'>".str_replace("#", $Row["id"], $ExtraField)."</td>";
@@ -234,7 +215,6 @@
 			{
 				$StringParts = explode("::", $Item);
 				$Key = $StringParts[0];
-				if(!isset($StringParts[1])) continue;
 				$Value = explode(",", $StringParts[1]);
 				$FinalArray[$Key] = $Value;
 			}
@@ -253,5 +233,15 @@
 			}
 
 			return $FinalArray;
+		}
+
+		public static function BuildDBTableArray()
+		{
+			$Tables = array();
+
+			foreach(DBTool::GetAllTables() as $ITable)
+				$Tables[$ITable["real_name"]] = new DBTable($ITable["real_name"]);
+
+			return $Tables;
 		}
 	}

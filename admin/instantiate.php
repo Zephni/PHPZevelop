@@ -63,7 +63,7 @@
 	------------------------------*/
 	if($Administrator->LoggedIn() && class_exists("Pagination"))
 	{
-		$Pagination = new Pagination(array("PerPage" => 12));
+		$Pagination = new Pagination(array("PerPage" => 20));
 		$Pagination->Options["ContainerCSS"]["display"] = "inline-block";
 		$Pagination->Options["ContainerCSS"]["width"] = "auto";
 		$Pagination->Options["ContainerCSS"]["padding"] = "0px 0px 20px 0px";

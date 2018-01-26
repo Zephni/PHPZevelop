@@ -32,7 +32,7 @@
 
 		<div class="outerContainer">
 			<div id="body" class="innerContainer">
-				<div class="horizontalPadding">
+				<div class="horizontalPadding" id="PageContent">
 					<?php echo $PHPZevelop->PageContent; ?>
 				</div>
 			</div>

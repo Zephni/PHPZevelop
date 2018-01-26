@@ -134,6 +134,8 @@
 			<span>Navigation</span>
 			<a href="<?php $PHPZevelop->Path->GetPage("home"); ?>">Home</a>
 			<a href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>">File manager</a>
+			<a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Add new table</a>
+			<a href="<?php $PHPZevelop->Path->GetPage("manage/add-field"); ?>">Add table field</a>
 
 			<span>Tables</span>
 			<table style="width: 100%;">

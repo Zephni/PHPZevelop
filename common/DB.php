@@ -13,22 +13,23 @@
 			$db->query("SELECT * FROM table WHERE id=:id", array('id' => $_GET['id']));
 	*/
 	class DB{
-		public $DBO, $error = array();
+		public $DBO, $Errors = array();
 		public $Data = array();
 		public $Fields = array();
 		public $LastInsertId;
 		public $Host, $User, $Pass, $Name;
 		public $Connected = false;
 		
-		public function __construct($Host, $User, $Pass, $Name){
-			$dsn = "mysql:dbname=".$Name.";host=".$Host;
+		public function __construct($Host, $User, $Pass, $Name = ""){
+			$dsn = "mysql:host=".$Host.";";
+			if($Name != "") $dsn .= "dbname=".$Name.";";
 			try {
 				$this->DBO = new PDO($dsn, $User, $Pass);
 				$this->DBO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 				$this->DBO->exec("set names utf8");
 				$this->Connected = true;
 			}catch (PDOException $e){
-				$this->error[] = 'Connection failed: ' . $e->getMessage();
+				$this->Errors[] = 'Connection failed: ' . $e->getMessage();
 			}
 		}
 
@@ -36,10 +37,11 @@
 			try{
 				if($dieOnQuery)
 					die($query);
+				
 				$preparedQuery = $this->DBO->prepare($query);
 				$preparedQuery->execute($Data);
 				$this->LastInsertId = $this->DBO->LastInsertId();
-				if(substr($query, 0, 6) == "UPDATE" || substr($query, 0, 6) == "INSERT"){
+				if(substr($query, 0, 6) == "UPDATE" || substr($query, 0, 6) == "INSERT" || substr($query, 0, 6) == "CREATE"){
 					return true;
 				}else{
 					if($options == NULL) $return = $preparedQuery->fetchAll(PDO::FETCH_ASSOC/*, $options*/);
@@ -49,7 +51,7 @@
 					return $return;
 				}
 			}catch(PDOException $e){
-				$this->error[] = $e->getMessage();
+				$this->Errors[] = $e->getMessage();
 				return array();
 			}
 		}
@@ -64,8 +66,8 @@
 		
 		public function ErrorHandler(){
 			$return = "";
-			foreach($this->error as $e){
-				$return .= "<span class='error-text'>".$e."</span><br />";
+			foreach($this->Errors as $e){
+				$return .= "<span class='Errors-text'>".$e."</span><br />";
 			}
 			return $return;
 		}
@@ -158,6 +160,33 @@
 
 			$this->Query($Str, $Arr);
 			return $this->LastInsertId;
+		}
+
+		function Delete($Table, $Where = null)
+		{
+			if(!is_array($Where) || count($Where) == 0)
+				die("Where can not be empty in DB->Delete");
+
+			$Arr = array();
+			$Wheres = 0;
+
+			$Str = "DELETE FROM ".$Table." WHERE ";
+
+			foreach($Where as $K => $V)
+			{
+				if(!is_array($V))
+				{
+					$Str .= " ".$V;
+				}
+				else
+				{
+					$Wheres++;
+					$Str .= " ".$V[0]." ".$V[1]." :w".$Wheres;
+					$Arr["w".$Wheres] = $V[2];
+				}
+			}
+
+			return $this->QuerySingle($Str, $Arr);
 		}
 
 		function Update($Table, $Values, $Where = null)
