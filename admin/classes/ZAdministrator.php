@@ -33,7 +33,7 @@
 
 	//if(!class_exists("User"))
 	//{
-		class Administrator extends DBRow
+		class Administrator extends DBItem
 		{
 			private $ActualPass = null;
 			public static $UsernameSessionField = "username";
@@ -41,11 +41,6 @@
 			public static $InactiveTime;
 
 			// Initiate
-			public function Initiate()
-			{
-				$this->Table = "administrators";
-				self::$InactiveTime = (60*20);
-			}
 
 			public function UniqueChecks($Uploading)
 			{
@@ -88,8 +83,9 @@
 			public static function AttemptLogin(&$User, $Username, $Password)
 			{
 				$MSG = null;
-				$UserLogin = Administrator::Get(array("username" => $Username, "email" => $Username), "OR");
-				
+				global $DB;
+				$UserLogin = Administrator::GetSingle("administrators", array("username", "LIKE", $Username), "OR", array("email", "LIKE", $Username));
+
 				if(isset($UserLogin->Data["id"]))
 				{
 					// Attempts
@@ -168,11 +164,14 @@
 			
 			public function LoggedIn()
 			{
+				global $DB;
+
 				if(!isset($_SESSION[self::$PasswordSessionField]) || !isset($this->Data["id"]) || strlen($this->Data["id"]) == 0)
 					return false;
-				
-				$TempUser = Administrator::Get(array("username" => $_SESSION[self::$UsernameSessionField]));
-				if(isset($TempUser->Data) && $_SESSION[self::$PasswordSessionField] == $TempUser->Data["password"])
+
+				$TempUser = Administrator::GetSingle("administrators", array("username", "LIKE", $_SESSION[self::$UsernameSessionField]));
+
+				if(isset($TempUser->Data["password"]) && $_SESSION[self::$PasswordSessionField] == $TempUser->Data["password"])
 					return true;
 				
 				return false;

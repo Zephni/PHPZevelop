@@ -58,7 +58,8 @@
 			$TableName = $Args[0];
 			$Where = (count($Args) > 1) ? array_slice($Args, 1) : array();
 			
-			$Item = new DBItem($TableName);
+			$CalledClass = get_called_class();
+			$Item = new $CalledClass($TableName);
 			$Item->GetData($Where);
 			return $Item;
 		}
@@ -73,8 +74,10 @@
 			
 			$Items = array();
 			
+			$CalledClass = get_called_class();
+			
 			foreach($DB->Select("*", $TableName, $Where) as $K => $V)
-				$Items[] = new DBItem($TableName, $V);
+				$Items[] = new $CalledClass($TableName, $V);
 			
 			return $Items;
 		}
