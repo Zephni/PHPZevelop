@@ -1,8 +1,8 @@
 <?php
-	// $Article = DBItem::GetSingle(array("id", "=", 1));
+	// $Article = DBItem::GetSingle("articles", array("id", "=", 1));
 	// $Article->Data["title"] = "New title";
 	// $Article->Update();
-
+	
 	class DBItem
 	{
 		public $TableName;
@@ -39,7 +39,7 @@
 
 			$DB->Update($this->TableName, $this->Data, array(array("id", "=", $this->Data["id"])));
 		}
-
+		
 		public function Remove()
 		{
 			global $DB;
@@ -49,7 +49,7 @@
 
 			$DB->QuerySingle("DELETE FROM ".$this->TableName." WHERE id=:id", array(array("id", "=", $this->Data["id"])));
 		}
-
+		
 		public static function GetSingle()
 		{
 			global $DB;

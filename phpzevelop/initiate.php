@@ -112,12 +112,8 @@
 	/* Site specific
 	------------------------------*/
 	// Global
-	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/global".FILE_EXT))
-		require_once($PHPZevelop->CFG->SiteDirRoot."/global".FILE_EXT);
-
-	// Instantiate
-	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT))
-		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
+	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/initiate".FILE_EXT))
+		require_once($PHPZevelop->CFG->SiteDirRoot."/initiate".FILE_EXT);
 
 	// Check if path was changed
 	if($OrrigionalPath != $PHPZevelop->CFG->PagePath)

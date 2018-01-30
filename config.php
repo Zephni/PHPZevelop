@@ -32,7 +32,7 @@
 		"DefaultFiles"		=> array("index", "default", "home")
 		
 	));
-
+	
 	/* Database
 	------------------------------*/	
 	if($PHPZevelop->CFG->SiteMode == SiteMode::Development)

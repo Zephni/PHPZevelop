@@ -71,6 +71,7 @@
 					return false;
 			}
 			
+			// GetActivationCode
 			public function GetActivationCode()
 			{
 				if(!isset($this->Data["id"]) || !isset($this->Data["salt"]))

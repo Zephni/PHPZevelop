@@ -17,7 +17,6 @@
 
 		<!-- JAVASCRIPT -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="<?php echo $PHPZevelop->Path->GetScript("main.js"); ?>"></script>
 	</head>
 	<body>
 		<div id="fixed-container">
