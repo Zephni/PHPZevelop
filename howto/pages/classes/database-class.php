@@ -12,7 +12,7 @@
 
 <p>The class.db.php file must be included in the "classes/" directory for this class to be available.</p>
 
-<p>By default the database class (which uses PDO) is configured in the "site/config.php" file and instantiated in the "site/instantiate.php": </p>
+<p>By default the database class (which uses PDO) is configured in the "site/config.php" file and instantiated in the "site/initiate.php": </p>
 
 <pre class="code" style="font-size: 13px;">
 # file: site/config.php
@@ -26,7 +26,7 @@ $PHPZevelop->CFG->DB = (object) array(
 	"Name" => ""
 );
 
-# file: site/instantiate.php.php
+# file: site/initiate.php.php
 
 /* Database connection
 ------------------------------*/

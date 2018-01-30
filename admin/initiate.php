@@ -4,10 +4,6 @@
 	$SubLoader = new SubLoader($PHPZevelop->CFG->SiteDirRoot);
 	$SubLoader->RunIncludes(array("../common", "classes", "functions"));
 	extract($SubLoader->DefinedVariables);
-
-	// Early instantiate
-	if(file_exists($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT))
-		require_once($PHPZevelop->CFG->SiteDirRoot."/instantiate".FILE_EXT);
 	
 	// Default Breadcrumbs
 	Breadcrumbs::$Items[""] = "home";

@@ -38,8 +38,7 @@ css/
 scripts/
 templates/
 config.php
-global.php
-instantiate.php
+initiate.php
 </pre>
 
 <p><span style="color: green;">classes/</span>: All classes in this directory will be included by default from global.php</p>
@@ -48,4 +47,3 @@ instantiate.php
 <p><span style="color: green;">templates/</span>: Template files should be placed here. See more <?php $Link->Out("help/load-style", "here"); ?>.</p>
 <p><span style="color: green;">config.php</span>: You can override config properties here. All pages loaded in the containing site will have the same config applied.</p>
 <p><span style="color: green;">global.php</span>: For any site specific code. By default this file runs all specified include directories. See more <?php $Link->Out("classes/subloader-class", "here"); ?>.</p>
-<p><span style="color: green;">instantiate.php</span>: Here you can instantiate included classes and set up their configuration.</p>
