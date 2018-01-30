@@ -5,6 +5,11 @@
 		public static $ValidPairs = array();
 		public static $InvalidPairs = array();
 
+		public static function IsValid()
+		{
+			return (count(ValidateValues::$InvalidPairs) == 0);
+		}
+
 		/*
 			Use like:
 			ValidateValues::Run($_POST, array(
@@ -17,7 +22,9 @@
 		public static function Run($Data, $CheckMethods = array(), $_Options = array())
 		{
 			$Options = array_merge(array(
-				"ErrorColor" => "red"
+				"HTMLEntity" => "span",
+				"Style" => "color: red;",
+				"Class" => ""
 			), $_Options);
 
 			foreach($Data as $Key => $Value)
@@ -29,7 +36,7 @@
 
 				if($Output !== true)
 				{
-					self::$ErrorMessages[] = "<span style='color: ".$Options["ErrorColor"].";'>".$Output."</span>";
+					self::$ErrorMessages[] = "<".$Options["HTMLEntity"]." class='".$Options["Class"]."' style='".$Options["Style"]."'>".$Output."</".$Options["HTMLEntity"].">";
 					self::$InvalidPairs[$Key] = $Data[$Key];
 				}
 				else
