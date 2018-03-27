@@ -1,6 +1,11 @@
 <?php
 	$Table = DBTool::GetTable($_GET["param_0"]);
 
+	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
+
+	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
+		$PHPZevelop->Location("");
+	
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
@@ -8,66 +13,61 @@
 		"PassParams" => true
 	));
 
-	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 ?>
 
 <div class="breadcrumbs"><?php
 	Breadcrumbs::Build(array(
-		"" => "administration",
+		"admin343872" => "administration",
 		"select/".$Table["real_name"] => $Table["name"]
 	));
 ?></div>
 
 <h1>Browsing <?php echo strtolower($Table["name"]); ?></h1>
-<br />
 
 <?php
-	// Passed search through GET
-	if(isset($_GET["search"]) || isset($_GET["page"]))
+	if(count($_POST) > 0)
 	{
-		$_SESSION["temp_search"] = urldecode($_GET["search"]);
-		$TempPage = (isset($_GET["page"])) ? $_GET["page"] : "1";
-		$PHPZevelop->Location("select/".$_GET["param_0"]."/".$TempPage);
+		$_SESSION["admin_filters"] = $_POST;
 	}
 
-	if(isset($_SESSION["temp_search"]))
+	if(isset($_SESSION["admin_filters"]) && isset($_SESSION["admin_current_table"]) && $Table["real_name"] == $_SESSION["admin_current_table"])
 	{
-		$_POST["search"] = $_SESSION["temp_search"];
-		unset($_SESSION["temp_search"]);
+		$_POST = $_SESSION["admin_filters"];
 	}
-	// /Passed search through GET
+	
+	$_SESSION["admin_current_table"] = $Table["real_name"];
 
-	$SearchForm = new FormGen();
-	$SearchForm->AddElement(array("type" => "text", "name" => "search", "placeholder" => "Search ".strtolower($Table["name"])));
-	$SearchForm->AddElement(array("type" => "submit", "value" => "Search"));
-	echo $SearchForm->Build(array("ColNum" => 2, "data" => $_POST));
+	function moveElement(&$array, $a, $b) {
+		$out = array_splice($array, $a, 1);
+		array_splice($array, $b, 0, $out);
+	}
+
+	$cols = array(); foreach($Table["columns"] as $Item) $cols[] = $Item["column_name"];
+	moveElement($cols, array_search("title", $cols), 0);
+
+	$FilterForm = new FilterForm(array(
+		"Fields" => $cols
+	), array(
+		".FilterFormSet *" => array("width" => "200px", "padding" => "8px"),
+		".FilterFormSet select" => array("box-shadow" => "none", "border" => "none"),
+		"input[type='submit']" => array("width" => "200px")
+	));
+
+	echo $FilterForm->BuildHeaderHTML();
+	echo $FilterForm->BuildHTML();
 
 	$Where = array();
 	if(count($_POST) > 0)
 	{
-		if(substr($_POST["search"], 0, 1) != "*"){
-			foreach($Table["columns"] as $Column){
-				$Where[] = array($Column["column_name"], "LIKE", "%".$_POST["search"]."%");
-				$Where[] = "OR";
-			}
-		}else{
-			$Temp = ltrim($_POST["search"], "*");
-			foreach(explode(",", $Temp) as $Item){
-				$Parts = explode(" ", trim($Item));
-				if(strtolower($Parts[1]) == "like") $Parts[2] = "%".$Parts[2]."%";
-				$Where[] = array($Parts[0], $Parts[1], $Parts[2]);
-				$Where[] = "AND";
-			}
-		}
-
-		array_pop($Where);
+		$Where = $FilterForm->DataToMySQLWhere($_POST);
 	}
 
 	$_SESSION["DBWhere"] = $Where;
 
+
 	$Rows = $DB->Select("COUNT(id) as 'count'", $_GET["param_0"], $Where, true);
 	$Pagination->Options["URL"] = $PHPZevelop->Path->GetPage("select/".$_GET["param_0"]."?page=(PN)".(isset($_POST["search"]) ? "&search=".$_POST["search"] : ""), true);
-	$Pagination->SetPage((isset($_GET["param_1"])) ? $_GET["param_1"] : 1);
+	$Pagination->SetPage((isset($_GET["page"])) ? $_GET["page"] : 1);
 	$PaginationHTML = $Pagination->BuildHTML($Rows["count"]);
 
 	$ExtraFields = array();
