@@ -8,10 +8,6 @@
 	// Default Breadcrumbs
 	Breadcrumbs::$Items[""] = "home";
 
-	// Logout if restricted
-	if($PHPZevelop->CFG->PagePath != "/login" && isset($Administrator) && !$Administrator->LoggedIn())
-		$PHPZevelop->Location("login");
-
 	/* Database
 	------------------------------*/
 	if(class_exists("DB"))
@@ -84,3 +80,7 @@
 		$Pagination->SetCSS("ActiveButtonCSS", array("background" => $Administrator->Data["theme_color"], "color" => "white !important"));
 		$Pagination->SetCSS("HighlightedButtonCSS", array("background" => $Administrator->Data["theme_color"], "color" => "white !important"));
 	}
+
+	// Logout if restricted
+	if($PHPZevelop->CFG->PagePath != "/login" && !$Administrator->LoggedIn())
+		$PHPZevelop->Location("login");
