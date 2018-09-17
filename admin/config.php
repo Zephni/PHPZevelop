@@ -3,12 +3,11 @@
 	
 	/*
 	$PHPZevelop->CFG->DB = (object) array(
-		"Host" => "212.67.203.173",
-		"User" => "zephnico_gilmore",
-		"Pass" => "lgilmore343872",
-		"Name" => "zephnico_gilmore"
-	);
-	*/
+		"Host" => "",
+		"User" => "",
+		"Pass" => "",
+		"Name" => ""
+	);*/
 
 	// Database name
 	$DatabaseName = $PHPZevelop->CFG->DB->Name;
