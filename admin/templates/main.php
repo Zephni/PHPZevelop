@@ -38,6 +38,9 @@
 	            enable_elements:"*[*]",
 	            valid_elements:"*[*]",
 	            valid_children : "*[*]",
+	            //force_br_newlines : true,
+	            //force_p_newlines : false,
+	            //forced_root_block : '',
 				menubar: false,
 				statusbar: true,
 				height : 200,
@@ -53,7 +56,7 @@
 			});
 		</script>
 		
-		<link rel="stylesheet" type="text/css" href="<?php $PHPZevelop->Path->GetCSS("style.php?c1=".urlencode($Administrator->Data["theme_color"])); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php $PHPZevelop->Path->GetCSS("style.php?c1=".urlencode($Administrator->Data["theme_color"])); ?>" />
 
 		<!-- -->
 		<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
@@ -81,91 +84,116 @@
 		</script>
 
 		<div id="NavTop">
-			<div class="item" style="padding-left: 15px;">
-				<a href="<?php $PHPZevelop->Path->GetPage(""); ?>">
-					<span style="font-weight: normal;"><?php echo $PHPZevelop->CFG->SiteTitle; ?></span>
-				</a>
-			</div>
-
-			<div style="position: absolute; right: 0px; top: 0px;">
-
-				<div class="item">
-					<a href="<?php $PHPZevelop->Path->GetPage("../") ?>">
-						<img src="<?php echo $PHPZevelop->Path->GetImage("components/arrow-icon.png"); ?>"><span>Go to front end</span>
+			<div class="InnerContainer">
+				<div class="item" style="padding-left: 0px !important;">
+					<a href="<?php $PHPZevelop->Path->GetPage(""); ?>">
+						<span style="font-weight: normal;"><?php echo $PHPZevelop->CFG->SiteTitle; ?></span>
 					</a>
 				</div>
 
-				<div class="item">
-					<a href="<?php $PHPZevelop->Path->GetPage("manage-account") ?>">
-						<img src="<?php echo $PHPZevelop->Path->GetImage("components/user-icon.png"); ?>"><span>Hello, <?php echo $Administrator->Data["username"]; ?>!</span>
-					</a>
-				</div>
+				<div style="position: absolute; right: 0px; top: 0px;">
 
-				<div class="item" style="padding-right: 20px;">
-					<a href="<?php $PHPZevelop->Path->GetPage("signout") ?>">
-						<img src="<?php echo $PHPZevelop->Path->GetImage("components/logout-icon.png"); ?>"><span>Logout</span>
-					</a>
-				</div>
+					<div class="item">
+						<a href="<?php $PHPZevelop->Path->GetPage("manage-account") ?>">
+							<img src="<?php echo $PHPZevelop->Path->GetImage("components/user-icon.png"); ?>"><span>Hello, <?php echo $Administrator->Data["username"]; ?>!</span>
+						</a>
+					</div>
 
-				<script type="text/javascript">
-					$(document).ready(function(){
-						function SetTimeString()
-						{
-							var dNow = new Date();
-							var localdate= dNow.getFullYear() + '/' + (dNow.getMonth()+1) + '/' + dNow.getDate() + ' ' + dNow.getHours() + ':' + dNow.getMinutes();
-							$("#currentTime").html(localdate);
-						}
+					<div class="item" style="padding-right: 20px;">
+						<a href="<?php $PHPZevelop->Path->GetPage("signout") ?>">
+							<img src="<?php echo $PHPZevelop->Path->GetImage("components/logout-icon.png"); ?>"><span>Logout</span>
+						</a>
+					</div>
 
-						SetTimeString();
-						window.setInterval(function(){
+					<script type="text/javascript">
+						$(document).ready(function(){
+							function SetTimeString()
+							{
+								var dNow = new Date();
+								var localdate= dNow.getFullYear() + '/' + (dNow.getMonth()+1) + '/' + dNow.getDate() + ' ' + dNow.getHours() + ':' + dNow.getMinutes();
+								$("#currentTime").html(localdate);
+							}
+
 							SetTimeString();
-						}, 1000);
-					});
-				</script>
+							window.setInterval(function(){
+								SetTimeString();
+							}, 1000);
+						});
+					</script>
 
-				<div class="item" style="padding-right: 25px; padding-left: 20px; background: #333333;">
-					<span id="currentTime" style="font-size: 12px;"></span>
+					<div class="item" style="padding-right: 25px; padding-left: 20px; background: #333333;">
+						<span id="currentTime" style="font-size: 12px;"></span>
+					</div>
 				</div>
 			</div>
-			
 		</div>
 
-		<div id="LeftCol">
-			<span>Navigation</span>
-			<a href="<?php $PHPZevelop->Path->GetPage("home"); ?>">Home</a>
-			<a href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>">File manager</a>
-			<a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Add new table</a>
-			<a href="<?php $PHPZevelop->Path->GetPage("manage/add-field"); ?>">Add table field</a>
+		<style type="text/css">
+			#NavBar {width: 100%; background: #F4F4F4; padding: 0px 0px; border-bottom: 3px solid #DDDDDD;}
+			#primary_nav_wrap {}
+			#primary_nav_wrap a {padding: 16px 12px 12px 12px; font-size: 12px; font-family: "HelveticaNeue","Helvetica Neue", Helvetica;}
+			#primary_nav_wrap ul {list-style: none; position: relative; margin:0; padding: 0;}
+			#primary_nav_wrap ul a{display: block; color: #333333; text-decoration: none; font-weight: 700;}
+			#primary_nav_wrap ul li {position:relative; display: inline-block; margin:0;}
+			#primary_nav_wrap ul li.current {background:#DDDDDD;}
+			#primary_nav_wrap ul li:hover {background: #DDDDDD;}
+			#primary_nav_wrap ul ul {display: none; position: absolute; top: 100%; left: 0; background: #F4F4F4; padding: 0; border-left: 2px solid #E6E6E6; border-bottom: 2px solid #DDDDDD; border-right: 2px solid #E6E6E6;}
+			#primary_nav_wrap ul ul li {float: none; width: 200px;}
+			#primary_nav_wrap ul ul a {}
+			#primary_nav_wrap ul ul ul {top: 0; left: 100%;}
+			#primary_nav_wrap ul li:hover > ul {display: block; z-index: 1;}
+			#primary_nav_wrap ul ul li {border-top: 2px solid #E6E6E6;}
+			#primary_nav_wrap ul ul ul li {background: #F1F1F1;}
+		</style>
+		<div id="NavBar">
+			<div class="InnerContainer">
 
-			<span>Tables</span>
-			<table style="width: 100%;">
-			<?php
-				foreach(DBTool::GetAllTables() as $Key => $Item)
-				{
-					$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
-					if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
+				<nav id="primary_nav_wrap">
+				  <ul>
+				    <li><a href="<?php $PHPZevelop->Path->GetPage("home"); ?>">Home</a></li>
 
-					echo "<tr>";
-					echo "<td><a href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'>".$Item["name"]."</td>";
+				    <li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">Account</a>
+				    	<ul>
+				    		<li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">My account</a></li>
+							<li><a href="<?php $PHPZevelop->Path->GetPage("signout"); ?>">Sign out</a></li>
+				    	</ul>
+				    </li>
 
-					if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
-						echo '<td style="width: 15%; text-align: right;"><a href="'.$PHPZevelop->Path->GetPage("add/".$Key, true).'" style="display: inline-block;">Add</a></td>';
-					else
-						echo "<td></td>";
+				    <li><a href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>">File manager</a></li>
 
-					echo "</tr>";
-				}
-			?>
-			</table>
+					<li>
+						<a>Tables</a>
+						<ul>
+							<?php    
+								foreach(DBTool::GetAllTables() as $Key => $Item)
+								{
+									$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
+									if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-			<span>Account</span>
-			<a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">Manage account</a>
-			<a href="<?php $PHPZevelop->Path->GetPage("signout"); ?>">Sign out</a>
+									echo "<li><a href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'>".$Item["name"]."</a>";
+
+									if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
+									{
+										echo "<ul>";
+										echo '<li><a href="'.$PHPZevelop->Path->GetPage("add/".$Key, true).'">Add</a></li>';
+										echo "</ul>";
+									}
+
+									echo "</li>";
+								}
+							?>
+						</ul>
+					</li>
+				  </ul>
+				</nav>
+
+			</div>
 		</div>
 
 		<div id="Content">
-			<?php echo $PHPZevelop->PageContent; ?>
+			<div class="InnerContainer">
+				<?php echo $PHPZevelop->PageContent; ?>
+			</div>
 		</div>
-
 	</body>
 </html>

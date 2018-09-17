@@ -41,6 +41,11 @@
 			public static $InactiveTime;
 
 			// Initiate
+			public function Initiate()
+			{
+				$this->Table = "administrators";
+				self::$InactiveTime = (60*20);
+			}
 
 			public function UniqueChecks($Uploading)
 			{
@@ -71,7 +76,6 @@
 					return false;
 			}
 			
-			// GetActivationCode
 			public function GetActivationCode()
 			{
 				if(!isset($this->Data["id"]) || !isset($this->Data["salt"]))
@@ -84,9 +88,8 @@
 			public static function AttemptLogin(&$User, $Username, $Password)
 			{
 				$MSG = null;
-				global $DB;
 				$UserLogin = Administrator::GetSingle("administrators", array("username", "LIKE", $Username), "OR", array("email", "LIKE", $Username));
-
+				
 				if(isset($UserLogin->Data["id"]))
 				{
 					// Attempts
@@ -165,14 +168,11 @@
 			
 			public function LoggedIn()
 			{
-				global $DB;
-
 				if(!isset($_SESSION[self::$PasswordSessionField]) || !isset($this->Data["id"]) || strlen($this->Data["id"]) == 0)
 					return false;
-
+				
 				$TempUser = Administrator::GetSingle("administrators", array("username", "LIKE", $_SESSION[self::$UsernameSessionField]));
-
-				if(isset($TempUser->Data["password"]) && $_SESSION[self::$PasswordSessionField] == $TempUser->Data["password"])
+				if(isset($TempUser->Data) && $_SESSION[self::$PasswordSessionField] == $TempUser->Data["password"])
 					return true;
 				
 				return false;

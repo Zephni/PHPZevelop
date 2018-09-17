@@ -2,7 +2,10 @@
 	$Table = DBTool::GetTable($_GET["param_0"]);
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
-
+	
+	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
+		$PHPZevelop->Location("");
+	
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
@@ -13,9 +16,9 @@
 	if(count($_POST) > 0)
 	{
 		$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
-
+		
 		ValidateValues::Run($_POST, array());
-
+		
 		foreach(array_merge(ValidateValues::$ValidPairs, $_FILES) as $K => $V){
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
@@ -23,10 +26,10 @@
 			if(ArrGet($ConfigArray, "type", 0) == "image") UploadImage($K, $ConfigArray, $V);
 			if(ArrGet($ConfigArray, "type", 0) == "checkbox") ValidateValues::$ValidPairs[$K] = implode("|", $V);
 		}
-
+		
 		if(count(ValidateValues::$InvalidPairs) == 0)
 			$DB->Update($Table["real_name"], ValidateValues::$ValidPairs, array(array("id", "=", $_GET["param_1"])));
-
+		
 		$LogString = array(); foreach(ValidateValues::$ValidPairs as $K => $V) if($Data[$K] != $V) $LogString[] = $K;
 		if(count($LogString) > 0) ChangeLog("Updated '".$Table["name"]."' #".$_GET["param_1"]." fields: ".implode(", ", $LogString));
 	}
@@ -52,7 +55,6 @@
 		
 		// Need to include here
 	}
-
 ?>
 
 <h1>Editing #<?php echo $Data["id"]; ?> in <?php echo strtolower($Table["name"]); ?></h1>
@@ -63,6 +65,7 @@
 		{
 			$TempEditLink = explode("|", $TableConfig["EditLink"][0]);
 			$TempEditLink[0] = str_replace("[id]", $_GET["param_1"], $TempEditLink[0]);
+			if(strstr($TempEditLink[0], "alias") !== false) $TempEditLink[0] = str_replace("[alias]", $Data["alias"], $TempEditLink[0]);
 			echo "<a href='".$TempEditLink[0]."' target='_blank' style='position: relative; left: 0px;'>".$TempEditLink[1]."</a>";
 		} unset($TempEditLink);
 	?>

@@ -10,7 +10,7 @@
 	$MSG = "Welcome to ".$PHPZevelop->CFG->SiteTitle.", please<br />use your login below.";
 
 	if((count($_POST) > 0) && Administrator::AttemptLogin($Administrator, $_POST["username"], $_POST["password"]) !== true)
-		$MSG = "Failed login with username '<b>".$_POST["username"]." <pre>".print_r($Administrator, true)."</pre></b>'";
+		$MSG = "Failed login with username '<b>".$_POST["username"]."</b>'";
 
 	if($Administrator->LoggedIn())
 	{

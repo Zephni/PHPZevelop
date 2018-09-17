@@ -41,7 +41,7 @@
 <?php
 	$Tables = array();
 	foreach($DB->Query("SHOW TABLES") as $K => $V)
-		$Tables[$V["Tables_in_kbbarkco_db"]] = $V["Tables_in_kbbarkco_db"];
+		$Tables[$V["Tables_in_zephnico_gilmore"]] = $V["Tables_in_zephnico_gilmore"];
 
 	$FormGen = new FormGen();
 	$FormGen->AddElement(array("type" => "select", "name" => "table_name"), array("title" => "Table", "data" => $Tables));

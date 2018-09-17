@@ -18,9 +18,9 @@
 			), $_Options);
 
 			$this->CSS = array(
-				".AddFilterButton"			=> array("color" => "#428BCA", "display" => "inline-block"),
+				".AddFilterButton"			=> array("color" => "#428BCA", "display" => "inline-block", "margin" => "0 0 8px 0", "padding" => "0px"),
 				".RemoveFilterButton"		=> array("color" => "red"),
-				".FilterFormSet *"			=> array("padding" => "4px", "font-size" => "13px", "display" => "inline-block"),
+				".FilterFormSet *"			=> array("padding" => "4px", "font-size" => "12px", "display" => "inline-block"),
 				".FilterFormSet .linker"	=> array("border" => "none !important"),
 				".RemoveFilterButton:hover"	=> array("cursor" => "pointer"),
 				".AddFilterButton:hover"	=> array("cursor" => "pointer"),
@@ -149,7 +149,7 @@
 		{
 			$HTML = array();
 
-			$HTML[] =	"<form method='post' action='/admin343872/select/".$_SESSION["admin_current_table"]."/?page=1' name='".$this->Options->FormName."'>";
+			$HTML[] =	"<form method='post' action='/pcx/select/".$_SESSION["admin_current_table"]."/?page=1' name='".$this->Options->FormName."'>";
 			$HTML[] =	"	<div id='".$this->Options->ElementID."'>";
 			$HTML[] =	"		<p class='".$this->Options->AddFilterButtonClass."'>".$this->Options->AddFilterText."</p>";
 			$HTML[] =	"	</div>";

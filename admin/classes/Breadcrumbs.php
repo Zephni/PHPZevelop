@@ -5,6 +5,7 @@
 
 		public static function GBuild($Array = null, $Delimiter = " &gt; ")
 		{
+			global $PHPZevelop;
 			$FinalGrouping = array();
 
 			if($Array != null && count($Array) > 0)
@@ -16,7 +17,7 @@
 			foreach($FinalItems as $K => $V)
 			{
 				if($I < count($FinalItems)-1)
-					$FinalGrouping[] = "<a href='".$K."'>".strtolower($V)."</a>";
+					$FinalGrouping[] = "<a href='".$PHPZevelop->Path->GetPage($K, true)."'>".strtolower($V)."</a>";
 				else
 					$FinalGrouping[] = strtolower($V);
 

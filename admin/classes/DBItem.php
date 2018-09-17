@@ -70,15 +70,52 @@
 			
 			$Args = func_get_args();
 			$TableName = $Args[0];
-			$Where = (count($Args) > 1) ? array_slice($Args, 1) : array();
-			
+			$Joins = array();
+
+			if(is_array($Args[1]) && array_key_exists("join", $Args[1]))
+			{
+				foreach($Args[1]["join"] as $V) $Joins[] = explode("/", $V);
+				$Where = (count($Args) > 1) ? array_slice($Args, 2) : array();
+			}
+			else
+			{
+				$Where = (count($Args) > 1) ? array_slice($Args, 1) : array();
+			}
+
 			$Items = array();
 			
 			$CalledClass = get_called_class();
 			
 			foreach($DB->Select("*", $TableName, $Where) as $K => $V)
-				$Items[] = new $CalledClass($TableName, $V);
+			{
+				$Item = new $CalledClass($TableName, $V);
+				
+				foreach($Joins as $JoinData)
+				{
+					if(isset($JoinData[3]))
+					{
+						$Temp = $DB->QuerySingle("SELECT ".$JoinData[2]." FROM ".$JoinData[1]." WHERE id=:id", array("id" => $Item->Data[$JoinData[3]]));
+						$Item->Data[$JoinData[0]] = $Temp[$JoinData[2]];
+					}
+					else
+					{
+						$Temp = $DB->QuerySingle("SELECT ".$JoinData[2]." FROM ".$JoinData[1]." WHERE id=:id", array("id" => $Item->Data[$JoinData[0]]));
+						$Item->Data[$JoinData[0]] = $Temp[$JoinData[2]];
+					}
+				}
+
+				$Items[] = $Item;
+			}
 			
 			return $Items;
 		}
+
+		/*
+			Join example:
+			DBItem::GetMultiple("table_name", array("join" => array("author/authors/name")));
+
+			or 
+
+			DBItem::GetMultiple("table_name", array("join" => array("image/authors/image/author")));
+		*/
 	}
