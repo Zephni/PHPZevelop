@@ -21,7 +21,7 @@ a img {border: none; text-decoration: none;}
 
 form input    {font-size: 16px !important; padding: 5px; border-radius: 1px; width: 100%; border: 1px solid #CCCCCC; margin-bottom: 10px; outline: none; font-family: "Droid Sans";}
 form textarea {font-size: 16px !important; padding: 5px; border-radius: 1px; width: 100%; border: 1px solid #CCCCCC; margin-bottom: 10px; outline: none; font-family: "Droid Sans"; min-height: 100px;}
-form select   {font-size: 16px !important; padding: 5px; border-radius: 1px; width: 100%; border: 1px solid #CCCCCC; margin-bottom: 10px; outline: none; font-family: "Droid Sans";}
+form select   {font-size: 16px !important; padding: 4px; border-radius: 1px; width: 100%; border: 1px solid #CCCCCC; margin-bottom: 10px; outline: none; font-family: "Droid Sans";}
 form input[type="file"] {border: none; box-shadow: none; position: relative; top: 3px;}
 form input[type="color"] {padding: 0px 8px; width: 80px;}
 form input[type="submit"] {font-size: 16px; background: <?php echo $HexColor1; ?>; border: none; color: white; font-weight: bold; outline: none;}

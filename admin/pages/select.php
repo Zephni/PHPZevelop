@@ -118,7 +118,7 @@
 			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage( ($_GET["param_0"] != "repairs") ? "edit/".$Table["real_name"]."/#" : "edit-repair/#", true)."'>Edit</a></center>";
 		else if($Item == "delete")
 			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."'>
-				<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' />
+				<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
 			</a></center>";
 		else if($Item == "preview")
 		{

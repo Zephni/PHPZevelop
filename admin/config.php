@@ -1,13 +1,13 @@
 <?php
 	$PHPZevelop->CFG->SiteTitle = "PHPZevelop";
 	
-	/*
+	
 	$PHPZevelop->CFG->DB = (object) array(
-		"Host" => "",
-		"User" => "",
-		"Pass" => "",
-		"Name" => ""
-	);*/
+		"Host" => "webregulate.co.uk",
+		"User" => "zephnico_phpz",
+		"Pass" => "phpzevelop34",
+		"Name" => "zephnico_phpzevelop"
+	);
 
 	// Database name
 	$DatabaseName = $PHPZevelop->CFG->DB->Name;

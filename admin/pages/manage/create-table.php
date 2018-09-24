@@ -15,16 +15,22 @@
 
 			$SQLFields = array();
 			$SQLFields[] = "id MEDIUMINT NOT NULL AUTO_INCREMENT";
-			for($I = 0; $I < count($_POST["field_name"]); $I++)
-				$SQLFields[] = $_POST["field_name"][$I]." ".$_POST["field_type"][$I]." NOT NULL "
-					.(($_POST["field_comment"][$I] != "") ? "COMMENT '".$_POST["field_comment"][$I]."'" : "")
-					.(($_POST["field_default"][$I] != "") ? "DEFAULT '".$_POST["field_default"][$I]."'" : "");
-
+			if(isset($_POST["field_name"]))
+			{
+				for($I = 0; $I < count($_POST["field_name"]); $I++)
+					$SQLFields[] = $_POST["field_name"][$I]." ".$_POST["field_type"][$I]." NOT NULL "
+						.(($_POST["field_comment"][$I] != "") ? "COMMENT '".$_POST["field_comment"][$I]."'" : "")
+						.(($_POST["field_default"][$I] != "") ? "DEFAULT '".$_POST["field_default"][$I]."'" : "");
+			}
 			$SQL .= implode(", ", $SQLFields);
+			$SQL .= ", PRIMARY KEY (id))";
 
-			$SQL .= ", PRIMARY KEY (id));";
+			$SQL .= " COMMENT='".addslashes($_POST["table_comment"])."'";
+			$SQL .= ";";
 
 			$DB->QuerySingle($SQL);
+
+			$PHPZevelop->Location("manage/modify-table/".$_POST["table_name"]);
 		}
 	}
 ?>
@@ -39,7 +45,7 @@
 	$(document).ready(function(){
 		FieldHTML =  "<tr><td>Field <span class='removeField'>(remove)</span></td></tr><tr><td>";
 		FieldHTML += "<input type='text' name='field_name[]' style='width: 24%; margin-right: 1.3%;' placeholder='field name' />";
-		FieldHTML += "<select type='text' name='field_type[]' style='width: 24%; margin-right: 1.3%; padding: 11px;'><option>VARCHAR(255)</option><option>TEXT</option></select>";
+		FieldHTML += "<select type='text' name='field_type[]' style='width: 24%; margin-right: 1.3%;'><option>VARCHAR(255)</option><option>TEXT</option></select>";
 		FieldHTML += "<input type='text' name='field_default[]' style='width: 24%; margin-right: 1.2%;' placeholder='field default' />";
 		FieldHTML += "<input type='text' name='field_comment[]' style='width: 24%;' placeholder='field comment' />";
 		FieldHTML += "</td></tr>";

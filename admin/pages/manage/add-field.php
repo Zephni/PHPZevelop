@@ -41,8 +41,8 @@
 <?php
 	$Tables = array();
 	foreach($DB->Query("SHOW TABLES") as $K => $V)
-		$Tables[$V["Tables_in_zephnico_gilmore"]] = $V["Tables_in_zephnico_gilmore"];
-
+		$Tables[$V["Tables_in_".$PHPZevelop->CFG->DB->Name]] = $V["Tables_in_".$PHPZevelop->CFG->DB->Name];
+	
 	$FormGen = new FormGen();
 	$FormGen->AddElement(array("type" => "select", "name" => "table_name"), array("title" => "Table", "data" => $Tables));
 	$FormGen->AddElement(array("type" => "text", "name" => "field_name"), array("title" => "Field name"));

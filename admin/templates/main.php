@@ -150,12 +150,35 @@
 
 				<nav id="primary_nav_wrap">
 				  <ul>
-				    <li><a href="<?php $PHPZevelop->Path->GetPage("home"); ?>">Home</a></li>
-
 				    <li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">Account</a>
 				    	<ul>
 				    		<li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">My account</a></li>
 							<li><a href="<?php $PHPZevelop->Path->GetPage("signout"); ?>">Sign out</a></li>
+				    	</ul>
+				    </li>
+
+				    <li><a>Manage database</a>
+				    	<ul>
+							<li><a href="<?php $PHPZevelop->Path->GetPage("manage/administrators"); ?>">Administrators</a>
+								<ul>
+									<li><a href="<?php $PHPZevelop->Path->GetPage("add/administrators"); ?>">Add administrator</a>
+								</ul>
+							</li>
+				    		<li><a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Create table</a></li>
+							<li>
+								<a href="<?php $PHPZevelop->Path->GetPage("manage/tables"); ?>">Modify table &nbsp; &rarr;</a>
+								<ul>
+									<?php    
+										foreach(DBTool::GetAllTables() as $Key => $Item)
+										{
+											$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
+											if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
+
+											echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>".$Item["name"]."</a></li>";
+										}
+									?>
+								</ul>
+							</li>
 				    	</ul>
 				    </li>
 
@@ -170,12 +193,13 @@
 									$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 									if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-									echo "<li><a href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'>".$Item["name"]."</a>";
+									echo "<li><a href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'>".$Item["name"]." &nbsp; &rarr;</a>";
 
 									if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
 									{
 										echo "<ul>";
 										echo '<li><a href="'.$PHPZevelop->Path->GetPage("add/".$Key, true).'">Add</a></li>';
+										echo '<li><a href="'.$PHPZevelop->Path->GetPage("select/".$Key, true).'">Browse</a></li>';
 										echo "</ul>";
 									}
 
