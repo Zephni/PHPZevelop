@@ -221,15 +221,6 @@
 		<div id="Content">
 			<div class="InnerContainer">
 				<?php echo $PHPZevelop->PageContent; ?>
-				
-				<p>Permissions (values below will be prohibited from this administrator) eg:
-			<pre>
-[{
-	"general":["create","modify","remove","administrator_delete"],
-	"table":[{"articles":["add","select"]}]
-}]
-			</pre>
-		</p>
 			</div>
 		</div>
 	</body>

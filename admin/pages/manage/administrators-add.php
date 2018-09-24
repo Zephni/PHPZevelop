@@ -67,3 +67,12 @@
 		"SubmitText" => "Create"
 	));
 ?>
+
+<p>Permissions (values below will be prohibited from this administrator) eg:
+<pre>
+[{
+"general":["create","modify","remove","administrator_delete"],
+"table":[{"articles":["add","select"]}]
+}]
+</pre>
+</p>
