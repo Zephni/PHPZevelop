@@ -145,7 +145,7 @@
 			#primary_nav_wrap ul ul li {border-top: 2px solid #E6E6E6;}
 			#primary_nav_wrap ul ul ul li {background: #F1F1F1;}
 			
-			#primary_nav_wrap ul ul a:not([href]) {color: #AAAAAA !important; cursor: not-allowed;}
+			#primary_nav_wrap a:not([href]) {color: #888888 !important; cursor: not-allowed;}
 		</style>
 		<div id="NavBar">
 			<div class="InnerContainer">
@@ -164,7 +164,7 @@
 				    	<ul>
 							<li><a <?php if(HasPermission("general", "administrator_select")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/administrators"); ?>"<?php } ?>>Administrators</a>
 								<ul>
-									<li><a <?php if(HasPermission("general", "administrator_add")){ ?>href="<?php $PHPZevelop->Path->GetPage("add/administrators"); ?>"<?php } ?>>Add administrator</a>
+									<li><a <?php if(HasPermission("general", "administrator_add")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/administrators-add"); ?>"<?php } ?>>Add administrator</a>
 								</ul>
 							</li>
 					<li><a <?php if(HasPermission("general", "create")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>"<?php } ?>>Create table</a></li>
@@ -186,18 +186,18 @@
 				    </li>
 					<?php } ?>
 
-				    <li><a href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>">File manager</a></li>
+				    <li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
 
 					<li>
 						<a>Tables</a>
 						<ul>
-							<?php    
+							<?php
 								foreach(DBTool::GetAllTables() as $Key => $Item)
 								{
 									$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 									if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-									echo "<li><a ".((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : ''))."'>".$Item["name"]."</a>";
+									echo "<li><a ".((HasPermission("table", $Key, "select")) ? "href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'" : "").">".$Item["name"]."</a>";
 
 									if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
 									{
@@ -221,6 +221,15 @@
 		<div id="Content">
 			<div class="InnerContainer">
 				<?php echo $PHPZevelop->PageContent; ?>
+				
+				<p>Permissions (values below will be prohibited from this administrator) eg:
+			<pre>
+[{
+	"general":["create","modify","remove","administrator_delete"],
+	"table":[{"articles":["add","select"]}]
+}]
+			</pre>
+		</p>
 			</div>
 		</div>
 	</body>

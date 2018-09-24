@@ -3,6 +3,9 @@
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
 	
+	if($Table["real_name"] == "administrators")
+		die("Cannot modify rows in this table with the standard edit method");
+
 	if(!HasPermission("table", $Table["real_name"], "edit"))
 		die("You do not have permission to edit rows in this table");
 

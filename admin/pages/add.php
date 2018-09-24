@@ -2,6 +2,9 @@
 	$Table = DBTool::GetTable($_GET["param_0"]);
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	
+	if($Table["real_name"] == "administrators")
+		die("Cannot add rows to this table with the standard add method");
+
 	if(!HasPermission("table", $Table["real_name"], "add"))
 		die("You do not have permission to add rows to this table");
 
