@@ -1,6 +1,11 @@
 <?php
 	$Table = DBTool::GetTable($_GET["param_0"]);
 
+	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
+
+	if(!HasPermission("table", $Table["real_name"], "select"))
+		die("You do not have permission to view this table");
+
 	if(isset($_GET["reset"]) && $_GET["reset"] == "true")
 	{
 		unset($_SESSION["admin_filters"], $_GET["reset"]);
@@ -12,11 +17,9 @@
 			$_POST[$K] = urldecode($V);
 	}
 
-	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
-
 	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
 		$PHPZevelop->Location("");
-	
+
 	/* Page setup
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
@@ -114,29 +117,12 @@
 	foreach($FieldList as $Item)
 	{
 		$Item = trim($Item);
-		if($Item == "edit")
+		if($Item == "edit" && HasPermission("table", "articles", "edit"))
 			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage( ($_GET["param_0"] != "repairs") ? "edit/".$Table["real_name"]."/#" : "edit-repair/#", true)."'>Edit</a></center>";
-		else if($Item == "delete")
+		else if($Item == "delete" && HasPermission("table", "articles", "delete"))
 			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."'>
 				<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
 			</a></center>";
-		else if($Item == "preview")
-		{
-			if(ArrGet($TableConfig, "EditLink", 0) != "")
-			{
-				$TempEditLink = explode("|", $TableConfig["EditLink"][0]);
-				$TempEditLink[0] = str_replace("[id]", "#", $TempEditLink[0]);
-				$ExtraFields[] = "<a href='".$TempEditLink[0]."' target='_blank' style='position: relative; left: 0px;'>".$TempEditLink[1]."</a>";
-			} unset($TempEditLink);
-		}
-		else if($Item == "entries"){
-			$ExtraFields[] = "<center>
-				*special::showentries*<br />
-				<a href='".$PHPZevelop->Path->GetPage("select/comp_entries/?search=".urlencode("*comp_id = ")."#".urlencode(", options like optin:1"), true)."'>entries</a>
-			</center>";
-		}else if($Item == "projects"){
-			$ExtraFields[] = "<center>projects: *special::showprojectcount*</center>";
-		}
 	}
 ?>
 

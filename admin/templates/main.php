@@ -144,6 +144,8 @@
 			#primary_nav_wrap ul li:hover > ul {display: block; z-index: 1;}
 			#primary_nav_wrap ul ul li {border-top: 2px solid #E6E6E6;}
 			#primary_nav_wrap ul ul ul li {background: #F1F1F1;}
+			
+			#primary_nav_wrap ul ul a:not([href]) {color: #AAAAAA !important; cursor: not-allowed;}
 		</style>
 		<div id="NavBar">
 			<div class="InnerContainer">
@@ -157,16 +159,17 @@
 				    	</ul>
 				    </li>
 
+					<?php if(HasPermission("general", "manage")){ ?>
 				    <li><a>Manage database</a>
 				    	<ul>
-							<li><a href="<?php $PHPZevelop->Path->GetPage("manage/administrators"); ?>">Administrators</a>
+							<li><a <?php if(HasPermission("general", "administrator_select")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/administrators"); ?>"<?php } ?>>Administrators</a>
 								<ul>
-									<li><a href="<?php $PHPZevelop->Path->GetPage("add/administrators"); ?>">Add administrator</a>
+									<li><a <?php if(HasPermission("general", "administrator_add")){ ?>href="<?php $PHPZevelop->Path->GetPage("add/administrators"); ?>"<?php } ?>>Add administrator</a>
 								</ul>
 							</li>
-				    		<li><a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Create table</a></li>
+					<li><a <?php if(HasPermission("general", "create")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>"<?php } ?>>Create table</a></li>
 							<li>
-								<a href="<?php $PHPZevelop->Path->GetPage("manage/tables"); ?>">Modify table &nbsp; &rarr;</a>
+								<a <?php if(HasPermission("general", "modify")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/tables"); ?>"<?php } ?>>Modify table</a>
 								<ul>
 									<?php    
 										foreach(DBTool::GetAllTables() as $Key => $Item)
@@ -174,13 +177,14 @@
 											$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 											if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-											echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>".$Item["name"]."</a></li>";
+											echo "<li><a ".(((HasPermission("general", "modify")) ? 'href="'.$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true) : ''))."'>".$Item["name"]."</a></li>";
 										}
 									?>
 								</ul>
 							</li>
 				    	</ul>
 				    </li>
+					<?php } ?>
 
 				    <li><a href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>">File manager</a></li>
 
@@ -193,13 +197,13 @@
 									$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 									if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-									echo "<li><a href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'>".$Item["name"]." &nbsp; &rarr;</a>";
+									echo "<li><a ".((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : ''))."'>".$Item["name"]."</a>";
 
 									if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
 									{
 										echo "<ul>";
-										echo '<li><a href="'.$PHPZevelop->Path->GetPage("add/".$Key, true).'">Add</a></li>';
-										echo '<li><a href="'.$PHPZevelop->Path->GetPage("select/".$Key, true).'">Browse</a></li>';
+										echo '<li><a '.((HasPermission("table", $Key, "add") ? 'href="'.$PHPZevelop->Path->GetPage("add/".$Key, true) : '')).'">Add</a></li>';
+										echo '<li><a '.((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : '')).'">Browse</a></li>';
 										echo "</ul>";
 									}
 

@@ -3,6 +3,9 @@
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
 	
+	if(!HasPermission("table", $Table["real_name"], "edit"))
+		die("You do not have permission to edit rows in this table");
+
 	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
 		$PHPZevelop->Location("");
 	

@@ -2,6 +2,9 @@
 	$Table = DBTool::GetTable($_GET["param_0"]);
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	
+	if(!HasPermission("table", $Table["real_name"], "add"))
+		die("You do not have permission to add rows to this table");
+
 	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
 		$PHPZevelop->Location("");
 	

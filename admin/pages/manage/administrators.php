@@ -36,15 +36,15 @@
 	$Where = array();
 
 	$ExtraFields = array();
-	$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/administrators/#", true)."'>permissions</a></center>";
-	$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/administrators/#", true)."'>edit</a></center>";
-	$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("administrators/delete/#", true)."'>
+	if(HasPermission("general", "administrator_permissions")) $ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("permissions/#", true)."'>permissions</a></center>";
+	if(HasPermission("general", "administrator_edit")) $ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/administrators/#", true)."'>edit</a></center>";
+	if(HasPermission("general", "administrator_delete")) $ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("administrators/delete/#", true)."'>
 				<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
 			</a></center>";
 
 	echo DBTool::DisplayList(array(
 		"Table" => "administrators",
-		"HideFields" => array("password", "salt", "last_active", "active", "theme_color", "login_attempts"),
+		"HideFields" => array("password", "salt", "last_active", "active", "theme_color", "login_attempts", "permissions"),
 		"NoDataHTML" => "<br /><center><p style='color: #888888'>No data available, <a href='".$PHPZevelop->Path->GetPage("add/"."administrators", true)."'>create ".strtolower("administrators")." item</a></p></center>",
 		"ExtraFields" => $ExtraFields,
 		"Where" => $Where,

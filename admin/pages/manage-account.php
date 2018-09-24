@@ -68,7 +68,7 @@
 
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $Data,
-		"HideFields" => array("id", "salt", "active", "last_active", "login_attempts"), 
+		"HideFields" => array("id", "salt", "active", "last_active", "login_attempts", "permissions"), 
 		"SubmitText" => "Update"
 	));
 ?>
