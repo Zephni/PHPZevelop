@@ -59,16 +59,16 @@
 	foreach(ValidateValues::$ValidPairs as $K => $V)
 		if($OrigionalData[$K] != $V)
 			$MSG[] = "<span style='color: green;'>Updated ".$K."</span>";
-
+	
 	echo "<p>".implode(", ", array_merge(ValidateValues::$ErrorMessages, $MSG))."</p>";
 ?>
 
 <?php
 	$Data["password"] = "";
-
+	
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $Data,
-		"HideFields" => array("id", "salt", "active", "last_active", "login_attempts", "permissions"), 
+		"HideFields" => array("id", "salt", "active", "last_active", "login_attempts", "permissions"),
 		"SubmitText" => "Update"
 	));
 ?>

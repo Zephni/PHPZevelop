@@ -6,9 +6,13 @@
 		"PassParams" => false
 	));
 
+	if(!HasPermission("general", "administrator_select"))
+		die("You do not have permission to view this table");
+
 	if(isset($_GET["param_0"]) && $_GET["param_0"] == "delete" && isset($_GET["param_1"]) && is_int($_GET["param_1"]))
 	{
-		$DB->QuerySingle("DELETE FROM administrators WHERE id=:id", array("id", "=", $_GET["param_1"]));
+		if(HasPermission("general", "administrator_delete"))
+			$DB->QuerySingle("DELETE FROM administrators WHERE id=:id", array("id", "=", $_GET["param_1"]));
 	}
 ?>
 

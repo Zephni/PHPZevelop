@@ -3,6 +3,10 @@
 	{
 		$Args = func_get_args();
 		global $Administrator;
+		
+		if($Administrator->Data["permissions"] == "")
+			return true;
+
         $Permissions = json_decode($Administrator->Data["permissions"]);
         
 		$Field = $Permissions;

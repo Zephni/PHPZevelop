@@ -131,7 +131,7 @@
 		<style type="text/css">
 			#NavBar {width: 100%; background: #F4F4F4; padding: 0px 0px; border-bottom: 3px solid #DDDDDD;}
 			#primary_nav_wrap {}
-			#primary_nav_wrap a {padding: 16px 12px 12px 12px; font-size: 12px; font-family: "HelveticaNeue","Helvetica Neue", Helvetica;}
+			#primary_nav_wrap a {padding: 16px 12px 12px 12px; font-size: 12px; font-family: "HelveticaNeue","Helvetica Neue", Helvetica; position: relative;}
 			#primary_nav_wrap ul {list-style: none; position: relative; margin:0; padding: 0;}
 			#primary_nav_wrap ul a{display: block; color: #333333; text-decoration: none; font-weight: 700;}
 			#primary_nav_wrap ul li {position:relative; display: inline-block; margin:0;}
@@ -145,31 +145,46 @@
 			#primary_nav_wrap ul ul li {border-top: 2px solid #E6E6E6;}
 			#primary_nav_wrap ul ul ul li {background: #F1F1F1;}
 			
-			#primary_nav_wrap a:not([href]) {color: #888888 !important; cursor: not-allowed;}
+			#primary_nav_wrap span {position: absolute; right: 5px; top: 12px; font-size: 12px;}
+			#primary_nav_wrap a:not([href]) {color: #444444 !important; cursor: default;}
 		</style>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				// Hides li's that have a tag without href, and also have ul, but no li elements inside (basically empty / useless li items)
+				$("li:has(ul)").each(function(){
+					if($(this).has("a") && $(this).find("a:first-of-type").attr("href") == undefined && $(this).find("ul") != undefined && $(this).find("ul li").length == 0)
+						$(this).hide();
+				});
+			});
+		</script>
 		<div id="NavBar">
 			<div class="InnerContainer">
 
 				<nav id="primary_nav_wrap">
 				  <ul>
-				    <li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">Account</a>
+				    <li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">Account &nbsp;&nbsp;<span>&#9207;</span></a>
 				    	<ul>
 				    		<li><a href="<?php $PHPZevelop->Path->GetPage("manage-account"); ?>">My account</a></li>
 							<li><a href="<?php $PHPZevelop->Path->GetPage("signout"); ?>">Sign out</a></li>
 				    	</ul>
 				    </li>
 
-					<?php if(HasPermission("general", "manage")){ ?>
-				    <li><a>Manage database</a>
+				    <li><a>Database &nbsp;&nbsp;<span>&#9207;</span></a>
 				    	<ul>
+							<?php if(HasPermission("general", "administrator_select") || HasPermission("general", "administrator_add")){ ?>
 							<li><a <?php if(HasPermission("general", "administrator_select")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/administrators"); ?>"<?php } ?>>Administrators</a>
 								<ul>
+									<?php if(HasPermission("general", "administrator_add")){ ?>
 									<li><a <?php if(HasPermission("general", "administrator_add")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/administrators-add"); ?>"<?php } ?>>Add administrator</a>
+									<?php } ?>
 								</ul>
 							</li>
-					<li><a <?php if(HasPermission("general", "create")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>"<?php } ?>>Create table</a></li>
+							<?php } ?>
+							<?php if(HasPermission("general", "create")){ ?>
+							<li><a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Create table</a></li>
+							<?php } ?>
 							<li>
-								<a <?php if(HasPermission("general", "modify")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/tables"); ?>"<?php } ?>>Modify table</a>
+								<a href="<?php $PHPZevelop->Path->GetPage("manage/tables"); ?>">Modify table</a>
 								<ul>
 									<?php    
 										foreach(DBTool::GetAllTables() as $Key => $Item)
@@ -177,19 +192,20 @@
 											$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 											if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-											echo "<li><a ".(((HasPermission("general", "modify")) ? 'href="'.$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true) : ''))."'>".$Item["name"]."</a></li>";
+											echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>".$Item["name"]."</a></li>";
 										}
 									?>
 								</ul>
 							</li>
 				    	</ul>
 				    </li>
+
+					<?php if(HasPermission("general", "file_manager")){ ?>
+				    <li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
 					<?php } ?>
 
-				    <li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
-
 					<li>
-						<a>Tables</a>
+						<a>Tables &nbsp;&nbsp;<span>&#9207;</span></a>
 						<ul>
 							<?php
 								foreach(DBTool::GetAllTables() as $Key => $Item)
@@ -197,13 +213,14 @@
 									$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 									if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-									echo "<li><a ".((HasPermission("table", $Key, "select")) ? "href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'" : "").">".$Item["name"]."</a>";
+									if(HasPermission("table", $Key, "select") || HasPermission("table", $Key, "add") || HasPermission("table", $Key, "select"))
+										echo "<li><a ".((HasPermission("table", $Key, "select")) ? "href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'" : "").">".$Item["name"]."</a>";
 
 									if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
 									{
 										echo "<ul>";
-										echo '<li><a '.((HasPermission("table", $Key, "add") ? 'href="'.$PHPZevelop->Path->GetPage("add/".$Key, true) : '')).'">Add</a></li>';
-										echo '<li><a '.((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : '')).'">Browse</a></li>';
+										if(HasPermission("table", $Key, "add")) echo '<li><a '.((HasPermission("table", $Key, "add") ? 'href="'.$PHPZevelop->Path->GetPage("add/".$Key, true) : '')).'">Add</a></li>';
+										if(HasPermission("table", $Key, "select")) echo '<li><a '.((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : '')).'">Browse</a></li>';
 										echo "</ul>";
 									}
 
