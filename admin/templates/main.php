@@ -199,11 +199,11 @@
 							</li>
 				    	</ul>
 				    </li>
-
+					
 					<?php if(HasPermission("general", "file_manager")){ ?>
 				    <li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
 					<?php } ?>
-
+					
 					<li>
 						<a>Tables &nbsp;&nbsp;<span>&#9207;</span></a>
 						<ul>
