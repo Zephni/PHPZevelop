@@ -85,10 +85,13 @@
 	$HideFields = array("id");
 	$DisableFields = array();
 	$Permissions = json_decode($Administrator->Data["permissions"], true);
-	foreach($Permissions[0]["table"][0][$Table["real_name"]] as $Item)
+	if(isset($Permissions[0]["table"][0][$Table["real_name"]]))
 	{
-		if(substr($Item, 0, strlen("hide_")) == "hide_") $HideFields[] = substr($Item, strlen("hide_"));
-		if(substr($Item, 0, strlen("disable_")) == "disable_") $DisableFields[] = substr($Item, strlen("disable_"));
+		foreach($Permissions[0]["table"][0][$Table["real_name"]] as $Item)
+		{
+			if(substr($Item, 0, strlen("hide_")) == "hide_") $HideFields[] = substr($Item, strlen("hide_"));
+			if(substr($Item, 0, strlen("disable_")) == "disable_") $DisableFields[] = substr($Item, strlen("disable_"));
+		}
 	}
 
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(

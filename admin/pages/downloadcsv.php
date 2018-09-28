@@ -11,12 +11,20 @@
 
 	$Table = DBTool::GetTable($_GET["param_0"]);
 
+	//
+	$HideFields = array("id");
+	$Permissions = json_decode($Administrator->Data["permissions"], true);
+	foreach($Permissions[0]["table"][0][$Table["real_name"]] as $Item)
+	{
+		if(substr($Item, 0, strlen("hide_")) == "hide_") $HideFields[] = substr($Item, strlen("hide_"));
+	}
+
 	// Build rows
 	$Rows = array();
 	$I = -1; foreach($Data as $Item)
 	{$I++;
 		$II = -1; foreach($Item as $K => $V)
-		{$II++;
+		{$II++;				
 			$ColumnCommands = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			
 			// Manipulate value if needed

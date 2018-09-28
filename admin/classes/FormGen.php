@@ -61,7 +61,7 @@
 							$I = ($Y * $BuildOptions["ColNum"]) + $X;
 							if($BuildOptions["ColNum"] > 1 || (isset($this->Elements[$I]) && isset($this->Elements[$I]["Options"]["title"]) && $this->Elements[$I]["Options"]["title"] != ""))
 							{
-								$HTML .= "<td>";
+								$HTML .= "<td style='width: ".(100 / $BuildOptions["ColNum"])."%;'>";
 								if(isset($this->Elements[$I]) && isset($this->Elements[$I]["Options"]["title"]))
 									$HTML .= $this->Elements[$I]["Options"]["title"];
 								$HTML .= "</td>";
@@ -204,7 +204,8 @@
 					"HideFields" => array("id", "uid"),
 					"DisableFields" => array(),
 					"CustomFields" => array(),
-					"SubmitText" => "Submit"
+					"SubmitText" => "Submit",
+					"ColNum" => 2
 				), $_Config);
 
 				foreach($Table["columns"] as $Item)
@@ -301,8 +302,8 @@
 					{
 						$ColumnOptions["type"][0] = "text";
 						$ColumnOptions["class"][0] = "datetimepicker";
-
-						if(isset($Config["Data"][$Item["column_name"]]))
+						
+						if(isset($Config["Data"][$Item["column_name"]]) && is_int($Config["Data"][$Item["column_name"]]))
 							$Config["Data"][$Item["column_name"]] = date("Y/m/d H:i", $Config["Data"][$Item["column_name"]]);
 						else
 							$Config["Data"][$Item["column_name"]] = date("Y/m/d H:i", time());
@@ -332,7 +333,7 @@
 				}
 				
 				$FormGen->AddElement(array("type" => "submit", "value" => $Config["SubmitText"]));
-				return $FormGen->Build(array("data" => $Config["Data"], "enctype" => "multipart/form-data"));
+				return $FormGen->Build(array("data" => $Config["Data"], "enctype" => "multipart/form-data", "ColNum" => $Config["ColNum"]));
 			}
 		}
 	}
