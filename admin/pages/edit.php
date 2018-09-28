@@ -76,13 +76,25 @@
 		} unset($TempEditLink);
 	?>
 	
+	<?php if(HasPermission("table", $_GET["param_0"], "delete")){ ?>
 	<a href="<?php $PHPZevelop->Path->GetPage("delete/".$_GET["param_0"]."/".$_GET["param_1"]); ?>" style='position: absolute; right: 0px;'>Delete this item</a>
+	<?php } ?>
 </p>
 
 <?php
+	$HideFields = array("id");
+	$DisableFields = array();
+	$Permissions = json_decode($Administrator->Data["permissions"], true);
+	foreach($Permissions[0]["table"][0][$Table["real_name"]] as $Item)
+	{
+		if(substr($Item, 0, strlen("hide_")) == "hide_") $HideFields[] = substr($Item, strlen("hide_"));
+		if(substr($Item, 0, strlen("disable_")) == "disable_") $DisableFields[] = substr($Item, strlen("disable_"));
+	}
+
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $Data,
-		"HideFields" => array("id"), 
+		"HideFields" => $HideFields,
+		"DisableFields" => $DisableFields,
 		"SubmitText" => "Update"
 	));
 ?>

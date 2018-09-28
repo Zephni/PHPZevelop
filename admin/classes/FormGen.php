@@ -202,6 +202,7 @@
 				$Config = array_merge(array(
 					"Data" => array(),
 					"HideFields" => array("id", "uid"),
+					"DisableFields" => array(),
 					"CustomFields" => array(),
 					"SubmitText" => "Submit"
 				), $_Config);
@@ -210,6 +211,7 @@
 				{
 					// If id then skip
 					if(in_array($Item["column_name"], $Config["HideFields"])) continue;
+					$Disabled = (in_array($Item["column_name"], $Config["DisableFields"])) ? true : false;
 
 					if(array_key_exists($Item["column_name"], $Config["CustomFields"]))
 					{
@@ -319,7 +321,8 @@
 							"type" => (isset($ColumnOptions["type"][0])) ? $ColumnOptions["type"][0] : "text",
 							"name" => $Item["column_name"],
 							"value" => (isset($Config["Data"][$Item["column_name"]])) ? $Config["Data"][$Item["column_name"]] : $Item["column_default"],
-							"class" => (isset($ColumnOptions["class"][0])) ? $ColumnOptions["class"][0] : ""
+							"class" => (isset($ColumnOptions["class"][0])) ? $ColumnOptions["class"][0] : "",
+							($Disabled) ? "disabled" : "" => ($Disabled) ? "disabled" : ""
 						), array(
 							"title" => $Title,
 							"data" => $Data,

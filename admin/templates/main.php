@@ -213,7 +213,7 @@
 									$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
 									if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
 
-									if(HasPermission("table", $Key, "select") || HasPermission("table", $Key, "add") || HasPermission("table", $Key, "select"))
+									if(HasPermission("table", $Key, "select") || HasPermission("table", $Key, "add"))
 										echo "<li><a ".((HasPermission("table", $Key, "select")) ? "href='".$PHPZevelop->Path->GetPage("select/".$Key, true)."'" : "").">".$Item["name"]."</a>";
 
 									if(!isset($TableConfig["AllowAdd"]) || $TableConfig["AllowAdd"][0] != "false")
