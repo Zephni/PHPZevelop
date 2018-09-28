@@ -77,6 +77,6 @@
 		"Data" => $_POST,
 		"HideFields" => $HideFields,
 		"SubmitText" => "Create",
-		"ColNum" => ($TableConfig["ColNum"]) ? $TableConfig["ColNum"][0] : 1
+		"ColNum" => (isset($TableConfig["ColNum"])) ? $TableConfig["ColNum"][0] : 1
 	));
 ?>

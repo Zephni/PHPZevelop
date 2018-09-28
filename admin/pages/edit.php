@@ -98,6 +98,7 @@
 		"Data" => $Data,
 		"HideFields" => $HideFields,
 		"DisableFields" => $DisableFields,
-		"SubmitText" => "Update"
+		"SubmitText" => "Update",
+		"ColNum" => (isset($TableConfig["ColNum"])) ? $TableConfig["ColNum"][0] : 1
 	));
 ?>

@@ -205,7 +205,7 @@
 					"DisableFields" => array(),
 					"CustomFields" => array(),
 					"SubmitText" => "Submit",
-					"ColNum" => 2
+					"ColNum" => 1
 				), $_Config);
 
 				foreach($Table["columns"] as $Item)

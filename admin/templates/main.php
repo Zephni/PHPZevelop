@@ -184,7 +184,7 @@
 							<li><a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Create table</a></li>
 							<?php } ?>
 							<li>
-								<a href="<?php $PHPZevelop->Path->GetPage("manage/tables"); ?>">Modify table</a>
+								<a>Modify table</a>
 								<ul>
 									<?php    
 										foreach(DBTool::GetAllTables() as $Key => $Item)
