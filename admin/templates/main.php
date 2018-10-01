@@ -223,7 +223,7 @@
 										if(HasPermission("table", $Key, "select")) echo '<li><a '.((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : '')).'">Browse</a></li>';
 										echo "</ul>";
 									}
-
+									
 									echo "</li>";
 								}
 							?>

@@ -76,6 +76,7 @@
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $_POST,
 		"HideFields" => $HideFields,
+		"DisableFields" => $DisableFields,
 		"SubmitText" => "Create",
 		"ColNum" => (isset($TableConfig["ColNum"])) ? $TableConfig["ColNum"][0] : 1
 	));
