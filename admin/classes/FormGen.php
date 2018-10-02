@@ -155,7 +155,7 @@
 					{
 						if(strlen($V) > 0 && isset($Item["Options"]["forceselected"]) && strstr($Item["Options"]["forceselected"], $V) !== false)
 							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' checked='checked' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
-						else if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && strstr(strtolower($this->PrepopData[$Item["Attributes"]["name"]]), strtolower($V)) !== false)
+						else if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && in_array($K, explode("|", $this->PrepopData[$Item["Attributes"]["name"]])))
 							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' checked='checked' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
 						else
 							$HTML .= "<div style='display: inline-block;'><input type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
@@ -261,10 +261,18 @@
 					// Checkbox
 					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "checkbox")
 					{
-						foreach($ColumnOptions["data"] as $V)
+						if(isset($ColumnOptions["values"]))
 						{
-							$Temp = explode("|", $V);
-							$Data[$Temp[0]] = $Temp[1];
+							foreach($ColumnOptions["values"] as $V)
+							{
+								$Temp = explode("|", $V);
+								$Data[$Temp[0]] = $Temp[1];
+							}
+						}
+						else if(isset($ColumnOptions["join"]))
+						{
+							foreach($DB->Select("id,".$ColumnOptions["join"][1], $ColumnOptions["join"][0]) as $Row)
+								$Data[$Row["id"]] = $Row[$ColumnOptions["join"][1]];
 						}
 					}
 
@@ -332,7 +340,7 @@
 					));
 				}
 				
-				$FormGen->AddElement(array("type" => "submit", "value" => $Config["SubmitText"]));
+				$FormGen->AddElement(array("type" => "submit", "name" => "_submit", "value" => $Config["SubmitText"]));
 				return $FormGen->Build(array("data" => $Config["Data"], "enctype" => "multipart/form-data", "ColNum" => $Config["ColNum"]));
 			}
 		}
