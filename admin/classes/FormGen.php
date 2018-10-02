@@ -205,7 +205,8 @@
 					"DisableFields" => array(),
 					"CustomFields" => array(),
 					"SubmitText" => "Submit",
-					"ColNum" => 1
+					"ColNum" => 1,
+					"SubmitValue" => false
 				), $_Config);
 
 				foreach($Table["columns"] as $Item)
@@ -340,7 +341,9 @@
 					));
 				}
 				
-				$FormGen->AddElement(array("type" => "submit", "name" => "_submit", "value" => $Config["SubmitText"]));
+				$SubmitElement = array("type" => "submit", "value" => $Config["SubmitText"]);
+				if($Config["SubmitValue"]) $SubmitElement["name"] = "_submit";
+				$FormGen->AddElement($SubmitElement);
 				return $FormGen->Build(array("data" => $Config["Data"], "enctype" => "multipart/form-data", "ColNum" => $Config["ColNum"]));
 			}
 		}

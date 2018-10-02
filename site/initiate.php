@@ -17,10 +17,3 @@
 				die($DB->ErrorHandler());
 		}
 	}
-
-	/* Link
-	------------------------------*/
-	if(class_exists("Link"))
-	{
-		$Link = new Link($PHPZevelop->Path);
-	}

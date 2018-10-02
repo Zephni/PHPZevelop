@@ -206,7 +206,6 @@
 				    	</ul>
 				    </li>
 					
-					
 					<li>
 						<a>Tables &nbsp;&nbsp;<span>&#9207;</span></a>
 						<ul>
@@ -232,6 +231,20 @@
 							?>
 						</ul>
 					</li>
+
+					<?php if(strlen($Administrator->Data["quickbar"]) > 0){ ?>
+					<li><a>Quick bar &nbsp;&nbsp;<span>&#9207;</span></a>
+						<ul>
+							<?php
+								foreach(explode(PHP_EOL, $Administrator->Data["quickbar"]) as $Item)
+								{
+									$Item = explode("|", $Item);
+									echo "<li><a href='".$PHPZevelop->Path->GetPage($Item[0], true)."'>".$Item[1]."</a></li>";
+								}
+							?>
+						</ul>
+					</li>
+					<?php } ?>
 				  </ul>
 				</nav>
 

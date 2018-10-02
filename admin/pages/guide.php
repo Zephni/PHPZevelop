@@ -63,4 +63,12 @@ key1:value1;key2:value2</p>
 
 <div class="Tip">Checkboxes (join values): <pre>type:checkbox;join:tablename:columntitle</pre></div>
 
+
+<h2 class="Section">Administrator options</h2>
+
+<div class="Tip">Permissions format: json (restricted): <pre>[{"general":["create","modify","remove","administrator_delete"],"table":[{"articles":["add","select","disable_title","hide_password"]}]}]</pre></div>
+
+<div class="Tip">Quickbar format: relative-url/Alias (Seperated by new line): <pre>add/article|alias</pre></div>
+
+
 <br /><br /><br /><br /><br /><br /><br />
