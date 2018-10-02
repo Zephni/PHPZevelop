@@ -6,6 +6,9 @@
 		"PassParams" => true
 	));
 
+	if(!HasPermission("general", "database") || !HasPermission("general", "modify"))
+		die("You do not have permission to modify tables");
+
 	$Table = DBTool::GetTable($_GET["param_0"]);
 
 	if(isset($_GET["param_1"]) && $_GET["param_1"] == "delete")

@@ -171,6 +171,7 @@
 
 				    <li><a>Database &nbsp;&nbsp;<span>&#9207;</span></a>
 				    	<ul>
+							<?php if(HasPermission("general", "database")){ ?>
 							<?php if(HasPermission("general", "administrator_select") || HasPermission("general", "administrator_add")){ ?>
 							<li><a <?php if(HasPermission("general", "administrator_select")){ ?>href="<?php $PHPZevelop->Path->GetPage("manage/administrators"); ?>"<?php } ?>>Administrators</a>
 								<ul>
@@ -197,6 +198,7 @@
 									?>
 								</ul>
 							</li>
+							<?php } ?>
 							<?php if(HasPermission("general", "file_manager")){ ?>
 							<li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
 							<?php } ?>

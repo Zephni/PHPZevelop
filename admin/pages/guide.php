@@ -45,6 +45,8 @@ key2::value2,value3
 
 <div class="Tip">Options to display on edit page (Default is edit,delete, extras must be custom added in edit.php): <pre>Options::edit,preview</pre></div>
 
+<div class="Tip">Hide table: <pre>Status::hidden</pre></div>
+
 
 <h2 class="Section">Column options</h2>
 

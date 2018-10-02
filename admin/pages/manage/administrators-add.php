@@ -5,7 +5,7 @@
 	if($Table["real_name"] != "administrators")
 		die("Cannot add rows to this table with the administrator add method");
 
-	if(!HasPermission("general", "administrator_add"))
+	if(!HasPermission("general", "database") || !HasPermission("general", "administrator_add"))
 		die("You do not have permission to add rows to this table");
 
 	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")

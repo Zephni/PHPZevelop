@@ -6,7 +6,7 @@
 		"PassParams" => false
 	));
 
-	if(!HasPermission("general", "administrator_select"))
+	if(!HasPermission("general", "database") || !HasPermission("general", "administrator_select"))
 		die("You do not have permission to view this table");
 
 	if(isset($_GET["param_0"]) && $_GET["param_0"] == "delete" && isset($_GET["param_1"]) && is_int($_GET["param_1"]))

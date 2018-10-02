@@ -6,6 +6,9 @@
 		"PassParams" => true
 	));
 	
+	if(!HasPermission("general", "database") || !HasPermission("general", "create"))
+		die("You do not have permission to create tables");
+
 	if(count($_POST) > 0)
 	{
 		ValidateValues::Run($_POST, array());

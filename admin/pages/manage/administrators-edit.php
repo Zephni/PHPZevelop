@@ -6,8 +6,8 @@
 	if($Table["real_name"] != "administrators")
 		die("Cannot modify rows in this table with the administrator edit method");
 
-	if(!HasPermission("general", "administrator_edit"))
-		die("You do not have permission to edit rows in this table");
+	if(!HasPermission("general", "database") || !HasPermission("general", "administrator_edit"))
+		die("You do not have permission to edit rows in this table");		
 
 	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
 		$PHPZevelop->Location("");
