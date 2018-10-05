@@ -204,6 +204,7 @@
 					"HideFields" => array("id", "uid"),
 					"DisableFields" => array(),
 					"CustomFields" => array(),
+					"AddFields" => array(),
 					"SubmitText" => "Submit",
 					"ColNum" => 1,
 					"SubmitValue" => false
@@ -218,7 +219,6 @@
 					if(array_key_exists($Item["column_name"], $Config["CustomFields"]))
 					{
 						$Config["CustomFields"][$Item["column_name"]]($FormGen, $Item);
-						continue;
 					}
 
 					$PreHTML = "";

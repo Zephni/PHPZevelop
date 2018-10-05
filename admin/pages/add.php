@@ -21,7 +21,7 @@
 	if(count($_POST) > 0 && isset($_POST["_submit"]))
 	{
 		unset($_POST["_submit"]);
-
+		
 		ValidateValues::Run($_POST, array());
 		
 		foreach(array_merge(ValidateValues::$ValidPairs, $_FILES) as $K => $V){

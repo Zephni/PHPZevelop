@@ -112,7 +112,7 @@
 					}
 					else
 					{
-						return "<h3 style='color: #BA1F24;'>Too many login attempts, please contact the administrator.</h3>";
+						return "<p>Too many login attempts, please contact the administrator.</p>";
 					}
 					// Attempts
 
@@ -121,10 +121,10 @@
 						
 					}
 					else
-						$MSG = "<h3 style='color: #BA1F24;'>Incorrect username/password combination</h3>";
+						$MSG = "<p>Incorrect username/password combination</p>";
 				}
 				else
-					$MSG = "<h3 style='color: #BA1F24;'>Incorrect username/password combination</h3>";
+					$MSG = "<p>Incorrect username/password combination</p>";
 
 				if($MSG == null)
 				{

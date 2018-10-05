@@ -43,7 +43,7 @@
 
 			$Administrator = Administrator::GetSingle("administrators", array("username", "LIKE", $_SESSION[Administrator::$UsernameSessionField]));
 
-			if(substr($Administrator->Data["last_active"], 1) > time()-Administrator::$InactiveTime)
+			if(isset($Administrator->Data["last_active"]) && substr($Administrator->Data["last_active"], 1) > time()-Administrator::$InactiveTime)
 			{
 				$Administrator->Login();
 				CookieHelper::Set("keep_admin_username", $_SESSION[Administrator::$UsernameSessionField]);

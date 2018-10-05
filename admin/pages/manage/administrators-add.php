@@ -31,9 +31,15 @@
 		}
 		
 		if(count(ValidateValues::$InvalidPairs) == 0){
-			$DB->Insert($Table["real_name"], ValidateValues::$ValidPairs);
+			$LastInsertID = $DB->Insert($Table["real_name"], ValidateValues::$ValidPairs);
+
+			// Password / salt
+			$AdministratorObject = Administrator::GetSingle("administrators", array("id", "=", $LastInsertID));
+			$AdministratorObject->SetPassword($_POST["password"]);
+			$AdministratorObject->Update();
+
 			ChangeLog("Uploaded to '".$Table["name"]."'");
-			$PHPZevelop->Location("edit/".$_GET["param_0"]."/".$Table["information"]["auto_increment"]);
+			$PHPZevelop->Location("manage/administrators");
 		}
 	}
 ?>
@@ -63,7 +69,10 @@
 <?php
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $_POST,
-		"HideFields" => array("id"), 
+		"HideFields" => array("id", "salt"),
+		"CustomFields" => array("password" => function($FormGen, &$Item){
+			
+		}),
 		"SubmitText" => "Create"
 	));
 ?>

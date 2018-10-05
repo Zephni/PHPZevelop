@@ -24,6 +24,24 @@
 		$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_0"])), true);
 		
 		ValidateValues::Run($_POST, array());
+
+		if($_POST["password"] != "[REPLACE TO CHANGE]")
+		{
+			$AdministratorObject = Administrator::GetSingle("administrators", array("id", "=", $_GET["param_0"]));
+
+			if(isset(ValidateValues::$ValidPairs["password"]))
+				$AdministratorObject->SetPassword(ValidateValues::$ValidPairs["password"]);
+
+			$AdministratorObject->Update();
+
+			if($AdministratorObject->Data["id"] == $Administrator->Data["id"])
+			{
+				$Administrator = $AdministratorObject;
+				$Administrator->Login();
+			}
+		}
+
+		unset(ValidateValues::$ValidPairs["password"], ValidateValues::$ValidPairs["salt"]);
 		
 		foreach(array_merge(ValidateValues::$ValidPairs, $_FILES) as $K => $V){
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
@@ -78,9 +96,13 @@
 </p>
 
 <?php
+	$Data["password"] = "[REPLACE TO CHANGE]";
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $Data,
-		"HideFields" => array("id"), 
+		"HideFields" => array("id", "salt"),
+		"CustomFields" => array("password" => function($FormGen, &$Item){
+			$Item["column_comment"] = "type:text;";
+		}),
 		"SubmitText" => "Update"
 	));
 ?>
