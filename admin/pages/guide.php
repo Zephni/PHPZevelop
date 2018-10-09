@@ -43,6 +43,8 @@ key2::value2,value3
 
 <div class="Tip">Default fields to display on select page (Default is all): <pre>DefaultFields::author,type,image,title,live,tstamp</pre></div>
 
+<div class="Tip">Hide fields (Applies after DefaultFields): <pre>HideFields::id</pre></div>
+
 <div class="Tip">Options to display on edit page (Default is edit,delete, extras must be custom added in edit.php): <pre>Options::edit,preview</pre></div>
 
 <div class="Tip">Hide table: <pre>Status::hidden</pre></div>

@@ -60,7 +60,7 @@
 
 			$Config = array_merge(array(
 				"Table" => null,
-				"HideFields" => array("id"),
+				"HideFields" => array(),
 				"TableClass" => "DBToolTable",
 				"InfoRowClass" => "DBToolInfoRow",
 				"RowClass" => "DBToolRow",
@@ -85,8 +85,11 @@
 			$ColumnComments = array();
 			foreach(self::GetTableColumns($Config["Table"]) as $Item)
 			{
-				if(in_array($Item["column_name"], $Config["HideFields"]))
-					continue;
+				if(isset($TableConfig["HideFields"])){
+					foreach($TableConfig["HideFields"] as $K => $V) $TableConfig["HideFields"][$K] = trim($V);
+					if(in_array($Item["column_name"], $TableConfig["HideFields"]))
+						continue;
+				}
 
 				if(isset($TableConfig["DefaultFields"])){
 					foreach($TableConfig["DefaultFields"] as $K => $V) $TableConfig["DefaultFields"][$K] = trim($V);
@@ -123,7 +126,7 @@
 				$HTML .=  "<tr class='".$Config["RowClass"]."'>";
 				foreach($Row as $Key => $Field)
 				{
-					if(in_array($Key, $Config["HideFields"]))
+					if(isset($TableConfig["HideFields"]) && in_array($Key, $TableConfig["HideFields"]))
 						continue;
 
 					if(isset($TableConfig["DefaultFields"]) && !in_array($Key, $TableConfig["DefaultFields"]))

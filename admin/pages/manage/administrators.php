@@ -22,8 +22,6 @@
 	));
 ?></div>
 
-<img src="<?php $PHPZevelop->Path->GetImage("components/logo.jpg"); ?>" style="width: 33%; max-width: 500px; float: right;" />
-
 <h1><?php echo $PHPZevelop->CFG->SiteTitle; ?> administrators</h1>
 <br />
 

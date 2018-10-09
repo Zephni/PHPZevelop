@@ -131,7 +131,7 @@
 
 	echo DBTool::DisplayList(array(
 		"Table" => $Table["real_name"],
-		"HideFields" => array(),
+		//"HideFields" => $HideFields,
 		"NoDataHTML" => "<br /><center><p style='color: #888888'>No data available, <a href='".$PHPZevelop->Path->GetPage("add/".$Table["real_name"], true)."'>create ".strtolower($Table["name"])." item</a></p></center>",
 		"ExtraFields" => $ExtraFields,
 		"Where" => $Where,
