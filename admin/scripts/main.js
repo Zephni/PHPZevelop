@@ -11,6 +11,15 @@ $(document).ready(function(){
 	});
 });
 
+function ConfirmDelete() {
+	var r = confirm("Are you sure you want to delete?");
+	if (r == true)
+		return true;
+	else
+		return false;
+
+}
+
 function SetupPopupMessages()
 {
 	$("head").append('<style type="text/css">.popupBackground {background: rgba(30, 30, 30, 0.5); width: 100%; height: 100%; position: fixed; z-index: 10; text-align: center; display: none;}.popupMessageBox {background: #EFEBDE; width: auto; position: relative; display: inline-block; z-index: 11; border: 2px solid #222C31; vertical-align: middle; border-radius: 10px; margin: 20px;}.popupMessageBox .head {padding: 7px 10px 7px 10px; background: #222C31; border-bottom: 2px solid #222C31; text-align: left; border-radius: 5px 5px 0 0; color: white;}.popupMessageBox .head span.closeButton {position: absolute; right: 2px; top: 2px; border: 2px solid #FFFFFF; border-radius: 6px; padding: 0px 9px 4px 9px; line-height: 22px;}.popupMessageBox .head span.closeButton:hover {cursor: pointer;}.popupMessageBox .body {padding: 25px; text-align: center; color: #333333;}</style>');

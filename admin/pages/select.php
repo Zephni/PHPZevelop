@@ -115,12 +115,12 @@
 	foreach($FieldList as $Item)
 	{
 		$Item = trim($Item);
-		if($Item == "edit" && HasPermission("table", $Item, "edit"))
-			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/".$Table["real_name"]."/#", true)."'>Edit</a></center>";
-		else if($Item == "delete" && HasPermission("table", $Item, "delete"))
-			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."'>
-				<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
-			</a></center>";
+		if($Item == "edit" && HasPermission("table", $Table["real_name"], "edit"))
+		$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/".$Table["real_name"]."/#", true)."'>Edit</a></center>";
+		else if($Item == "delete" && HasPermission("table", $Table["real_name"], "delete"))
+		$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."' onclick='return ConfirmDelete();'>
+		<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
+		</a></center>";
 	}
 ?>
 
