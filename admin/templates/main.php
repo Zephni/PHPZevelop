@@ -188,7 +188,9 @@
 							<?php if(HasPermission("general", "file_manager")){ ?>
 							<li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
 							<?php } ?>
+							<?php if(HasPermission("general", "file_manager")){ ?>
 							<li><a href="<?php $PHPZevelop->Path->GetPage("guide"); ?>">Guide</a></li>
+							<?php } ?>
 				    	</ul>
 				    </li>
 					
@@ -225,8 +227,14 @@
 							<?php
 								foreach(explode(PHP_EOL, $Administrator->Data["quickbar"]) as $Item)
 								{
-									$Item = explode("|", $Item);
-									echo "<li><a href='".$PHPZevelop->Path->GetPage($Item[0], true)."'>".$Item[1]."</a></li>";
+									if(strstr($Item, "|") !== false)
+										$Item = explode("|", $Item);
+									else
+										$Item = array($Item, $Item);
+
+									$Link = (substr($Item[0], 0, 4) != "http") ? $PHPZevelop->Path->GetPage($Item[0], true) : $Item[0];
+
+									echo "<li><a href='".$Link."'>".$Item[1]."</a></li>";
 								}
 							?>
 						</ul>

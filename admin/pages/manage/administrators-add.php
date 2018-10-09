@@ -80,7 +80,7 @@
 <p>Permissions (values below will be prohibited from this administrator) eg:
 <pre>
 [{
-"general":["create","modify","remove","administrator_delete"],
+"general":["create","modify","remove","administrator_select","administrator_edit","administrator_delete","administrator_add","file_manager"]
 "table":[{"articles":["add","select","disable_title","hide_password"]}]
 }]
 </pre>
