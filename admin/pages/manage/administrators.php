@@ -3,16 +3,16 @@
 	------------------------------*/
 	$PHPZevelop->OverrideObjectData("CFG", array(
 		"PageTitle"  => "Home",
-		"PassParams" => false
+		"PassParams" => true
 	));
 
 	if(!HasPermission("general", "database") || !HasPermission("general", "administrator_select"))
 		die("You do not have permission to view this table");
 
-	if(isset($_GET["param_0"]) && $_GET["param_0"] == "delete" && isset($_GET["param_1"]) && is_int($_GET["param_1"]))
+	if(isset($_GET["param_0"]) && $_GET["param_0"] == "delete")
 	{
 		if(HasPermission("general", "administrator_delete"))
-			$DB->QuerySingle("DELETE FROM administrators WHERE id=:id", array("id", "=", $_GET["param_1"]));
+			$DB->QuerySingle("DELETE FROM administrators WHERE id=:id", array("id" => $_GET["param_1"]));
 	}
 ?>
 
@@ -41,7 +41,7 @@
 
 	$ExtraFields = array();
 	if(HasPermission("general", "administrator_edit")) $ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("manage/administrators-edit/#", true)."'>edit</a></center>";
-	if(HasPermission("general", "administrator_delete")) $ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("administrators/delete/#", true)."'>
+	if(HasPermission("general", "administrator_delete")) $ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("manage/administrators/delete/#", true)."'>
 				<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
 			</a></center>";
 

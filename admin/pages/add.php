@@ -18,7 +18,7 @@
 		"PassParams" => true
 	));
 	
-	if(count($_POST) > 0 && isset($_POST["_submit"]))
+	if(isset($_POST["_submit"]))
 	{
 		unset($_POST["_submit"]);
 		
@@ -80,6 +80,7 @@
 		"HideFields" => $HideFields,
 		"DisableFields" => $DisableFields,
 		"SubmitText" => "Create",
+		"SubmitValue" => true,
 		"ColNum" => (isset($TableConfig["ColNum"])) ? $TableConfig["ColNum"][0] : 1
 	));
 ?>

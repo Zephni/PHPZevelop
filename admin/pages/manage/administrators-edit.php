@@ -18,7 +18,7 @@
 		"PageTitle"  => "Editing #".$Data["id"]." in ".$Table["name"],
 		"PassParams" => true
 	));
-
+	
 	if(count($_POST) > 0)
 	{
 		$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_0"])), true);

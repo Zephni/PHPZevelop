@@ -161,6 +161,23 @@
 						}
 					}
 
+					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "checkbox")
+					{
+						if(isset($FieldConfigArray["join"]))
+						{
+							$StringValues = array();
+							$CheckboxValues = explode("|", $Field);
+							foreach($CheckboxValues as $Item)
+							{
+								$Temp = $DB->SelectSingle($FieldConfigArray["join"][1], $FieldConfigArray["join"][0], array(array("id", "=", $Item)));
+								$Temp = (isset($Temp[$FieldConfigArray["join"][1]])) ? $Temp[$FieldConfigArray["join"][1]] : "- none -";
+								$StringValues[] = $Temp;
+							}
+							
+							$Field = implode(", ", $StringValues);
+						}
+					}
+
 					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "tel")
 					{
 						$Field = substr($Field, 0, 5)." ".substr($Field, 6);

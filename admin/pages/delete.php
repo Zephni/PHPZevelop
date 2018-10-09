@@ -6,6 +6,9 @@
 		"PassParams" => true
 	));
 
+	if(strtolower($_GET["param_0"]) == "administrators")
+		die("You cannot delete from the administrator table using the default delete function");
+
 	$Table = DBTool::GetTable($_GET["param_0"]);
 
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);

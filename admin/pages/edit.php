@@ -19,33 +19,35 @@
 		"PassParams" => true
 	));
 
-	if(count($_POST) > 0 && isset($_POST["_submit"]))
+	if(isset($_POST["_submit"]))
 	{
 		unset($_POST["_submit"]);
 		
 		$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
 		
-		ValidateValues::Run($_POST, array());
-		
 		// Resets checkboxs to empty if none passed
 		foreach($Data as $K => $V)
 		{
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
-			if(ArrGet($ConfigArray, "type", 0) == "checkbox" && !array_key_exists($K, ValidateValues::$ValidPairs)) ValidateValues::$ValidPairs[$K] = "";
+			if(ArrGet($ConfigArray, "type", 0) == "checkbox")
+			{
+				$DB->Update($Table["real_name"], array($K => ""), array(array("id", "=", $_GET["param_1"])));
+			}
 		}
-		
+
+		ValidateValues::Run($_POST, array());
+
 		foreach(array_merge(ValidateValues::$ValidPairs, $_FILES) as $K => $V){
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
 			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
 			if(ArrGet($ConfigArray, "type", 0) == "image") UploadImage($K, $ConfigArray, $V);
-			if(ArrGet($ConfigArray, "type", 0) == "checkbox" && ValidateValues::$ValidPairs[$K] != "") ValidateValues::$ValidPairs[$K] = implode("|", $V);
+			if(ArrGet($ConfigArray, "type", 0) == "checkbox" && isset(ValidateValues::$ValidPairs[$K]) && ValidateValues::$ValidPairs[$K] != "") ValidateValues::$ValidPairs[$K] = implode("|", $V);
 		}
 
 		if(count(ValidateValues::$InvalidPairs) == 0)
 		{
 			$DB->Update($Table["real_name"], ValidateValues::$ValidPairs, array(array("id", "=", $_GET["param_1"])));
-			//die("<pre>".print_r(ValidateValues::$ValidPairs, true)."</pre>");
 		}
 		
 		$LogString = array(); foreach(ValidateValues::$ValidPairs as $K => $V) if($Data[$K] != $V) $LogString[] = $K;
@@ -111,6 +113,7 @@
 		"HideFields" => $HideFields,
 		"DisableFields" => $DisableFields,
 		"SubmitText" => "Update",
+		"SubmitValue" => true,
 		"ColNum" => (isset($TableConfig["ColNum"])) ? $TableConfig["ColNum"][0] : 1
 	));
 ?>

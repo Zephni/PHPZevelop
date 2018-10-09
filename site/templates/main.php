@@ -42,7 +42,7 @@
 			<div id="footer" class="innerContainer">
 				<div class="horizontalPadding">
 					<hr />
-					<p style="font-size: 12px;">&copy;  PHPZevelop <?php echo date("Y"); ?> - <?php $Link->Out("https://twitter.com/_Zephni", "@_Zephni"); ?> (Craig Dennis)</p>
+					<p style="font-size: 12px;">&copy;  PHPZevelop <?php echo date("Y"); ?> - <a href="https://twitter.com/_Zephni">@_Zephni</a> (Craig Dennis)</p>
 				</div>
 			</div>
 		</div>

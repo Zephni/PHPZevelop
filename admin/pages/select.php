@@ -98,9 +98,7 @@
 
 	$Where = array();
 	if(count($_POST) > 0)
-	{
 		$Where = $FilterForm->DataToMySQLWhere($_POST);
-	}
 
 	$_SESSION["DBWhere"] = $Where;
 
@@ -126,9 +124,7 @@
 	}
 ?>
 
-<?php
-	echo $PaginationHTML;
-?>
+<?php echo $PaginationHTML; ?>
 
 <?php
 	$Order = (isset($TableConfig["DefaultOrder"]) && $TableConfig["DefaultOrder"][0] != "") ? "ORDER BY ".implode(",", $TableConfig["DefaultOrder"]) : "ORDER BY id DESC";

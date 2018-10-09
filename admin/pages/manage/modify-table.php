@@ -13,6 +13,9 @@
 
 	if(isset($_GET["param_1"]) && $_GET["param_1"] == "delete")
 	{
+		if(strtolower($_GET["param_0"]) == "administrators")
+			die("You cannot delete the administrator table");
+
 		$DB->QuerySingle("DROP TABLE `".$_GET["param_0"]."`");
 		$PHPZevelop->Location("");
 	}
