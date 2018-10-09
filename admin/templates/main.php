@@ -184,20 +184,6 @@
 							<?php if(HasPermission("general", "create")){ ?>
 							<li><a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>">Create table</a></li>
 							<?php } ?>
-							<li>
-								<a>Modify table</a>
-								<ul>
-									<?php    
-										foreach(DBTool::GetAllTables() as $Key => $Item)
-										{
-											$TableConfig = DBTool::TableConfigStringArray($Item["information"]["table_comment"]);
-											if(isset($TableConfig["Status"]) && $TableConfig["Status"][0] == "hidden") continue;
-
-											echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>".$Item["name"]."</a></li>";
-										}
-									?>
-								</ul>
-							</li>
 							<?php } ?>
 							<?php if(HasPermission("general", "file_manager")){ ?>
 							<li><a <?php if(HasPermission("general", "file_manager")){ ?>href="<?php $PHPZevelop->Path->GetPage("file-manager"); ?>"<?php } ?>>File manager</a></li>
@@ -223,6 +209,7 @@
 										echo "<ul>";
 										if(HasPermission("table", $Key, "add")) echo '<li><a '.((HasPermission("table", $Key, "add") ? 'href="'.$PHPZevelop->Path->GetPage("add/".$Key, true) : '')).'">Add</a></li>';
 										if(HasPermission("table", $Key, "select")) echo '<li><a '.((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : '')).'">Browse</a></li>';
+										if(HasPermission("table", $Key, "select")) echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>Modify</a></li>";
 										echo "</ul>";
 									}
 									
