@@ -45,7 +45,6 @@
 
 	echo DBTool::DisplayList(array(
 		"Table" => "administrators",
-		"HideFields" => array("password", "salt", "last_active", "active", "theme_color", "login_attempts", "permissions", "quickbar"),
 		"NoDataHTML" => "<br /><center><p style='color: #888888'>No data available, <a href='".$PHPZevelop->Path->GetPage("manage/administrators-add", true)."'>create ".strtolower("administrators")." item</a></p></center>",
 		"ExtraFields" => $ExtraFields,
 		"Where" => $Where,

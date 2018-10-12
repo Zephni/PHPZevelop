@@ -149,7 +149,7 @@
 		{
 			$HTML = array();
 
-			$HTML[] =	"<form method='post' action='/pcx/select/".$_SESSION["admin_current_table"]."/?page=1' name='".$this->Options->FormName."'>";
+			$HTML[] =	"<form method='post' action='".$PHPZevelop->Path->GetPage("/select/".$_SESSION["admin_current_table"]."/?page=1", true)."' name='".$this->Options->FormName."'>";
 			$HTML[] =	"	<div id='".$this->Options->ElementID."'>";
 			$HTML[] =	"		<p class='".$this->Options->AddFilterButtonClass."'>".$this->Options->AddFilterText."</p>";
 			$HTML[] =	"	</div>";

@@ -107,6 +107,10 @@
 			if(substr($Item, 0, strlen("disable_")) == "disable_") $DisableFields[] = substr($Item, strlen("disable_"));
 		}
 	}
+	
+	if(isset($TableConfig["HideFields"])){
+		foreach($TableConfig["HideFields"] as $K => $V) $HideFields[] = trim($V);
+	}
 
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $Data,

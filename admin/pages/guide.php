@@ -55,7 +55,7 @@ key2::value2,value3
 <p class="SectionDescription">Format used is:<br />
 key1:value1;key2:value2</p>
 
-<div class="Tip">Textarea: <pre>type:textarea</pre></div>
+<div class="Tip">Textarea: <pre>type:textarea;</pre> optional for formatting <pre>class:wysiwyg;</pre></div>
 
 <div class="Tip">Select (predefined values): <pre>type:select;values:key1|value1:key2|value2</pre></div>
 
@@ -64,6 +64,8 @@ key1:value1;key2:value2</p>
 <div class="Tip">Checkboxes  (predefined values): <pre>type:checkbox;data:key1|value1:key2|value2</pre></div>
 
 <div class="Tip">Checkboxes (join values): <pre>type:checkbox;join:tablename:columntitle</pre></div>
+
+<div class="Tip">Image: <pre>type:image;filelocation:articles;io_file_src_name_body:articles_[id];</pre></div>
 
 
 <h2 class="Section">Administrator options</h2>

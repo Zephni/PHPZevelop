@@ -75,6 +75,10 @@
 		}
 	}
 
+	if(isset($TableConfig["HideFields"])){
+		foreach($TableConfig["HideFields"] as $K => $V) $HideFields[] = trim($V);
+	}
+
 	echo FormGen::DBFormBuild(DBTool::GetTable($Table["real_name"]), array(
 		"Data" => $_POST,
 		"HideFields" => $HideFields,
