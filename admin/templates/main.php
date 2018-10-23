@@ -211,7 +211,7 @@
 										echo "<ul>";
 										if(HasPermission("table", $Key, "add")) echo '<li><a '.((HasPermission("table", $Key, "add") ? 'href="'.$PHPZevelop->Path->GetPage("add/".$Key, true) : '')).'">Add</a></li>';
 										if(HasPermission("table", $Key, "select")) echo '<li><a '.((HasPermission("table", $Key, "select") ? 'href="'.$PHPZevelop->Path->GetPage("select/".$Key, true) : '')).'">Browse</a></li>';
-										if(HasPermission("table", $Key, "select")) echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>Modify</a></li>";
+										if(HasPermission("general", "modify") && HasPermission("table", $Key, "select")) echo "<li><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Key, true)."'>Modify</a></li>";
 										echo "</ul>";
 									}
 									

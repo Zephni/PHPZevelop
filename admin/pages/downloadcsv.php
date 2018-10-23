@@ -12,11 +12,19 @@
 	$Table = DBTool::GetTable($_GET["param_0"]);
 
 	//
-	$HideFields = array("id");
-	$Permissions = json_decode($Administrator->Data["permissions"], true);
-	foreach($Permissions[0]["table"][0][$Table["real_name"]] as $Item)
+	try
 	{
-		if(substr($Item, 0, strlen("hide_")) == "hide_") $HideFields[] = substr($Item, strlen("hide_"));
+		$HideFields = array("id");
+		$Permissions = json_decode($Administrator->Data["permissions"], true);
+		if(isset($Permissions[0]["table"]) && isset($Permissions[0]["table"][0][$Table["real_name"]]))
+		{
+			foreach($Permissions[0]["table"][0][$Table["real_name"]] as $Item)
+				if(substr($Item, 0, strlen("hide_")) == "hide_") $HideFields[] = substr($Item, strlen("hide_"));
+		}
+	}
+	catch(Exception $e)
+	{
+		
 	}
 
 	// Build rows
@@ -24,7 +32,7 @@
 	$I = -1; foreach($Data as $Item)
 	{$I++;
 		$II = -1; foreach($Item as $K => $V)
-		{$II++;				
+		{$II++;
 			$ColumnCommands = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			
 			// Manipulate value if needed
@@ -34,7 +42,7 @@
 				$V = $V[$ColumnCommands["join"][1]];
 			}
 
-			if(isset($ColumnCommands) && isset($ColumnCommands["type"]) && $ColumnCommands["type"][0] == "timestamp")
+			if(isset($ColumnCommands) && isset($ColumnCommands["type"]) && $ColumnCommands["type"][0] == "timestamp" && is_long($V))
 				$V = date("Y/m/d H:ia", $V);
 			
 			if(strlen($V) > 60) $V = substr($V, 0, 57)."...";

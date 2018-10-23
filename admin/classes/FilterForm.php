@@ -147,6 +147,8 @@
 
 		public function BuildHTML()
 		{
+			global $PHPZevelop;
+			
 			$HTML = array();
 
 			$HTML[] =	"<form method='post' action='".$PHPZevelop->Path->GetPage("/select/".$_SESSION["admin_current_table"]."/?page=1", true)."' name='".$this->Options->FormName."'>";

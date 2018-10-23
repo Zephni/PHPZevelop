@@ -60,7 +60,11 @@
 </div>
 <?php } ?>
 
-<a href="<?php $PHPZevelop->Path->GetPage("downloadcsv/".$_GET["param_0"]); ?>" style="position: absolute; top: 20px; right: 20px; margin-top: -6px; padding: 5px 13px 5px 13px; color: white; background: <?php echo $Administrator->Data["theme_color"]; ?>; text-decoration: none;">
+<a href="<?php $PHPZevelop->Path->GetPage("add/".$_GET["param_0"]); ?>" style="position: absolute; top: 20px; right: 0px; margin-top: -6px; padding: 5px 13px 5px 13px; color: white; background: <?php echo $Administrator->Data["theme_color"]; ?>; text-decoration: none;">
+	Add new
+</a>
+
+<a href="<?php $PHPZevelop->Path->GetPage("downloadcsv/".$_GET["param_0"]); ?>" style="position: absolute; top: 20px; right: 0px; margin-top: 28px; padding: 5px 13px 5px 13px; color: white; background: <?php echo $Administrator->Data["theme_color"]; ?>; text-decoration: none;">
 	Download CSV dataset
 </a>
 
