@@ -4,6 +4,9 @@
 		global $FrontEndImageLocationRoot;
 		global $Table;
 
+		if($File["name"] == "" || $File["name"] == null)
+			return;
+
 		$FileLocation = $FrontEndImageLocationRoot."/";
 		if(ArrGet($ColumnCommands, "location", 0) != "")
 			$FileLocation .= $ColumnCommands["location"][0];
@@ -17,6 +20,6 @@
 		else
 			$Name = str_replace("[id]", (isset($_GET["param_1"])) ? $_GET["param_1"] : $Table["information"]["auto_increment"], $Table["real_name"]."_[id]").$Ext;
 
-		move_uploaded_file($File["tmp_name"], $FileLocation."/".$Name);
-		ValidateValues::$ValidPairs[$ColumnKey] = $Name;
+		move_uploaded_file($File["tmp_name"], $FileLocation."/".$Name.".".$Ext);
+		ValidateValues::$ValidPairs[$ColumnKey] = $Name.".".$Ext;
 	}
