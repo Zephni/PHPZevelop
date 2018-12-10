@@ -142,7 +142,7 @@
 			return $this->Select($Fields, $From, $Where, true, $Die);
 		}
 
-		function Insert($Table, $Values)
+		function Insert($Table, $Values, $dieOnQuery = false)
 		{
 			$Str = "INSERT INTO ".$Table." SET ";
 
@@ -158,7 +158,7 @@
 
 			$Str .= implode(", ", $Temp);
 
-			$this->Query($Str, $Arr);
+			$this->Query($Str, $Arr, null, false, $dieOnQuery);
 			return $this->LastInsertId;
 		}
 

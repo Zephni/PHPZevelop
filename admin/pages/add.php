@@ -33,6 +33,7 @@
 		}
 		
 		if(count(ValidateValues::$InvalidPairs) == 0){
+
 			$DB->Insert($Table["real_name"], ValidateValues::$ValidPairs);
 			ChangeLog("Uploaded to '".$Table["name"]."'");
 			$PHPZevelop->Location("edit/".$_GET["param_0"]."/".$Table["information"]["auto_increment"]);

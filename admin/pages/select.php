@@ -65,7 +65,7 @@
 </a>
 
 <a href="<?php $PHPZevelop->Path->GetPage("downloadcsv/".$_GET["param_0"]); ?>" style="position: absolute; top: 20px; right: 0px; margin-top: 28px; padding: 5px 13px 5px 13px; color: white; background: <?php echo $Administrator->Data["theme_color"]; ?>; text-decoration: none;">
-	Download CSV dataset
+	Download CSV dataset <span id="Count">counting...</span>
 </a>
 
 <?php
@@ -120,11 +120,14 @@
 	{
 		$Item = trim($Item);
 		if($Item == "edit" && HasPermission("table", $Table["real_name"], "edit"))
-		$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/".$Table["real_name"]."/#", true)."'>Edit</a></center>";
+			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("edit/".$Table["real_name"]."/#", true)."'>Edit</a></center>";
 		else if($Item == "delete" && HasPermission("table", $Table["real_name"], "delete"))
-		$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."' onclick='return ConfirmDelete();'>
-		<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
-		</a></center>";
+			$ExtraFields[] = "<center><a href='".$PHPZevelop->Path->GetPage("delete/".$Table["real_name"]."/#", true)."' onclick='return ConfirmDelete();'>
+			<img src='".$PHPZevelop->Path->GetImage("/components/delete.png", true)."' style='width: 16px;' />
+			</a></center>";
+		else if(substr($Item, 0, 7) == "custom|") // custom html, like custom|<center>Some text</center>
+			$ExtraFields[] = substr($Item, 7);
+
 	}
 ?>
 
@@ -143,6 +146,12 @@
 		"Limit" => $Pagination->BeginItems.",".$Pagination->Options["PerPage"]
 	));
 ?>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#Count").html("<?php echo $Rows["count"]; ?>");
+	});
+</script>
 
 <br />
 <br />

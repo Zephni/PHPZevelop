@@ -192,7 +192,7 @@
 					}
 
 					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "timestamp")
-						$Field = date("d-m-Y D", $Field);
+						$Field = date("d-m-Y H:ia", $Field);
 
 					if(isset($FieldConfigArray["type"]) && $FieldConfigArray["type"][0] == "image")
 					{
@@ -216,17 +216,22 @@
 				if(!isset($TableConfig["AllowExtraFields"]))
 				{
 					foreach($Config["ExtraFields"] as $ExtraField){
-						if(strpos($ExtraField, "*special::showentries*") !== false)
+						if(strpos($ExtraField, "*special|showentries*") !== false)
 						{
-							$Total = count($DB->Select("id", "comp_entries", array(array("comp_id", "=", $Row["id"]))));
+							$Total = $DB->QuerySingle("SELECT "); //count($DB->Select("id", "comp_entries", array(array("comp_id", "=", $Row["id"]))));
 							$OptIns = count($DB->Select("id", "comp_entries", array(array("comp_id", "=", $Row["id"]), "AND", array("`options`", "LIKE", "%optin:1%"))));
-							$ExtraField = str_replace("*special::showentries*", $OptIns."/".$Total, $ExtraField);
+							$ExtraField = str_replace("*special|showentries*", $OptIns."/".$Total, $ExtraField);
 						}
 
-						if(strpos($ExtraField, "*special::showprojectcount*") !== false)
+						if(strpos($ExtraField, "*special|linktoentries*") !== false)
+						{
+							$ExtraField = str_replace("*special|linktoentries*", "<a href='/yhadmin/select/comp_entries/?field1=comp_id&comparison1=%3D&value1=".$Row["id"]."'>entries</a>", $ExtraField);
+						}
+
+						if(strpos($ExtraField, "*special|showprojectcount*") !== false)
 						{
 							$Total = count($DB->Select("id", "projects", array(array("uid", "=", $Row["id"]))));
-							$ExtraField = str_replace("*special::showprojectcount*", $Total, $ExtraField);
+							$ExtraField = str_replace("*special|showprojectcount*", $Total, $ExtraField);
 						}
 
 						$HTML .= "<td class='".$Config["ExtraFieldClass"]."'>".str_replace("#", $Row["id"], $ExtraField)."</td>";

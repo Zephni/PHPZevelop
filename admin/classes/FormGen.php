@@ -312,10 +312,10 @@
 						$ColumnOptions["type"][0] = "text";
 						$ColumnOptions["class"][0] = "datetimepicker";
 						
-						if(isset($Config["Data"][$Item["column_name"]]) && is_int($Config["Data"][$Item["column_name"]]))
+						if(isset($Config["Data"][$Item["column_name"]]))
 							$Config["Data"][$Item["column_name"]] = date("Y/m/d H:i", $Config["Data"][$Item["column_name"]]);
-						else
-							$Config["Data"][$Item["column_name"]] = date("Y/m/d H:i", time());
+						//else
+						//	$Config["Data"][$Item["column_name"]] = date("Y/m/d H:i", time());
 					}
 					
 					// Default config passer
