@@ -101,7 +101,7 @@
 				LoadedFieldHTML += "<input type='text' name='field_comment[]' style='width: 24%;' placeholder='field comment' value='<?php echo preg_replace("/\r?\n|\r/", "", str_replace("'", "", $V["column_comment"])); ?>' />";
 				LoadedFieldHTML += "</td></tr>";
 				$("#addField").parent().parent().before(LoadedFieldHTML);
-
+				
 				$(".removeField").unbind().click(function(){
 					$("input[name='marked_for_delete']").show();
 					$("#markedtext").show();

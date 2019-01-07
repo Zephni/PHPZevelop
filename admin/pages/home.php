@@ -13,7 +13,7 @@
 	));
 ?></div>
 
-<img src="https://www.yourhomemagazine.co.uk/site/images/components/logo.png?1542717304" style="width: 33%; max-width: 500px; float: right;" />
+<img src="<?php $PHPZevelop->Path->GetImage("components/logo.jpg?".time()); ?>" style="width: 33%; max-width: 500px; float: right;" />
 
 <h1><?php echo $PHPZevelop->CFG->SiteTitle; ?></h1>
 <br />
