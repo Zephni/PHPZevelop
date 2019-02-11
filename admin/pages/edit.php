@@ -42,6 +42,14 @@
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
 			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
 			if(ArrGet($ConfigArray, "type", 0) == "image") UploadImage($K, $ConfigArray, $V);
+			if(ArrGet($ConfigArray, "type", 0) == "images" && isset($_FILES[$K]["name"]) && count($_FILES[$K]["name"]) > 0){
+				$Offset = 0;
+				foreach(explode(",", $Data[$K]) as $Temp)
+					if(!empty($Temp))
+						$Offset++;
+				//die("(".$Offset.")");
+				UploadImage($K, $ConfigArray, $V, $Offset); // Will upload multiple, and set an offset
+			}
 			if(ArrGet($ConfigArray, "type", 0) == "checkbox" && isset(ValidateValues::$ValidPairs[$K]) && ValidateValues::$ValidPairs[$K] != "") ValidateValues::$ValidPairs[$K] = implode("|", $V);
 		}
 

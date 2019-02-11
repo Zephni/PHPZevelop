@@ -1,5 +1,5 @@
 <?php
-	function UploadImage($ColumnKey, $ColumnCommands, $File)
+	function UploadImage($ColumnKey, $ColumnCommands, $File, $Offset = 0)
 	{
 		global $PHPZevelop;
 		global $Table;
@@ -29,7 +29,7 @@
 						"size"		=> $Files["size"][$I]
 					);
 
-					$AppendName = "_".($I + 1);
+					$AppendName = "_".($I + $Offset + 1);
 				}
 				else
 				{
@@ -42,7 +42,7 @@
 				{
 					$Image->file_overwrite = true;
 					$Image->file_src_name_body = $Table["real_name"]."_".((isset($_GET["param_1"])) ? $_GET["param_1"] : $Table["information"]["auto_increment"]);
-					$Image->file_src_name_ext  = "jpg";
+					$Image->file_src_name_ext = "jpg";
 					$Image->image_convert = 'jpg';
 					$Image->jpeg_quality = 100;
 					
