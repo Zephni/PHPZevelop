@@ -65,6 +65,14 @@
 		
 		$Table = DBTool::GetTable($_GET["param_0"]);
 	}
+
+	$FieldTypeOptions = array(
+		"TEXT",
+		"VARCHAR(255)",
+		"VARCHAR(25)",
+		"INT",
+		"MEDIUMINT"
+	);
 ?>
 
 <style type="text/css">
@@ -114,16 +122,16 @@
 				<?php
 			}
 		?>
-
+		
 		$("#addField").click(function(){
 			$(this).parent().parent().before(FieldHTML);
-
+			
 			$(".removeField").unbind().click(function(){
 				$(this).parent().parent().next().remove();
 				$(this).parent().parent().remove();
 			});
 		});
-
+		
 		$("input[name='marked_for_delete']").hide();
 		$("#markedtext").hide();
 	});

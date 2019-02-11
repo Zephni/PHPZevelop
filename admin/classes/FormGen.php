@@ -215,6 +215,7 @@
 					// If id then skip
 					if(in_array($Item["column_name"], $Config["HideFields"])) continue;
 					$Disabled = (in_array($Item["column_name"], $Config["DisableFields"])) ? true : false;
+					$Multiple = false;
 
 					if(array_key_exists($Item["column_name"], $Config["CustomFields"]))
 					{
@@ -306,6 +307,14 @@
 						$PostHTML = "</td></tr></table>";
 					}
 
+					// Images type
+					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "images")
+					{
+						$ColumnOptions["type"][0] = "file";
+						$Item["column_name"] = $Item["column_name"]."[]";
+						$Multiple = true;
+					}
+
 					// Timestamp type
 					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "timestamp")
 					{
@@ -332,7 +341,8 @@
 							"name" => $Item["column_name"],
 							"value" => (isset($Config["Data"][$Item["column_name"]])) ? $Config["Data"][$Item["column_name"]] : $Item["column_default"],
 							"class" => (isset($ColumnOptions["class"][0])) ? $ColumnOptions["class"][0] : "",
-							($Disabled) ? "disabled" : "" => ($Disabled) ? "disabled" : ""
+							($Disabled) ? "disabled" : "null" => ($Disabled) ? "disabled" : "null",
+							($Multiple) ? "multiple" : "null" => ($Multiple) ? "multiple" : "null",
 						), array(
 							"title" => $Title,
 							"data" => $Data,
