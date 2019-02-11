@@ -5,9 +5,11 @@
 		global $Table;
 		global $FrontEndImageLocationRoot;
 		global $FrontEndImageLocationLocal;
+		global $Data;
 
 		if($File["name"] != "")
 		{
+			$OrigionalValue = (isset($Data) && isset($Data[$ColumnKey])) ? $Data[$ColumnKey] : "";
 			ValidateValues::$ValidPairs[$ColumnKey] = array();
 
 			$Files = $_FILES[$ColumnKey];
@@ -73,6 +75,6 @@
 				}
 			}
 
-			ValidateValues::$ValidPairs[$ColumnKey] = implode(",", ValidateValues::$ValidPairs[$ColumnKey]);
+			ValidateValues::$ValidPairs[$ColumnKey] = $OrigionalValue.((strlen($OrigionalValue) > 0 && count(ValidateValues::$ValidPairs[$ColumnKey]) > 0) ? "," : "").implode(",", ValidateValues::$ValidPairs[$ColumnKey]);
 		}
 	}
