@@ -93,9 +93,14 @@
 			if(ArrGet($ConfigArray, "type", 0) == "images" && isset($_FILES[$K]["name"]) && !empty($_FILES[$K]["name"][0])){
 				$Offset = 0;
 				foreach(explode(",", $Data[$K]) as $Temp)
-					if(!empty($Temp))
-						$Offset++;
-				//die("(".$Offset.")");
+				{
+					$T1 = explode("_", $Temp);
+					$T1 = explode(".", $T1[count($T1)-1]);
+					$T1 = $T1[0];
+					if($T1 >= $Offset)
+						$Offset = $T1;
+				}
+				
 				UploadImage($K, $ConfigArray, $V, $Offset); // Will upload multiple, and set an offset
 			}
 			if(ArrGet($ConfigArray, "type", 0) == "checkbox" && isset(ValidateValues::$ValidPairs[$K]) && ValidateValues::$ValidPairs[$K] != "") ValidateValues::$ValidPairs[$K] = implode("|", $V);
