@@ -322,6 +322,8 @@
 							$PostHTML .= "
 								<div style='padding: 5px; width: 100px; float: left; position: relative;'>
 									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' style='font-weight: bold; font-size: 16px; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 3px 2px 4px; line-height: 14px; border: 1px solid #CCCCCC;'>x</a>
+									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=left"."' style='font-weight: bold; font-size: 12px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; left: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 4px 0px 3px; line-height: 14px; border: 1px solid #CCCCCC;'>&lt;</a>
+									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=right"."' style='font-weight: bold; font-size: 12px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; right: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 3px 0px 4px; line-height: 14px; border: 1px solid #CCCCCC;'>&gt;</a>
 									<img src='".$FrontEndLocationLocal."/images/".$ColumnOptions["filelocation"][0]."/".$Temp."' style='width: 100%;' />
 								</div>
 							";

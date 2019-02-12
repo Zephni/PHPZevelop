@@ -29,6 +29,36 @@
 		$DB->Update($Table["real_name"], array($_GET["imgfield"] => $Data[$_GET["imgfield"]]), array(array("id", "=", $_GET["param_1"])));
 		$PHPZevelop->Location($PHPZevelop->CFG->PagePath);
 	}
+
+	// Shift image
+	if(isset($_GET["imgshift"]))
+	{
+		function moveElement(&$array, $a, $b) {
+			$out = array_splice($array, $a, 1);
+			array_splice($array, $b, 0, $out);
+		}
+
+		$ImageFile = $_GET["imgshift"];
+
+		$Data[$_GET["imgfield"]] = explode(",", $Data[$_GET["imgfield"]]);
+
+		$Index = array_search($ImageFile, $Data[$_GET["imgfield"]]);
+
+		$NewIndex = $Index;
+
+		if($_GET["imgdir"] == "left") $NewIndex--;
+		else if($_GET["imgdir"] == "right") $NewIndex++;
+
+		if($NewIndex > count($Data[$_GET["imgfield"]])-1)
+			$NewIndex = 0;
+		else if($NewIndex < 0)
+			$NewIndex = count($Data[$_GET["imgfield"]])-1;
+
+		moveElement($Data[$_GET["imgfield"]], $Index, $NewIndex);
+		$Data[$_GET["imgfield"]] = implode(",", $Data[$_GET["imgfield"]]);
+		$DB->Update($Table["real_name"], array($_GET["imgfield"] => $Data[$_GET["imgfield"]]), array(array("id", "=", $_GET["param_1"])));
+		$PHPZevelop->Location($PHPZevelop->CFG->PagePath);
+	}
 	
 	/* Page setup
 	------------------------------*/
