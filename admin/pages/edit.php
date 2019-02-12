@@ -59,8 +59,8 @@
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
 			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
-			if(ArrGet($ConfigArray, "type", 0) == "image") UploadImage($K, $ConfigArray, $V);
-			if(ArrGet($ConfigArray, "type", 0) == "images" && isset($_FILES[$K]["name"]) && count($_FILES[$K]["name"]) > 0){
+			if(ArrGet($ConfigArray, "type", 0) == "image"  && isset($_FILES[$K]) && isset($_FILES[$K]["name"])) UploadImage($K, $ConfigArray, $V);
+			if(ArrGet($ConfigArray, "type", 0) == "images" && isset($_FILES[$K]["name"]) && !empty($_FILES[$K]["name"][0])){
 				$Offset = 0;
 				foreach(explode(",", $Data[$K]) as $Temp)
 					if(!empty($Temp))
