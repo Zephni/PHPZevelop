@@ -310,9 +310,23 @@
 					// Images type
 					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "images")
 					{
+						global $FrontEndLocationLocal;
 						$ColumnOptions["type"][0] = "file";
 						$Item["column_name"] = $Item["column_name"]."[]";
 						$Multiple = true;
+
+						$PostHTML = '<div style="width: 100%; padding: 10px; box-sizing: border-box;">';
+						foreach(explode(",", $Config["Data"][rtrim($Item["column_name"], "[]")]) as $Temp)
+						{if(empty($Temp)) continue;
+							$Path = urlencode($ColumnOptions["filelocation"][0]."/".$Temp);
+							$PostHTML .= "
+								<div style='padding: 5px; width: 100px; float: left; position: relative;'>
+									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' style='font-weight: bold; font-size: 16px; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 3px 2px 4px; line-height: 14px; border: 1px solid #CCCCCC;'>x</a>
+									<img src='".$FrontEndLocationLocal."/images/".$ColumnOptions["filelocation"][0]."/".$Temp."' style='width: 100%;' />
+								</div>
+							";
+						}
+						$PostHTML .= '</div>';
 					}
 
 					// Timestamp type

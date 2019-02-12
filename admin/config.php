@@ -12,6 +12,6 @@
 	// Database name
 	$DatabaseName = $PHPZevelop->CFG->DB->Name;
 	$FrontEndLocationRoot = ROOT_DIR."/site";
-	$FrontEndLocationLocal = LOCAL_DIR."/site";
+	$FrontEndLocationLocal = str_replace("//", "/", LOCAL_DIR."/site");
 	$FrontEndImageLocationRoot = str_replace("//", "/", $FrontEndLocationRoot."/images");
 	$FrontEndImageLocationLocal = str_replace("//", "/", $FrontEndLocationLocal."/images");

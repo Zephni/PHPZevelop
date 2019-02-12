@@ -2,7 +2,7 @@
 	$Table = DBTool::GetTable($_GET["param_0"]);
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);
-	
+
 	if($Table["real_name"] == "administrators")
 		die("Cannot modify rows in this table with the standard edit method");
 
@@ -11,6 +11,24 @@
 
 	if($Administrator->Data["username"] != "Zephni" && isset($TableConfig["Disabled"]) && strtolower($TableConfig["Disabled"][0]) == "true")
 		$PHPZevelop->Location("");
+
+	// Delete image
+	if(isset($_GET["imgdel"]))
+	{
+		$ImgDel = urldecode($_GET["imgdel"]);
+		$ImageFile = explode("/", $ImgDel);
+		$ImageFile = $ImageFile[count($ImageFile)-1];
+		$FullImgPath = $FrontEndImageLocationRoot."/".$ImgDel;
+		try {unlink($FullImgPath);} catch (Exception $e) {}
+
+		$Data[$_GET["imgfield"]] = explode(",", $Data[$_GET["imgfield"]]);
+		if(($key = array_search($ImageFile, $Data[$_GET["imgfield"]])) !== false)
+			unset($Data[$_GET["imgfield"]][$key]);
+		$Data[$_GET["imgfield"]] = implode(",", $Data[$_GET["imgfield"]]);
+
+		$DB->Update($Table["real_name"], array($_GET["imgfield"] => $Data[$_GET["imgfield"]]), array(array("id", "=", $_GET["param_1"])));
+		$PHPZevelop->Location($PHPZevelop->CFG->PagePath);
+	}
 	
 	/* Page setup
 	------------------------------*/
