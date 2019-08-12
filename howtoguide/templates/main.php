@@ -37,17 +37,23 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">PHPZevelop</a>
+						<a class="navbar-brand" href="#">
+							<img src="<?php $PHPZevelop->Path->GetImage("PHPZevelopIconOnly.png"); ?>" alt="PHPZevelop Icon" style="height: 32px; float: left; margin-top: -8px; padding-right: 10px;">
+							PHPZevelop
+						</a>
 					</div>
 
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<li class="active"><a href="#">How to</a></li>
-							<li><a href="https://github.com/Zephni/PHPZevelop" target="_blank">Download on GitHub</a></li>
-							<li role="separator" class="divider"></li>
-							<!--<li><a href="#">Contact us</a></li>-->
-						</ul>
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/">How to</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="navbar-right"><a href="https://github.com/Zephni/PHPZevelop" target="_blank">
+							<img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="PHPZevelop Icon" style="height: 32px; float: left; margin-top: -8px; padding-right: 10px;">
+							Download on GitHub
+						</a></li>
+					</ul>
 					</div>
 				</div><!-- /.container-fluid -->
 			</nav>
