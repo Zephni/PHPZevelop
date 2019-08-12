@@ -4,9 +4,9 @@
 	
 	$PHPZevelop->CFG->DB = (object) array(
 		"Host" => "webregulate.co.uk",
-		"User" => "zephnico_phpz",
-		"Pass" => "phpzevelop34",
-		"Name" => "zephnico_phpzevelop"
+		"User" => "phpzevel_user",
+		"Pass" => "phpzeveloppass",
+		"Name" => "phpzevel_database"
 	);
 
 	// Database name
