@@ -22,8 +22,8 @@
 		"MetaKeywords"		=> "PHPZevelop, PHP, Framework",
 		
 		// Structural
-		"Site"				=> "site",
-		"MultiSite"			=> array("admin", "howto"),
+		"Site"				=> "howtoguide",
+		"MultiSite"			=> array("admin"),
 		"LoadStyle"			=> "Template",
 		"Template"			=> "main",
 		"PassParams"		=> false,
