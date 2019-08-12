@@ -13,7 +13,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- CSS -->
-		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("style1.css?".time()); ?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo $PHPZevelop->Path->GetCSS("style1.css?".time()); ?>" />
 
 		<!-- BOOTSTRAP Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -24,9 +24,9 @@
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 		<script src="<?php echo $PHPZevelop->Path->GetScript("main.js?".time()); ?>"></script>
 	</head>
-	<body>
+	<body data-spy="scroll" data-target="#sidebarNav" data-offset="200">
 
-		<div data-spy="scroll" data-target="#sidebarNav" data-offset="50" style="width: 100%; height: 100%; position: relative; overflow: auto; z-index: 1;">
+		<div id="Home">
 			<nav class="navbar navbar-default navbar-fixed-top">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
