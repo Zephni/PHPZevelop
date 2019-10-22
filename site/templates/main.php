@@ -24,10 +24,53 @@
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 		<script src="<?php echo $PHPZevelop->Path->GetScript("main.js?".time()); ?>"></script>
 	</head>
-	<body>
+	<body data-spy="scroll" data-target="#sidebarNav" data-offset="200">
 
-		<div class="container">
+		<div id="Home">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">
+							<img src="<?php $PHPZevelop->Path->GetImage("PHPZevelopIconOnly.png"); ?>" alt="PHPZevelop Icon" style="height: 32px; float: left; margin-top: -8px; padding-right: 10px;">
+							PHPZevelop
+						</a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/">How to</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="navbar-right"><a href="https://github.com/Zephni/PHPZevelop" target="_blank">
+							<img src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="PHPZevelop Icon" style="height: 32px; float: left; margin-top: -8px; padding-right: 10px;">
+							Download on GitHub
+						</a></li>
+					</ul>
+					</div>
+				</div><!-- /.container-fluid -->
+			</nav>
+
 			<?php echo $PHPZevelop->PageContent; ?>
+			
+			<div class="container">
+				<footer>
+					<div class="col-xs-12">
+						<div class="row">
+							<hr />
+							<p style="font-size: 12px;">PHPZevelop <?php echo date("Y"); ?> - <a href="https://twitter.com/_Zephni">@_Zephni</a> (Craig Dennis)</p>
+						</div>
+					</div>
+				</footer>
+			</div>
+			
 		</div>
 
 		<!-- BOOTSTRAP  Latest compiled and minified JavaScript -->
