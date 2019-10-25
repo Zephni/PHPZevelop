@@ -1,0 +1,10 @@
+body {background: #F5F5F5;}
+table {position: relative;}
+h2.display-4 {margin-bottom: 20px;}
+
+.new-button {padding: 3px 8px; border-radius: 0.2rem; position: absolute; right: 0.7rem; top: 0.7rem;}
+.new-button:hover {text-decoration: none !important;}
+
+.breadcrumbs {margin-bottom: 20px;}
+
+table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {bottom: 0.7em;}

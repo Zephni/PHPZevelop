@@ -8,32 +8,27 @@
 		<title><?php echo $PHPZevelop->CFG->SiteTitle; ?> - <?php echo $PHPZevelop->CFG->PageTitle; ?></title>
 
 		<!-- JAVASCRIPT -->
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="<?php $PHPZevelop->Path->GetScript("main.js?".time()); ?>"></script>
 
-		<!-- JQuery datetimepicker -->
-		<link rel="stylesheet" href="<?php $PHPZevelop->Path->GetScript("datetimepicker-master/jquery.datetimepicker.css"); ?>" />
-		<script src="<?php $PHPZevelop->Path->GetScript("datetimepicker-master/jquery.datetimepicker.js"); ?>"></script>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('.datetimepicker').datetimepicker();
-			});
-		</script>
-
 		<!-- Bootstrap 4 -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" crossorigin="anonymous">
+
+		<!-- DataTables -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 
 		<!-- Custom CSS -->
-		<style type="text/css">
-			body {background: #F5F5F5;}
-		</style>
+		<link rel="stylesheet" href="<?php $PHPZevelop->Path->GetCSS("style.css?".time()); ?>" />
 	</head>
 	<body>
 
 		
 		<style type="text/css">
 			html,body {height: 100%; padding-top: 28px;}
-			#sidebar {border-right: 2px solid #CCCCCC; width: 300px;}
+			#sidebar {width: 300px;}
 			#content {background: white;}
 			#logo-container {width: 50%; margin: auto;}
 
@@ -68,7 +63,7 @@
 		<div class="container-fluid h-100">
 
 			<div class="row justify-content-center h-100"> 
-				<div id="sidebar" class="col-md-auto d-none d-md-block p-4 border-right border-info bg-light">
+				<div id="sidebar" class="col-md-auto d-none d-lg-block p-4 border-right border-info bg-light">
 					<div id="logo-container">
 						<img src="<?php $PHPZevelop->Path->GetImage("Logo.png"); ?>" alt="Logo" class="img-fluid" />
 					</div>
@@ -80,9 +75,5 @@
 			</div>
 
 		</div>
-		
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	</body>
 </html>

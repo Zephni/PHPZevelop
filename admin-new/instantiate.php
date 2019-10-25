@@ -48,7 +48,7 @@
 				$Administrator->Login();
 				CookieHelper::Set("keep_admin_username", $_SESSION[Administrator::$UsernameSessionField]);
 			}
-				
+			
 			//else
 			//	$Administrator->Logout();
 		}
