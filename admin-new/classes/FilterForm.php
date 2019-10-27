@@ -155,7 +155,7 @@
 			$HTML[] =	"	<div id='".$this->Options->ElementID."'>";
 			$HTML[] =	"		<p class='".$this->Options->AddFilterButtonClass."'>".$this->Options->AddFilterText."</p>";
 			$HTML[] =	"	</div>";
-			$HTML[] =	"	<input type='submit' value='".$this->Options->SubmitText."' />";
+			$HTML[] =	"	<input type='submit' value='".$this->Options->SubmitText."' class='btn btn-info' />";
 			$HTML[] =	"</form>";
 
 			echo implode("\n", $HTML);

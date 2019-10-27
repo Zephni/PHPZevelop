@@ -81,9 +81,9 @@
 			$HTML = "<table class='".$Config["TableClass"]."'>";
 			
 			// Build info row
-			$HTML .= "<tr class='".$Config["InfoRowClass"]."'>";
+			$HTML .= "<thead><tr class='".$Config["InfoRowClass"]."'>";
 			$ColumnComments = array();
-			foreach(self::GetTableColumns($Config["Table"]) as $Item)
+			foreach(self::GetTableColumns($Config["Table"]) as $K => $Item)
 			{
 				if(isset($TableConfig["HideFields"])){
 					foreach($TableConfig["HideFields"] as $K => $V) $TableConfig["HideFields"][$K] = trim($V);
@@ -98,14 +98,14 @@
 				}
 
 				$ColumnComments[$Item["column_name"]] = $Item["column_comment"];
-				$HTML .= "<td>".self::NiceName($Item["column_name"])."</td>";
+				$HTML .= "<th style='".(($Item["column_name"]== "id") ? "width: 1%; white-space: nowrap;" : "auto")."'>".self::NiceName($Item["column_name"])."</th>";
 			}
 
 			if(!isset($TableConfig["AllowExtraFields"]))
 				foreach($Config["ExtraFields"] as $ExtraField)
-					$HTML .= "<td class='".$Config["ExtraFieldClass"]."'></td>";
+					$HTML .= "<th style='width: 1%; white-space: nowrap;' class='".$Config["ExtraFieldClass"]."'></th>";
 
-			$HTML .= "</tr>";
+			$HTML .= "</tr></thead>";
 			// Build info row
 			
 			// Final Where

@@ -8,7 +8,7 @@
 		<title><?php echo $PHPZevelop->CFG->SiteTitle; ?> - <?php echo $PHPZevelop->CFG->PageTitle; ?></title>
 
 		<!-- JAVASCRIPT -->
-		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="<?php $PHPZevelop->Path->GetScript("main.js?".time()); ?>"></script>
 
 		<!-- Bootstrap 4 -->
