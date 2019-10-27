@@ -41,7 +41,7 @@
 			CookieHelper::Set(Administrator::$UsernameSessionField, $_SESSION[Administrator::$UsernameSessionField]);
 			CookieHelper::Set(Administrator::$PasswordSessionField, $_SESSION[Administrator::$PasswordSessionField]);
 
-			$Administrator = Administrator::GetSingle("administrators", array("username", "LIKE", $_SESSION[Administrator::$UsernameSessionField]));
+			$Administrator = Administrator::GetSingle(Administrator::$DBTABLEDEFAULT, array("username", "LIKE", $_SESSION[Administrator::$UsernameSessionField]));
 
 			if(isset($Administrator->Data["last_active"]) && substr($Administrator->Data["last_active"], 1) > time()-Administrator::$InactiveTime)
 			{
@@ -54,7 +54,7 @@
 		}
 
 		if(!isset($Administrator) || !$Administrator->LoggedIn())
-			$Administrator = new Administrator("administrators");
+			$Administrator = new Administrator(Administrator::$DBTABLEDEFAULT);
 	}
 	else if(true) // Change to false to disable user loggin
 		die("Administrator class required");

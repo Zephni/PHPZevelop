@@ -44,7 +44,7 @@
 			</a></center>";
 
 	echo DBTool::DisplayList(array(
-		"Table" => "administrators",
+		"Table" => Administrator::$DBTABLEDEFAULT,
 		"NoDataHTML" => "<br /><center><p style='color: #888888'>No data available, <a href='".$PHPZevelop->Path->GetPage("manage/administrators-add", true)."'>create ".strtolower("administrators")." item</a></p></center>",
 		"ExtraFields" => $ExtraFields,
 		"Where" => $Where,

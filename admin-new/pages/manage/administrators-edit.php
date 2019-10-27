@@ -1,9 +1,9 @@
 <?php
-	$Table = DBTool::GetTable("administrators");
+	$Table = DBTool::GetTable(Administrator::$DBTABLEDEFAULT);
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_0"])), true);
 	
-	if($Table["real_name"] != "administrators")
+	if($Table["real_name"] != Administrator::$DBTABLEDEFAULT)
 		die("Cannot modify rows in this table with the administrator edit method");
 
 	if(!HasPermission("general", "database") || !HasPermission("general", "administrator_edit"))
@@ -27,7 +27,7 @@
 
 		if($_POST["password"] != "[REPLACE TO CHANGE]")
 		{
-			$AdministratorObject = Administrator::GetSingle("administrators", array("id", "=", $_GET["param_0"]));
+			$AdministratorObject = Administrator::GetSingle(Administrator::$DBTABLEDEFAULT, array("id", "=", $_GET["param_0"]));
 
 			if(isset(ValidateValues::$ValidPairs["password"]))
 				$AdministratorObject->SetPassword(ValidateValues::$ValidPairs["password"]);

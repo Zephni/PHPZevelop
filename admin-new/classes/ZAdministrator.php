@@ -36,6 +36,7 @@
 		class Administrator extends DBItem
 		{
 			private $ActualPass = null;
+			public static $DBTABLEDEFAULT = "_administrators";
 			public static $UsernameSessionField = "username";
 			public static $PasswordSessionField = "password";
 			public static $InactiveTime;
@@ -43,7 +44,7 @@
 			// Initiate
 			public function Initiate()
 			{
-				$this->Table = "administrators";
+				$this->Table = self::$DBTABLEDEFAULT;
 				self::$InactiveTime = (60*20);
 			}
 
@@ -88,7 +89,7 @@
 			public static function AttemptLogin(&$User, $Username, $Password)
 			{
 				$MSG = null;
-				$UserLogin = Administrator::GetSingle("administrators", array("username", "LIKE", $Username), "OR", array("email", "LIKE", $Username));
+				$UserLogin = Administrator::GetSingle(self::$DBTABLEDEFAULT, array("username", "LIKE", $Username), "OR", array("email", "LIKE", $Username));
 				
 				if(isset($UserLogin->Data["id"]))
 				{
@@ -171,7 +172,7 @@
 				if(!isset($_SESSION[self::$PasswordSessionField]) || !isset($this->Data["id"]) || strlen($this->Data["id"]) == 0)
 					return false;
 				
-				$TempUser = Administrator::GetSingle("administrators", array("username", "LIKE", $_SESSION[self::$UsernameSessionField]));
+				$TempUser = Administrator::GetSingle(self::$DBTABLEDEFAULT, array("username", "LIKE", $_SESSION[self::$UsernameSessionField]));
 				if(isset($TempUser->Data) && $_SESSION[self::$PasswordSessionField] == $TempUser->Data["password"])
 					return true;
 				

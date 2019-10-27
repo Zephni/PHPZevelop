@@ -1,8 +1,8 @@
 <?php
-	$Table = DBTool::GetTable("administrators");
+	$Table = DBTool::GetTable(Administrator::$DBTABLEDEFAULT);
 	$TableConfig = DBTool::TableConfigArray($Table["real_name"]);
 	
-	if($Table["real_name"] != "administrators")
+	if($Table["real_name"] != Administrator::$DBTABLEDEFAULT)
 		die("Cannot add rows to this table with the administrator add method");
 
 	if(!HasPermission("general", "database") || !HasPermission("general", "administrator_add"))
@@ -34,7 +34,7 @@
 			$LastInsertID = $DB->Insert($Table["real_name"], ValidateValues::$ValidPairs);
 
 			// Password / salt
-			$AdministratorObject = Administrator::GetSingle("administrators", array("id", "=", $LastInsertID));
+			$AdministratorObject = Administrator::GetSingle(Administrator::$DBTABLEDEFAULT, array("id", "=", $LastInsertID));
 			$AdministratorObject->SetPassword($_POST["password"]);
 			$AdministratorObject->Update();
 

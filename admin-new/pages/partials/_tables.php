@@ -1,5 +1,8 @@
 <?php
     $Tables = DBTool::GetAllTables();
+    foreach($Tables as $K => $V)
+        if(substr($V["real_name"],0, 1) == "_")
+            unset($Tables[$K]);
 ?>
 
 <h2 class="display-4">Tables</h2>
@@ -8,7 +11,7 @@
     <thead class="thead-dark">
         <tr>
             <th class="w-100">Table name</th>
-            <th>Real name</th>
+            <th style="min-width: 150px;">Real name</th>
             <th>Columns</th>
             <th></th>
             <th></th>

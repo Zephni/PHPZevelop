@@ -6,7 +6,7 @@
 		"PassParams" => true
 	));
 
-	$Table = DBTool::GetTable("administrators");
+	$Table = DBTool::GetTable(Administrator::$DBTABLEDEFAULT);
 	$OrigionalData = $DB->Select("*", $Table["real_name"], array(array("id", "=", $Administrator->Data["id"])), true);
 
 	if(count($_POST) > 0)
