@@ -13,7 +13,7 @@
             <th></th>
             <th></th>
             <th>
-                <a href="/" class="bth btn-success float-right new-button">+ New table</a>
+                <a href="<?php $PHPZevelop->Path->GetPage("manage/create-table"); ?>" class="bth btn-success float-right new-button">+ New table</a>
             </th>
         </tr>
     </thead>
@@ -25,8 +25,8 @@
                 echo "  <td class='align-middle font-weight-bold'>".$Item["name"]."</td>";
                 echo "  <td class='align-middle'>".$Item["real_name"]."</td>";
                 echo "  <td class='align-middle;'><center>".count($Item["columns"])."</center></td>";
-                echo "  <td class='align-middle'><a href='/' class='btn btn-sm btn-info'>View Rows</a></td>";
-                echo "  <td class='align-middle'><a href='/' class='btn btn-sm btn-primary'>Modify Table</a></td>";
+                echo "  <td class='align-middle'><a href='' class='btn btn-sm btn-info'>View Rows</a></td>";
+                echo "  <td class='align-middle'><a href='".$PHPZevelop->Path->GetPage("manage/modify-table/".$Item["real_name"], true)."' class='btn btn-sm btn-primary'>Modify Table</a></td>";
                 echo "  <td class='align-middle'><a href='/' class='confirm btn btn-sm btn-danger'>Delete</a></td>";
                 echo "</tr>";
             }
