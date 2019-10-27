@@ -143,7 +143,8 @@
 <div class="breadcrumbs"><?php
 	Breadcrumbs::Build(array(
 		"" => "administration",
-		"create" => "Modifying table"
+		"/" => "Modifying table",
+		"modify_table" => $_GET["param_0"]
 	));
 ?></div>
 
