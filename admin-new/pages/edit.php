@@ -89,11 +89,12 @@
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
 			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
-			if(ArrGet($ConfigArray, "type", 0) == "image"  && isset($_FILES[$K]) && isset($_FILES[$K]["name"])) UploadImage($K, $ConfigArray, $V);
+			if(ArrGet($ConfigArray, "type", 0) == "image" && isset($_FILES[$K]["name"]) && !empty($_FILES[$K]["name"][0])){
+				UploadImage($K, $ConfigArray, $V); // Will upload single
+			}
 			if(ArrGet($ConfigArray, "type", 0) == "images" && isset($_FILES[$K]["name"]) && !empty($_FILES[$K]["name"][0])){
 				$Offset = 0;
-				foreach(explode(",", $Data[$K]) as $Temp)
-				{
+				foreach (explode(",", $Data[$K]) as $Temp) {
 					$T1 = explode("_", $Temp);
 					$T1 = explode(".", $T1[count($T1)-1]);
 					$T1 = $T1[0];
@@ -105,7 +106,6 @@
 			}
 
 			if (ArrGet($ConfigArray, "type", 0) == "checkbox" && isset(ValidateValues::$ValidPairs[$K]) && ValidateValues::$ValidPairs[$K] != "") {
-				//die(var_dump($V));
 				ValidateValues::$ValidPairs[$K] = implode("|", $V);
 			}
 		}

@@ -1,5 +1,5 @@
 <?php
-	function UploadImage($ColumnKey, $ColumnCommands, $File, $Offset = 0)
+	function UploadImage($ColumnKey, $ColumnCommands, $File, $Offset = null)
 	{
 		global $PHPZevelop;
 		global $Table;
@@ -31,7 +31,8 @@
 						"size"		=> $Files["size"][$I]
 					);
 
-					$AppendName = "_".($I + $Offset + 1);
+					if($Offset !== null)
+						$AppendName = "_".($I + $Offset + 1);
 				}
 				else
 				{
@@ -75,6 +76,9 @@
 				}
 			}
 
-			ValidateValues::$ValidPairs[$ColumnKey] = $OrigionalValue.((strlen($OrigionalValue) > 0 && count(ValidateValues::$ValidPairs[$ColumnKey]) > 0) ? "," : "").implode(",", ValidateValues::$ValidPairs[$ColumnKey]);
+			if($Offset !== null)
+				ValidateValues::$ValidPairs[$ColumnKey] = $OrigionalValue.((strlen($OrigionalValue) > 0 && count(ValidateValues::$ValidPairs[$ColumnKey]) > 0) ? "," : "").implode(",", ValidateValues::$ValidPairs[$ColumnKey]);
+			else
+				ValidateValues::$ValidPairs[$ColumnKey] = implode(",", ValidateValues::$ValidPairs[$ColumnKey]); // Single, but used implode as is still an array
 		}
 	}

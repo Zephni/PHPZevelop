@@ -167,7 +167,7 @@
 				else if($Item["Attributes"]["type"] == "file")
 				{
 					$Item["Attributes"]["style"] = "width: auto;";
-					$HTML .= $Item["Options"]["prehtml"]."<input class='form-control-file' ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
+					$HTML .= $Item["Options"]["prehtml"]."<input ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
 				}
 				else if($Item["Attributes"]["type"] == "submit")
 				{
@@ -294,44 +294,64 @@
 							$PostHTML = "</td></tr></table>";
 						}
 					}
-					
+
 					// Image type
 					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "image")
 					{
+						global $FrontEndLocationLocal;
 						$ColumnOptions["type"][0] = "file";
-						$ColumnOptions["class"][0] = "ImageSelector ".((isset($ColumnOptions["class"][0])) ? $ColumnOptions["class"][0] : "");
+						$ColumnOptions["class"][0] = "form-control-file ".((isset($ColumnOptions["class"][0])) ? $ColumnOptions["class"][0] : "");
+						$Item["column_name"] = $Item["column_name"]."[]";
 
-						if(isset($Config["Data"][$Item["column_name"]]))
-							$Img = $FrontEndImageLocationLocal."/".$ColumnOptions["filelocation"][0]."/".$Config["Data"][$Item["column_name"]];
-						else
-							$Img = $PHPZevelop->Path->GetImage("components/no-image-icon.jpg", true);
-						
-						$PreHTML = "<table style='width: 100%;'><tr><td style='width: 10%;'><img src='".$Img."' class='PreviewImage' /></td><td style='width: 90%;'>";
-						$PostHTML = "</td></tr></table>";
+						if(isset($Config["Data"][rtrim($Item["column_name"], "[]")]) && strlen($Config["Data"][rtrim($Item["column_name"], "[]")]) > 0)
+						{
+							$PostHTML = '<div class="w-100 d-block mt-3 p-2" style="overflow: auto; background: white; border: 1px solid #CCCCCC;">';
+							
+							foreach(explode(",", $Config["Data"][rtrim($Item["column_name"], "[]")]) as $Temp)
+							{if(empty($Temp)) continue;
+								$Path = urlencode($ColumnOptions["filelocation"][0]."/".$Temp);
+								$PostHTML .= "
+									<div style='padding: 8px; width: 180px; float: left; position: relative; border: 1px solid #CCCCCC; margin-right: 7px; '>
+										<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' class='font-weight-bold' style='font-size: 18px; width: 24px; height: 24px; text-align: center; vertical-align: middle; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>x</a>
+										<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=left"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; left: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&lt;</a>
+										<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=right"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; right: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&gt;</a>
+										<img src='".$FrontEndLocationLocal."/images/".$ColumnOptions["filelocation"][0]."/".$Temp."' style='width: 100%;' />
+									</div>
+								";
+							}
+
+							$PostHTML .= '</div>';
+						}
 					}
-
+					
 					// Images type
 					if(isset($ColumnOptions["type"]) && $ColumnOptions["type"][0] == "images")
 					{
 						global $FrontEndLocationLocal;
 						$ColumnOptions["type"][0] = "file";
+						$ColumnOptions["class"][0] = "form-control-file ".((isset($ColumnOptions["class"][0])) ? $ColumnOptions["class"][0] : "");
 						$Item["column_name"] = $Item["column_name"]."[]";
 						$Multiple = true;
 
-						$PostHTML = '<div class="w-100 d-block mt-3 p-2" style="overflow: auto; background: white; border: 1px solid #CCCCCC;">';
-						foreach(explode(",", $Config["Data"][rtrim($Item["column_name"], "[]")]) as $Temp)
-						{if(empty($Temp)) continue;
-							$Path = urlencode($ColumnOptions["filelocation"][0]."/".$Temp);
-							$PostHTML .= "
-								<div style='padding: 8px; width: 180px; float: left; position: relative; border: 1px solid #CCCCCC; margin-right: 7px; '>
-									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' class='font-weight-bold' style='font-size: 18px; width: 24px; height: 24px; text-align: center; vertical-align: middle; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>x</a>
-									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=left"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; left: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&lt;</a>
-									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=right"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; right: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&gt;</a>
-									<img src='".$FrontEndLocationLocal."/images/".$ColumnOptions["filelocation"][0]."/".$Temp."' style='width: 100%;' />
-								</div>
-							";
+						if(isset($Config["Data"][rtrim($Item["column_name"], "[]")]) && strlen($Config["Data"][rtrim($Item["column_name"], "[]")]) > 0)
+						{
+							$PostHTML = '<div class="w-100 d-block mt-3 p-2" style="overflow: auto; background: white; border: 1px solid #CCCCCC;">';
+							
+							foreach(explode(",", $Config["Data"][rtrim($Item["column_name"], "[]")]) as $Temp)
+							{if(empty($Temp)) continue;
+								$Path = urlencode($ColumnOptions["filelocation"][0]."/".$Temp);
+								$PostHTML .= "
+									<div style='padding: 8px; width: 180px; float: left; position: relative; border: 1px solid #CCCCCC; margin-right: 7px; '>
+										<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' class='font-weight-bold' style='font-size: 18px; width: 24px; height: 24px; text-align: center; vertical-align: middle; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>x</a>
+										<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=left"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; left: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&lt;</a>
+										<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=right"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; right: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&gt;</a>
+										<img src='".$FrontEndLocationLocal."/images/".$ColumnOptions["filelocation"][0]."/".$Temp."' style='width: 100%;' />
+									</div>
+								";
+							}
+
+							$PostHTML .= '</div>';
 						}
-						$PostHTML .= '</div>';
 					}
 
 					// Timestamp type

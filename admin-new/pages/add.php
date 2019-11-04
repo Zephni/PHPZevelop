@@ -28,7 +28,7 @@
 			$ConfigArray = DBTool::FieldConfigArray($Table["columns"][$K]["column_comment"]);
 			if(ArrGet($ConfigArray, "type", 0) == "timestamp") ValidateValues::$ValidPairs[$K] = strtotime($V);
 			if(ArrGet($ConfigArray, "type", 0) == "file") UploadFile($K, $ConfigArray, $V);
-			if(ArrGet($ConfigArray, "type", 0) == "image"){if(count($_FILES[$K]) > 0) UploadImage($K, $ConfigArray, $V);}
+			if(ArrGet($ConfigArray, "type", 0) == "image" && isset($_FILES[$K]["name"]) && count($_FILES[$K]["name"]) > 0) UploadImage($K, $ConfigArray, $V[0]); // Will upload single
 			if(ArrGet($ConfigArray, "type", 0) == "images" && isset($_FILES[$K]["name"]) && count($_FILES[$K]["name"]) > 0) UploadImage($K, $ConfigArray, $V); // Will upload multiple
 			if(ArrGet($ConfigArray, "type", 0) == "checkbox") ValidateValues::$ValidPairs[$K] = implode("|", $V);
 		}
@@ -39,7 +39,7 @@
 			$DB->Insert($Table["real_name"], ValidateValues::$ValidPairs);
 			if(count($DB->Errors) > 0)
 				die(print_r($DB->Errors));
-			ChangeLog("Uploaded to '".$Table["name"]."'");
+			
 			$PHPZevelop->Location("edit/".$_GET["param_0"]."/".$Table["information"]["auto_increment"]);
 		}
 	}
