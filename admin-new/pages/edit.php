@@ -103,16 +103,17 @@
 				
 				UploadImage($K, $ConfigArray, $V, $Offset); // Will upload multiple, and set an offset
 			}
-			if(ArrGet($ConfigArray, "type", 0) == "checkbox" && isset(ValidateValues::$ValidPairs[$K]) && ValidateValues::$ValidPairs[$K] != "") ValidateValues::$ValidPairs[$K] = implode("|", $V);
+
+			if (ArrGet($ConfigArray, "type", 0) == "checkbox" && isset(ValidateValues::$ValidPairs[$K]) && ValidateValues::$ValidPairs[$K] != "") {
+				//die(var_dump($V));
+				ValidateValues::$ValidPairs[$K] = implode("|", $V);
+			}
 		}
 
 		if(count(ValidateValues::$InvalidPairs) == 0)
 		{
 			$DB->Update($Table["real_name"], ValidateValues::$ValidPairs, array(array("id", "=", $_GET["param_1"])));
 		}
-		
-		$LogString = array(); foreach(ValidateValues::$ValidPairs as $K => $V) if($Data[$K] != $V) $LogString[] = $K;
-		if(count($LogString) > 0) ChangeLog("Updated '".$Table["name"]."' #".$_GET["param_1"]." fields: ".implode(", ", $LogString));
 	}
 	
 	$Data = $DB->Select("*", $Table["real_name"], array(array("id", "=", $_GET["param_1"])), true);

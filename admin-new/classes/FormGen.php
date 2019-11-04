@@ -45,6 +45,9 @@
 
 				// Set build options
 				$BuildOptions = array_merge($this->DefaultBuildOptions, $ApplyBuildOptions);
+
+				// Force ColNum to 1 as was causeing issues
+				$BuildOptions["ColNum"] = 1;
 				
 				// Build HTML
 				$HTML = "<form ".$this->BuildAttributes($BuildOptions["FormAttributes"]).">";
@@ -149,20 +152,22 @@
 				}
 				else if($Item["Attributes"]["type"] == "checkbox")
 				{
+					$HTML .= "<div class='d-block'>";
 					foreach($Item["Options"]["data"] as $K => $V)
 					{
 						if(strlen($V) > 0 && isset($Item["Options"]["forceselected"]) && strstr($Item["Options"]["forceselected"], $V) !== false)
-							$HTML .= "<div style='display: inline-block;'><input class='form-control' type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' checked='checked' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
+							$HTML .= '<div class="form-check form-check-inline"><input checked="checked" class="form-check-input" type="checkbox" name="'.$Item["Attributes"]["name"].'[]" value="'.$K.'"><label class="form-check-label">'.$V.'</label></div>';
 						else if(strlen($V) > 0 && isset($this->PrepopData[$Item["Attributes"]["name"]]) && in_array($K, explode("|", $this->PrepopData[$Item["Attributes"]["name"]])))
-							$HTML .= "<div style='display: inline-block;'><input class='form-control' type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' checked='checked' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
+							$HTML .= '<div class="form-check form-check-inline"><input checked="checked" class="form-check-input" type="checkbox" name="'.$Item["Attributes"]["name"].'[]" value="'.$K.'"><label class="form-check-label">'.$V.'</label></div>';
 						else
-							$HTML .= "<div style='display: inline-block;'><input class='form-control' type='checkbox' name='".$Item["Attributes"]["name"]."[]' value='".$K."' style='width: 23px; height: 20px; margin-right: 4px;' /><span style='position: relative; top: -5px; padding-right: 10px;'>".$V."</span></div>";
+							$HTML .= '<div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="'.$Item["Attributes"]["name"].'[]" value="'.$K.'"><label class="form-check-label">'.$V.'</label></div>';
 					}
+					$HTML .= "</div>";
 				}
 				else if($Item["Attributes"]["type"] == "file")
 				{
 					$Item["Attributes"]["style"] = "width: auto;";
-					$HTML .= $Item["Options"]["prehtml"]."<input class='form-control' ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
+					$HTML .= $Item["Options"]["prehtml"]."<input class='form-control-file' ".$this->BuildAttributes($Item["Attributes"])." />".$Item["Options"]["posthtml"];
 				}
 				else if($Item["Attributes"]["type"] == "submit")
 				{
@@ -313,15 +318,15 @@
 						$Item["column_name"] = $Item["column_name"]."[]";
 						$Multiple = true;
 
-						$PostHTML = '<div style="width: 100%; padding: 10px; box-sizing: border-box;">';
+						$PostHTML = '<div class="w-100 d-block mt-3 p-2" style="overflow: auto; background: white; border: 1px solid #CCCCCC;">';
 						foreach(explode(",", $Config["Data"][rtrim($Item["column_name"], "[]")]) as $Temp)
 						{if(empty($Temp)) continue;
 							$Path = urlencode($ColumnOptions["filelocation"][0]."/".$Temp);
 							$PostHTML .= "
-								<div style='padding: 5px; width: 100px; float: left; position: relative;'>
-									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' style='font-weight: bold; font-size: 16px; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 3px 2px 4px; line-height: 14px; border: 1px solid #CCCCCC;'>x</a>
-									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=left"."' style='font-weight: bold; font-size: 12px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; left: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 4px 0px 3px; line-height: 14px; border: 1px solid #CCCCCC;'>&lt;</a>
-									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=right"."' style='font-weight: bold; font-size: 12px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; right: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); padding: 0px 3px 0px 4px; line-height: 14px; border: 1px solid #CCCCCC;'>&gt;</a>
+								<div style='padding: 8px; width: 180px; float: left; position: relative; border: 1px solid #CCCCCC; margin-right: 7px; '>
+									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgdel=".$Path."&imgfield=".rtrim($Item["column_name"], "[]")."' class='font-weight-bold' style='font-size: 18px; width: 24px; height: 24px; text-align: center; vertical-align: middle; color: red; background: #FFFFFF; border-radius: 14px; position: absolute; right: 5px; top: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>x</a>
+									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=left"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; left: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&lt;</a>
+									<a href='".$PHPZevelop->CFG->SiteDirLocal.$PHPZevelop->CFG->PagePath."?imgshift=".$Temp."&imgfield=".rtrim($Item["column_name"], "[]")."&imgdir=right"."' class='text-primary font-weight-bold' style='font-weight: bold; width: 24px; height: 24px; text-align: center; vertical-align: middle; font-size: 16px; color: #333333; background: #FFFFFF; border-radius: 12px; position: absolute; right: 6px; bottom: 5px; text-decoration: none; box-shadow: 0 0 12px rgba(0, 0, 0, .3); line-height: 18px; border: 1px solid #CCCCCC;'>&gt;</a>
 									<img src='".$FrontEndLocationLocal."/images/".$ColumnOptions["filelocation"][0]."/".$Temp."' style='width: 100%;' />
 								</div>
 							";
