@@ -71,3 +71,12 @@
 		$Pagination->SetCSS("ActiveButtonCSS", array("background" => $Administrator->Data["theme_color"], "color" => "white !important"));
 		$Pagination->SetCSS("HighlightedButtonCSS", array("background" => $Administrator->Data["theme_color"], "color" => "white !important"));
 	}
+
+	/* FieldTypeOptions
+	------------------------------*/
+	$FieldTypeOptions = array(
+		"VARCHAR(255)",
+		"TEXT",
+		"MEDIUMTEXT",
+		"INT(11)"
+	);

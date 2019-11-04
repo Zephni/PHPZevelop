@@ -9,13 +9,14 @@
 	if(!HasPermission("general", "database") || !HasPermission("general", "modify"))
 		die("You do not have permission to modify tables");
 
-	$Table = DBTool::GetTable($_GET["param_0"]);
+	if(strtolower($_GET["param_0"]) == Administrator::$DBTABLEDEFAULT)
+		die("You cannot modify or delete the administrator table (".Administrator::$DBTABLEDEFAULT.")");
+	
+		$Table = DBTool::GetTable($_GET["param_0"]);
+
 
 	if(isset($_GET["param_1"]) && $_GET["param_1"] == "delete")
 	{
-		if(strtolower($_GET["param_0"]) == Administrator::$DBTABLEDEFAULT)
-			die("You cannot delete the administrator table");
-
 		$DB->QuerySingle("DROP TABLE `".$_GET["param_0"]."`");
 		$PHPZevelop->Location("");
 	}
@@ -68,14 +69,6 @@
 		
 		$Table = DBTool::GetTable($_GET["param_0"]);
 	}
-
-	$FieldTypeOptions = array(
-		"TEXT",
-		"VARCHAR(255)",
-		"VARCHAR(25)",
-		"INT",
-		"MEDIUMINT"
-	);
 ?>
 
 <style type="text/css">
@@ -88,7 +81,11 @@
 	$(document).ready(function(){
 		FieldHTML =  "<tr class='field'><td>Field <span class='removeField'>(remove)</span></td></tr><tr><td><div class='form-group group-spacer'>";
 		FieldHTML += "<input type='text' class='form-control d-inline' name='field_name[]' style='width: 24%; margin-right: 1.3%;' placeholder='field name' />";
-		FieldHTML += "<select type='text' class='form-control d-inline' name='field_type[]' style='width: 24%; margin-right: 1.3%;'><option>VARCHAR(255)</option><option>MEDIUMTEXT</option></select>";
+		FieldHTML += "<select type='text' class='form-control d-inline' name='field_type[]' style='width: 24%; margin-right: 1.3%;'>";
+		<?php foreach($FieldTypeOptions as $Item){ ?>
+		FieldHTML += "<option><?= $Item ?></option>";
+		<?php } ?>
+		FieldHTML += "</select>";
 		FieldHTML += "<input type='text' class='form-control d-inline' name='field_default[]' style='width: 24%; margin-right: 1.2%;' placeholder='field default' />";
 		FieldHTML += "<input type='text' class='form-control d-inline' name='field_comment[]' style='width: 24%;' placeholder='field comment' />";
 		FieldHTML += "</div></td></tr>";
@@ -103,7 +100,11 @@
 				LoadedFieldHTML += "<input type='hidden' name='original_field_name[]' style='width: 24%; margin-right: 1.3%;' value='<?php echo preg_replace("/\r?\n|\r/", "", str_replace("'", "", $K)); ?>' />";
 				LoadedFieldHTML += "<input type='text' class='form-control d-inline' name='field_name[]' style='width: 24%; margin-right: 1.3%;' placeholder='field name' value='<?php echo preg_replace("/\r?\n|\r/", "", str_replace("'", "", $K)); ?>' />";
 
-				LoadedFieldHTML += "<select type='text' class='form-control d-inline' name='field_type[]' style='width: 24%; margin-right: 1.3%;'><option>VARCHAR(255)</option><option>MEDIUMTEXT</option></select>";
+				LoadedFieldHTML += "<select type='text' class='form-control d-inline' name='field_type[]' style='width: 24%; margin-right: 1.3%;'>";
+				<?php foreach($FieldTypeOptions as $Item){ ?>
+					LoadedFieldHTML += "<option <?= (strtoupper($V["column_type"]) == $Item) ? "selected='selected'" : "" ; ?>><?= $Item ?></option>";
+				<?php } ?>
+				LoadedFieldHTML += "</select>";
 
 				LoadedFieldHTML += "<input type='hidden' name='original_field_default[]' style='width: 24%; margin-right: 1.3%;' value='<?php echo preg_replace("/\r?\n|\r/", "", str_replace("'", "", $V["column_default"])); ?>' />";
 				LoadedFieldHTML += "<input type='text' class='form-control d-inline' name='field_default[]' style='width: 24%; margin-right: 1.2%;' placeholder='field default' value='<?php echo preg_replace("/\r?\n|\r/", "", str_replace("'", "", $V["column_default"])); ?>' />";

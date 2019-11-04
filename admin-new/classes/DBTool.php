@@ -45,7 +45,7 @@
 			global $DB;
 
 			$Array = array();
-			foreach($DB->Query("SELECT `column_name`, `column_default`, `column_comment` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='".$PHPZevelop->CFG->DB->Name."' AND `TABLE_NAME`=:table_name", array("table_name" => $TableName)) as $Item)
+			foreach($DB->Query("SELECT `column_name`, `column_default`, `column_comment`, `column_type` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='".$PHPZevelop->CFG->DB->Name."' AND `TABLE_NAME`=:table_name", array("table_name" => $TableName)) as $Item)
 				$Array[$Item["column_name"]] = $Item;
 
 			return $Array;

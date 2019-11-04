@@ -51,7 +51,11 @@
 	$(document).ready(function(){
 		FieldHTML =  "<tr><td>Field <span class='removeField'>(remove)</span></td></tr><tr><td><div class='form-group group-spacer'>";
 		FieldHTML += "<input type='text' class='form-control d-inline' name='field_name[]' style='width: 24%; margin-right: 1.3%;' placeholder='field name' />";
-		FieldHTML += "<select type='text' class='form-control d-inline' name='field_type[]' style='width: 24%; margin-right: 1.3%;'><option>VARCHAR(255)</option><option>MEDIUMTEXT</option></select>";
+		FieldHTML += "<select type='text' class='form-control d-inline' name='field_type[]' style='width: 24%; margin-right: 1.3%;'>";
+		<?php foreach($FieldTypeOptions as $Item){ ?>
+		FieldHTML += "<option><?= $Item ?></option>";
+		<?php } ?>
+		FieldHTML += "</select>";
 		FieldHTML += "<input type='text' class='form-control d-inline' name='field_default[]' style='width: 24%; margin-right: 1.2%;' placeholder='field default' />";
 		FieldHTML += "<input type='text' class='form-control d-inline' name='field_comment[]' style='width: 24%;' placeholder='field comment' />";
 		FieldHTML += "</div></td></tr>";
